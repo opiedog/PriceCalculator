@@ -7,21 +7,6 @@
 
 import Foundation
 
-//    Sq Feet       Price for 5000M STANDARD MESH - Green/Blue/Tan/Grey
-//    0    300      $4.14
-//    301    400    $3.35
-//    401    500    $3.06
-//    501    600    $2.80
-//    601    650    $2.69
-//    651    700    $2.57
-//    701    800    $2.52
-//    801    900    $2.41
-//    901    1000   $2.29
-//    1001    1200  $2.24
-//    1201    1300  $2.17
-//    1301    1600  $2.16
-//    1601    1900  $2.00
-//    1901    2000  $1.94
 //    2001    10000 Call for Quote
 func getPriceForArea(area: Double) -> Double {
     var pricePerSqFoot: Double = -1
@@ -69,12 +54,15 @@ func getPriceForArea(area: Double) -> Double {
     else if((1901 < area) && (area <= 2000)) {
         pricePerSqFoot = 1.94
     }
-//    else if((2001 < area) && (area <= 2000)) {
-//        pricePerSqFoot = 3.35
+//    else if((2001 < area) && (area <= 10000)) {
+//        pricePerSqFoot = N/A
 //    }
 
     if( pricePerSqFoot > 0) {
         finalPrice = pricePerSqFoot * area
+    }
+    else {
+        // TODO
     }
     
     return finalPrice

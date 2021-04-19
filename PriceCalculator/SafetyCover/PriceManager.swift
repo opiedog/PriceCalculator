@@ -32,9 +32,13 @@ enum ShapeDescription {
     case lazyl
 }
 
+// TODO
+//  - Add a field to capture the units (e.g. feet, meters)
 struct AreaDimensions {
     var shapeCharacterization: ShapeCharacterization = .undefined
     var shapeDescription: ShapeDescription = .undefined
+    var area: Double = 0
+    var perimeter: Double = 0
 
     //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
     //                              // Rect     // TrueL    // LazyL
@@ -59,10 +63,17 @@ struct AreaDimensions {
             self.shapeDescription = shapeDescription
         }
         
+        var borderWidth: Double = 0
+
         switch shapeDescription {
             case ShapeDescription.rectangle:
                 self.longLength = longLength
                 self.longWidth = longWidth
+                
+                borderWidth = 2.0
+                self.area = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
+                
+                self.perimeter = (2 * longLength) + (2 * longWidth)
 
                 self.shapeCharacterization = .geometric
 
@@ -72,6 +83,13 @@ struct AreaDimensions {
 
                 self.shortLength = shortLength
                 self.shortWidth = shortWidth
+                
+                borderWidth = 3.0
+                let area1 = (Double)(longLength * shortWidth)
+                let area2 = (Double)(shortLength * (longWidth - shortWidth))
+                area = area1 + area2
+
+                self.perimeter = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
 
                 self.shapeCharacterization = .geometric
 
@@ -97,27 +115,9 @@ struct AreaDimensions {
 class SafetyCoverPriceCalculator {
     var priceResult: PriceResult = PriceResult()
     private var _areaDimensions: AreaDimensions?
-    private var _areaSqFt: Double = 0.0
     
     init() {
         _areaDimensions = nil
-        _areaSqFt = 0.0
-    }
-//    init(areaDimensions: AreaDimensions) {
-//        _area = areaDimensions
-//        // Verify the input
-//        if (!validateAreaDimensions(areaDimensions: areaDimensions)) {
-//            priceResult.success = false
-//            priceResult.errorType = CalculatePriceError.validateInputs
-//            return
-//        }
-//    }
-    
-    func convertToFeet(footVal: Int, inchVal: Int) -> Double {
-        let val1 = (Double)(footVal)
-        let val2 = (Double)(inchVal) / 12.0
-        let val3 = val1 + val2
-        return val3
     }
     
     func setAreaDimensions(areaDimensions: AreaDimensions) {
@@ -134,130 +134,26 @@ class SafetyCoverPriceCalculator {
     }
 
     //--------------------------------
-    func getArea() -> Double {
-        //var area: Double = 0
-        
-        switch self._areaDimensions!.shapeDescription {
-            case .rectangle:
-                let borderWidth: Double = 2.0
-                _areaSqFt = (Double)((borderWidth + _areaDimensions!.longLength) * (borderWidth + _areaDimensions!.longWidth))
-
-            case .truel:
-                let area1 = (Double)(_areaDimensions!.longLength * _areaDimensions!.shortWidth)
-                let area2 = (Double)(_areaDimensions!.shortLength * (_areaDimensions!.longWidth - _areaDimensions!.shortWidth))
-                _areaSqFt = area1 + area2
-
-            case .lazyl:
-                // TODO
-//                self.longLength = longLength
-//                self.longWidth = longWidth
-//
-//                self.shortLength = shortLength
-//                self.shortWidth = shortWidth
-//
-//                self.longDiagLength = longDiagLength
-//                self.shortDiagLength = shortDiagLength
-                _areaSqFt = 0
-
-            case .undefined:
-                _areaSqFt = 0
-        }
-        
-        return _areaSqFt
-    }
-
-    //--------------------------------
     func calculatePrice() {
         // Validate inputs
-        //if (!validateInputs()) {
-        //    priceResult.success = false
-        //    priceResult.errorType = CalculatePriceError().validateInputs
-        //    return
-        //}
-        
-//        //
-//        var configResult = false
-//        switch _area.shapeCharacterization {
-//            case .freeform:
-//                configResult = configureFreeformPoolShape()
-//            case .geometric:
-//                configResult = configureGeometricPoolShape()
-//            case .undefined:
-//                configResult = false
-//        }
-//
-//        if (!configResult) {
-//            if (!priceResult.success) {
-//                priceResult.errorType = CalculatePriceError.validateInputs
-//                return
-//            }
-//        }
-        
+        // TODO
 
-        //
+        // Get the baseline for the square footage
+        priceResult.calculatedPrice = getPriceForArea(area: self._areaDimensions!.area)
+
+        // Add the options
+        var optionsTotal: Double = 0.0
         
-        // All done
-        
-        priceResult.calculatedPrice = getPriceForArea(area: self._areaSqFt)
-        let asdf = priceResult.calculatedPrice + 1
+        priceResult.calculatedPrice += optionsTotal
     }
-//
-//    //--------------------------------
-//    func setPoolAreaDimensions_Rect(lengthFeet: Int, lengthInches: Double, widthFeet: Int, widthInches: Double) {
-//        // Validate inputs
-//        if(!areValid_PoolAreaDimensions_rect(lengthFeet: lengthFeet, lengthInches: lengthInches, widthFeet: widthFeet, widthInches: widthInches)) {
-//            return
-//        }
-//
-//        // Populate the struct
-//        _area.longLengthFeet = lengthFeet
-//        _area.longLengthInches = lengthInches
-//        _area.longWidthFeet = widthFeet
-//        _area.longWidthInches = widthInches
-//
-//        _area.shapeDescription = .geometric
-//    }
+    
+    func convertToFeet(footVal: Int, inchVal: Int) -> Double {
+        let val1 = (Double)(footVal)
+        let val2 = (Double)(inchVal) / 12.0
+        let val3 = val1 + val2
+        return val3
+    }
 }
-
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-//func calculatePrice(shapeDescription: ShapeDescription) -> PriceResult {
-//    // Validate inputs
-//    if (!validateInputs()) {
-//        var priceResult = PriceResult()
-//        priceResult.success = false
-//        priceResult.errorType = CalculatePriceError().validateInputs
-//        return priceResult
-//    }
-//
-//    //
-//    //var area = 0
-//    var configResult = false
-//
-//    switch shapeDescription {
-//        case .freeform:
-//            configResult = configureFreeformPoolShape()
-//        case .geometric:
-//            configResult = configureGeometricPoolShape()
-//        case .undefined:
-//            configResult = false
-//    }
-//
-//    if (!configResult) {
-//        var priceResult = testConfigResult(configResult: configResult)
-//        if (!priceResult.success) {
-//            return priceResult
-//        }
-//    }
-//
-//
-//    //
-//
-//    // All done
-//
-//    // TODO
-//    return PriceResult()
-//}
 
 //---------------------------------------------------------------------
 //---------------------------------------------------------------------

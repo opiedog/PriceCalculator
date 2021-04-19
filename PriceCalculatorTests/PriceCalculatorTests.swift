@@ -23,11 +23,10 @@ class PriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testRectanglularPoolArea1() throws {
+    func testRectanglularPoolAreaAndPerimeter1() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        //let area: Double = PriceCalculator.getArea_geometric(aFeet: 10, aInches: 0, bFeet: 20, bInches: 6)
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
         let w: Double = calculator.convertToFeet(footVal: 20, inchVal: 6)
         XCTAssertEqual(20.5, w)
@@ -36,13 +35,18 @@ class PriceCalculatorTests: XCTestCase {
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         calculator.setAreaDimensions(areaDimensions: areaDims)
-        let area: Double = calculator.getArea()
+        
+        //let area: Double = calculator.getArea()
+        let area: Double = areaDims.area
         XCTAssertEqual(270, area)
+        
+        let perimeter: Double = areaDims.perimeter
+        XCTAssertEqual((20.5 * 2) + (10 * 2), perimeter)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testRectanglularPoolArea2() throws {
+    func testRectanglularPoolAreaAndPerimeter2() throws {
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
 
         let B: Double = calculator.convertToFeet(footVal: 38, inchVal: 3)
@@ -55,8 +59,12 @@ class PriceCalculatorTests: XCTestCase {
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         calculator.setAreaDimensions(areaDimensions: areaDims)
-        let area: Double = calculator.getArea()
+        //let area: Double = calculator.getArea()
+        let area: Double = areaDims.area
         XCTAssertEqual(roundToTenThousandth(value: 667.4792), roundToTenThousandth(value: area))
+        
+        let perimeter: Double = areaDims.perimeter
+        XCTAssertEqual((B * 2) + (A * 2), perimeter)
     }
 
     //----------------------------------------------------
@@ -73,7 +81,9 @@ class PriceCalculatorTests: XCTestCase {
         
         calculator.setAreaDimensions(areaDimensions: areaDims)
 
-        XCTAssertEqual(270, calculator.getArea())
+        //XCTAssertEqual(270, calculator.getArea())
+        let area: Double = areaDims.area
+        XCTAssertEqual(270, area)
 
         // Set the options
         // TODO
@@ -99,7 +109,7 @@ class PriceCalculatorTests: XCTestCase {
         
         calculator.setAreaDimensions(areaDimensions: areaDims)
 
-        XCTAssertEqual(916.8472, roundToTenThousandth(value: calculator.getArea()))
+        //XCTAssertEqual(916.8472, roundToTenThousandth(value: calculator.getArea()))
 
         // Set the options
         // TODO
