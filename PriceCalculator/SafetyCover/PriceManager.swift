@@ -32,6 +32,11 @@ enum ShapeDescription {
     case lazyl
 }
 
+struct SafetyCoverOptionSelection {
+    var optionItem: SafetyCoverOptionItem
+    var quantity: Int = 0
+}
+
 // TODO
 //  - Add a field to capture the units (e.g. feet, meters)
 struct AreaDimensions {
@@ -134,15 +139,28 @@ class SafetyCoverPriceCalculator {
     }
 
     //--------------------------------
-    func calculatePrice() {
+    func calculatePrice(safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, selectedOptions: [SafetyCoverOptionSelection]?) {
         // Validate inputs
         // TODO
 
+        let dataLayer: DataLayer = DataLayer()
+        
         // Get the baseline for the square footage
-        priceResult.calculatedPrice = getPriceForArea(area: self._areaDimensions!.area)
+        //priceResult.calculatedPrice = getPriceForArea(area: self._areaDimensions!.area)
+        
+        priceResult.calculatedPrice = dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, area: self._areaDimensions!.area)
 
         // Add the options
         var optionsTotal: Double = 0.0
+        
+        if(selectedOptions != nil) {
+            for selectedOption in selectedOptions! {
+                // Get the item from the data layer
+                let rawItem: SafetyCoverOptionItem = dataLayer.getSafetyCoverOptionItem(name: selectedOption.optionItem.name, safetyCoverPanelSize: safetyCoverPanelSize)
+                
+                optionsTotal += (rawItem.unitPrice * (Double(selectedOption.quantity)))
+            }
+        }
         
         priceResult.calculatedPrice += optionsTotal
     }
