@@ -27,14 +27,9 @@ class PriceCalculatorTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        calculator.setAreaDimensions(areaDimensions: areaDims)
         
-        //let area: Double = calculator.getArea()
         let area: Double = areaDims.area
         XCTAssertEqual(9, area)
         
@@ -48,16 +43,13 @@ class PriceCalculatorTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        let w: Double = calculator.convertToFeet(footVal: 20, inchVal: 6)
+        let helper = MeasurementHelper()
+        let w: Double = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         XCTAssertEqual(20.5, w)
         
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
-        //let area: Double = calculator.getArea()
         let area: Double = areaDims.area
         XCTAssertEqual(270, area)
         
@@ -68,19 +60,16 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testRectanglularPoolAreaAndPerimeter3() throws {
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-
-        let B: Double = calculator.convertToFeet(footVal: 38, inchVal: 3)
+        let helper = MeasurementHelper()
+        let B: Double = helper.feetAndInchesToFeet(footVal: 38, inchVal: 3)
         XCTAssertEqual(38.25, B)
 
-        let A: Double = calculator.convertToFeet(footVal: 14, inchVal: 7)
+        let A: Double = helper.feetAndInchesToFeet(footVal: 14, inchVal: 7)
         XCTAssertEqual(14.5833, roundToTenThousandth(value: A))
         
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        //let area: Double = calculator.getArea()
         let area: Double = areaDims.area
         XCTAssertEqual(roundToTenThousandth(value: 667.4792), roundToTenThousandth(value: area))
         
@@ -94,26 +83,19 @@ class PriceCalculatorTests: XCTestCase {
         // Set the dimensions
         let poolShapeDesc: ShapeDescription = .rectangle
 
-        // Set the dimensions of the pool and the pool type
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        
         // 1x1 pool
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        calculator.setAreaDimensions(areaDimensions: areaDims)
 
         let area: Double = areaDims.area
         
         // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
         XCTAssertEqual(9, area)
 
-        // Set the core product to purchase
-        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
-        let panelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)        
+        calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Calculate the price
-        calculator.calculatePrice(safetyCoverModel: coverModel, safetyCoverPanelSize: panelSize, selectedOptions: nil)
-
+        calculator.calculatePrice()
         XCTAssertEqual(37.26, calculator.priceResult.calculatedPrice)
     }
 
@@ -124,23 +106,19 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
 
         // Set the dimensions of the pool and the pool type
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        let w = calculator.convertToFeet(footVal: 20, inchVal: 6)
+        let helper = MeasurementHelper()
+        let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        calculator.setAreaDimensions(areaDimensions: areaDims)
 
         let area: Double = areaDims.area
         XCTAssertEqual(270, area)
 
-        // Set the core product to purchase
-        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
-        let panelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
-        
         // Calculate the price
-        calculator.calculatePrice(safetyCoverModel: coverModel, safetyCoverPanelSize: panelSize, selectedOptions: nil)
-
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        calculator.setAreaDimensions(areaDimensions: areaDims)
+        
+        calculator.calculatePrice()
         XCTAssertEqual(1117.8, calculator.priceResult.calculatedPrice)
     }
 
@@ -151,19 +129,16 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
 
         // Set the dimensions of the pool and the pool type
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        let w = calculator.convertToFeet(footVal: 20, inchVal: 6)
+        let helper = MeasurementHelper()
+        let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        calculator.setAreaDimensions(areaDimensions: areaDims)
 
         let area: Double = areaDims.area
         XCTAssertEqual(270, area)
 
-        // Set the core product to purchase
-        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
-        let panelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Set the options
         var optionItem_step = SafetyCoverOptionItem()
@@ -185,11 +160,26 @@ class PriceCalculatorTests: XCTestCase {
         options.append(selectedOption_step)
         options.append(selectedOption_fullPerimLawnTube)
         options.append(selectedOption_partialPerimLawnTube)
+        
+        calculator.setSelectedOptions(selectedOptions: options)
 
         // Calculate the price
+        calculator.calculatePrice()
+
+        XCTAssertEqual(1432.83, calculator.priceResult.calculatedPrice)
+        
+        /*********
+        // Add 1 more option
+        var optionItem_FastenSysDoubleDRings = SafetyCoverOptionItem()
+        optionItem_FastenSysDoubleDRings.name = "Double D-Rings (Non-buckle) Option/not updgrade"
+        var selectedOption_FastenSysDoubleDRings: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_FastenSysDoubleDRings)
+        selectedOption_FastenSysDoubleDRings.quantity = 15
+
+        // Calculate the price again
         calculator.calculatePrice(safetyCoverModel: coverModel, safetyCoverPanelSize: panelSize, selectedOptions: options)
 
         XCTAssertEqual(1432.83, calculator.priceResult.calculatedPrice)
+        *********/
     }
 
     //----------------------------------------------------
@@ -199,28 +189,33 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
 
         // Set the dimensions of the pool and the pool type
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator()
-        let A = calculator.convertToFeet(footVal: 19, inchVal: 11)
-        let B = calculator.convertToFeet(footVal: 39, inchVal: 10)
+        let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 19, inchVal: 11)
+        let B = helper.feetAndInchesToFeet(footVal: 39, inchVal: 10)
 
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        calculator.setAreaDimensions(areaDimensions: areaDims)
 
         let area: Double = areaDims.area
         XCTAssertEqual(916.8472, roundToTenThousandth(value: area))
 
-        // Set the core product to purchase
-        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
-        let panelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
-        
-        // Set the options
-        // TODO
-
         // Calculate the price
-        calculator.calculatePrice(safetyCoverModel: coverModel, safetyCoverPanelSize: panelSize, selectedOptions: nil)
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        calculator.setAreaDimensions(areaDimensions: areaDims)
 
+        calculator.calculatePrice()
         XCTAssertEqual(2099.5801, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_PartialPerimeterLawnTube() throws {
+        // Set the options
+        var optionItem_partialPerimLawnTube = SafetyCoverOptionItem()
+        optionItem_partialPerimLawnTube.name = "Partial Perimeter Anchor - Lawn Tubes"
+        var selectedOption_partialPerimLawnTube: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_partialPerimLawnTube)
+        selectedOption_partialPerimLawnTube.quantity = 1
+        
+        
     }
 
     //----------------------------------------------------

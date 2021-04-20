@@ -57,10 +57,10 @@ class DataLayer {
         else if(lcaseName == "Full Perimeter Anchor - Lawn Tubes".lowercased()) {
             item.uom = UnitOfMeasure.coverarea
             if(safetyCoverPanelSize == SafetyCoverPanelSize.fivebyfive) {
-                item.unitPrice = 99.90
+                item.unitPrice = 99.9
             }
             else if(safetyCoverPanelSize == SafetyCoverPanelSize.threebythree) {
-                item.unitPrice = 148.50
+                item.unitPrice = 148.5
             }
         }
         else if(lcaseName == "Partial Perimeter Anchor - Lawn Tubes".lowercased()) {
@@ -70,6 +70,15 @@ class DataLayer {
             }
             else if(safetyCoverPanelSize == SafetyCoverPanelSize.threebythree) {
                 item.unitPrice = 4.33
+            }
+        }
+        else if(lcaseName == "Double D-Rings (Non-buckle) Option/not updgrade".lowercased()) {
+            item.uom = UnitOfMeasure.coverarea
+            if(safetyCoverPanelSize == SafetyCoverPanelSize.fivebyfive) {
+                item.unitPrice = 61.5
+            }
+            else if(safetyCoverPanelSize == SafetyCoverPanelSize.threebythree) {
+                item.unitPrice = 71.75
             }
         }
 

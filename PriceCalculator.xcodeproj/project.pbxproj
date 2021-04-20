@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */; };
 		6361AF76262CD5BB0067A8DD /* SafetyCoverLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */; };
 		63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */; };
 		63CD679F2628F392002B92F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679E2628F392002B92F9 /* ContentView.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementHelpers.swift; sourceTree = "<group>"; };
 		6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyCoverLookups.swift; sourceTree = "<group>"; };
 		63CD67992628F392002B92F9 /* PriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorApp.swift; sourceTree = "<group>"; };
@@ -76,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630D21E5262F5CA5002FFFC3 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		63CD67902628F392002B92F9 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +109,7 @@
 		63CD679B2628F392002B92F9 /* PriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				630D21E5262F5CA5002FFFC3 /* Utilities */,
 				63CD67CA2628F492002B92F9 /* SafetyCover */,
 				63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */,
 				63CD679E2628F392002B92F9 /* ContentView.swift */,
@@ -273,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */,
 				63CD67CC2628F4E9002B92F9 /* PriceManager.swift in Sources */,
 				63CD679F2628F392002B92F9 /* ContentView.swift in Sources */,
 				63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */,

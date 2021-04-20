@@ -118,17 +118,29 @@ struct AreaDimensions {
 
 //====================================
 class SafetyCoverPriceCalculator {
-    var priceResult: PriceResult = PriceResult()
+    private let _dataLayer: DataLayer = DataLayer()
     private var _areaDimensions: AreaDimensions?
-    
-    init() {
+    private var _safetyCoverModel: SafetyCoverModel
+    private var _safetyCoverPanelSize: SafetyCoverPanelSize
+    private var _selectedOptions: [SafetyCoverOptionSelection]?
+
+    var priceResult: PriceResult = PriceResult()
+
+    init(safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize) {
         _areaDimensions = nil
+        _safetyCoverModel = safetyCoverModel
+        _safetyCoverPanelSize = safetyCoverPanelSize
+        _selectedOptions = nil
     }
     
     func setAreaDimensions(areaDimensions: AreaDimensions) {
         _areaDimensions = areaDimensions
     }
     
+    func setSelectedOptions(selectedOptions: [SafetyCoverOptionSelection]) {
+        _selectedOptions = selectedOptions
+    }
+
     func validateAreaDimensions(areaDimensions: AreaDimensions) -> Bool {
         //guard areaDimensions != nil else {
         //    return false
@@ -139,37 +151,32 @@ class SafetyCoverPriceCalculator {
     }
 
     //--------------------------------
-    func calculatePrice(safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, selectedOptions: [SafetyCoverOptionSelection]?) {
+    func calculatePrice() {
         // Validate inputs
         // TODO
 
-        let dataLayer: DataLayer = DataLayer()
-        
         // Get the baseline for the square footage
-        //priceResult.calculatedPrice = getPriceForArea(area: self._areaDimensions!.area)
-        
-        priceResult.calculatedPrice = dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, area: self._areaDimensions!.area)
+        priceResult.calculatedPrice = _dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.area)
 
         // Add the options
+        priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
+    }
+    
+    //--------------------------------
+    func getTotalForOptionsList(selectedOptions: [SafetyCoverOptionSelection]?) -> Double {
         var optionsTotal: Double = 0.0
         
         if(selectedOptions != nil) {
             for selectedOption in selectedOptions! {
                 // Get the item from the data layer
-                let rawItem: SafetyCoverOptionItem = dataLayer.getSafetyCoverOptionItem(name: selectedOption.optionItem.name, safetyCoverPanelSize: safetyCoverPanelSize)
+                let rawItem: SafetyCoverOptionItem = _dataLayer.getSafetyCoverOptionItem(name: selectedOption.optionItem.name, safetyCoverPanelSize: _safetyCoverPanelSize)
                 
+                // Multiple its unit price times the quantity and add it to the total
                 optionsTotal += (rawItem.unitPrice * (Double(selectedOption.quantity)))
             }
         }
         
-        priceResult.calculatedPrice += optionsTotal
-    }
-    
-    func convertToFeet(footVal: Int, inchVal: Int) -> Double {
-        let val1 = (Double)(footVal)
-        let val2 = (Double)(inchVal) / 12.0
-        let val3 = val1 + val2
-        return val3
+        return optionsTotal
     }
 }
 
@@ -178,7 +185,7 @@ class SafetyCoverPriceCalculator {
 func getArea_geometric(aFeet: Double, aInches: Double, bFeet: Double, bInches: Double) -> Double {
     let aVal: Double = (2 + (aFeet + (aInches / 12)))
     let bVal: Double = (2 + (bFeet + (bInches / 12)))
-    var area = aVal * bVal
+    let area = aVal * bVal
     
     return area
 }
