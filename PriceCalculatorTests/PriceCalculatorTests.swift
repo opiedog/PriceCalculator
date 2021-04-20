@@ -30,7 +30,7 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
         
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(9, area)
         
         let perimeter: Double = areaDims.perimeter
@@ -50,7 +50,7 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(270, area)
         
         let perimeter: Double = areaDims.perimeter
@@ -70,7 +70,7 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(roundToTenThousandth(value: 667.4792), roundToTenThousandth(value: area))
         
         let perimeter: Double = areaDims.perimeter
@@ -86,12 +86,12 @@ class PriceCalculatorTests: XCTestCase {
         // 1x1 pool
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         
         // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
         XCTAssertEqual(9, area)
 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)        
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
         calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Calculate the price
@@ -111,7 +111,7 @@ class PriceCalculatorTests: XCTestCase {
         
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(270, area)
 
         // Calculate the price
@@ -129,12 +129,13 @@ class PriceCalculatorTests: XCTestCase {
         let poolShapeDesc: ShapeDescription = .rectangle
 
         // Set the dimensions of the pool and the pool type
+        let l: Double = 10
         let helper = MeasurementHelper()
         let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: l, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(270, area)
 
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
@@ -167,7 +168,8 @@ class PriceCalculatorTests: XCTestCase {
         calculator.calculatePrice()
 
         XCTAssertEqual(1432.83, calculator.priceResult.calculatedPrice)
-        
+        //XCTAssertEqual(1432.83, roundToHundredth(value: calculator.priceResult.calculatedPrice))
+
         /*********
         // Add 1 more option
         var optionItem_FastenSysDoubleDRings = SafetyCoverOptionItem()
@@ -195,7 +197,7 @@ class PriceCalculatorTests: XCTestCase {
 
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.area
+        let area: Double = areaDims.areaCover
         XCTAssertEqual(916.8472, roundToTenThousandth(value: area))
 
         // Calculate the price
@@ -208,14 +210,94 @@ class PriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testSingleItemPrice_PartialPerimeterLawnTube() throws {
+    func testSingleItemPrice_FullPerimeter_LawnTube_geo_270() throws {
+        let l: Double = 10.0
+        let helper = MeasurementHelper()
+        let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
+        
+        let safetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let safetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        
+        let optionName = "Full Perimeter Anchor - Lawn Tubes"
+        let qty = 1
+        
+        let amount = testSingleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
+        
+        XCTAssertEqual(99.9, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_FasteningSystem_DRings_geo_205() throws {
+        let l: Double = 10.0
+        let helper = MeasurementHelper()
+        let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
+        
+        let safetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let safetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        
+        let optionName = "Double D-Rings (Non-buckle) Option/not updgrade"
+        let qty = 1
+        
+        let amount = testSingleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
+        
+        XCTAssertEqual(61.5, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_rect_area_core(lengthFractionalFoot: Double, widthFractionalFoot: Double, safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, optionName: String, quantity: Int) -> Double {
+        let poolShapeDesc: ShapeDescription = .rectangle
+        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: lengthFractionalFoot, longWidth: widthFractionalFoot, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize)
+        calculator.setAreaDimensions(areaDimensions: areaDims)
+
         // Set the options
-        var optionItem_partialPerimLawnTube = SafetyCoverOptionItem()
-        optionItem_partialPerimLawnTube.name = "Partial Perimeter Anchor - Lawn Tubes"
-        var selectedOption_partialPerimLawnTube: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_partialPerimLawnTube)
-        selectedOption_partialPerimLawnTube.quantity = 1
-        
-        
+        var optionItem = SafetyCoverOptionItem()
+        optionItem.name = optionName
+        var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
+        selectedOption.quantity = quantity
+
+        var options = [SafetyCoverOptionSelection]()
+        options.append(selectedOption)
+                
+        let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
+        return amount
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_PartialPerimeter_LawnTube_1() throws {
+        // Set the options
+        var optionItem = SafetyCoverOptionItem()
+        optionItem.name = "Partial Perimeter Anchor - Lawn Tubes"
+        var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
+        selectedOption.quantity = 1
+
+        var options = [SafetyCoverOptionSelection]()
+        options.append(selectedOption)
+                
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
+        XCTAssertEqual(2.89, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_PartialPerimeter_LawnTube_15() throws {
+        // Set the options
+        var optionItem = SafetyCoverOptionItem()
+        optionItem.name = "Partial Perimeter Anchor - Lawn Tubes"
+        var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
+        selectedOption.quantity = 15
+
+        var options = [SafetyCoverOptionSelection]()
+        options.append(selectedOption)
+                
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
+        XCTAssertEqual(43.35, amount)
     }
 
     //----------------------------------------------------
@@ -228,6 +310,13 @@ class PriceCalculatorTests: XCTestCase {
 //    }
 
     
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func roundToHundredth(value: Double) -> Double {
+        let rounded: Double = round(value * 100) / 100.0
+        return rounded
+    }
+
     //----------------------------------------------------
     //----------------------------------------------------
     func roundToTenThousandth(value: Double) -> Double {

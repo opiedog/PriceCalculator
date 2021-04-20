@@ -42,7 +42,10 @@ struct SafetyCoverOptionSelection {
 struct AreaDimensions {
     var shapeCharacterization: ShapeCharacterization = .undefined
     var shapeDescription: ShapeDescription = .undefined
-    var area: Double = 0
+    
+    var areaPool: Double = 0    // The area of the pool
+    var areaCover: Double = 0   // The area of the cover that includes an amount to be larger than the pool
+    
     var perimeter: Double = 0
 
     //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
@@ -75,9 +78,10 @@ struct AreaDimensions {
                 self.longLength = longLength
                 self.longWidth = longWidth
                 
+                self.areaPool = (Double)(longLength * longWidth)
                 borderWidth = 2.0
-                self.area = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
-                
+                self.areaCover = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
+
                 self.perimeter = (2 * longLength) + (2 * longWidth)
 
                 self.shapeCharacterization = .geometric
@@ -89,10 +93,11 @@ struct AreaDimensions {
                 self.shortLength = shortLength
                 self.shortWidth = shortWidth
                 
-                borderWidth = 3.0
                 let area1 = (Double)(longLength * shortWidth)
                 let area2 = (Double)(shortLength * (longWidth - shortWidth))
-                area = area1 + area2
+                self.areaPool = area1 + area2
+                borderWidth = 3.0
+                self.areaCover = area1 + area2  // TODO - I don't think the Excel calculator includes the borderWidth
 
                 self.perimeter = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
 
@@ -156,7 +161,7 @@ class SafetyCoverPriceCalculator {
         // TODO
 
         // Get the baseline for the square footage
-        priceResult.calculatedPrice = _dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.area)
+        priceResult.calculatedPrice = _dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
 
         // Add the options
         priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
@@ -172,7 +177,25 @@ class SafetyCoverPriceCalculator {
                 let rawItem: SafetyCoverOptionItem = _dataLayer.getSafetyCoverOptionItem(name: selectedOption.optionItem.name, safetyCoverPanelSize: _safetyCoverPanelSize)
                 
                 // Multiple its unit price times the quantity and add it to the total
-                optionsTotal += (rawItem.unitPrice * (Double(selectedOption.quantity)))
+                switch(rawItem.uom) {
+                    case .each:
+                        optionsTotal += (rawItem.unitPrice * (Double(selectedOption.quantity)))
+                    case .linearfoot:
+                        optionsTotal += (rawItem.unitPrice * (Double(selectedOption.quantity)))
+                    case .poolarea:
+                        optionsTotal += (rawItem.unitPrice * self._areaDimensions!.areaPool)
+                    case .coverarea:
+                        optionsTotal += (rawItem.unitPrice * self._areaDimensions!.areaCover)
+//                    case .linearfoot:
+//                        // TODO
+//                        optionsTotal += 0
+                    case .perimeter:
+                        // TODO
+                        optionsTotal += 0
+                    case .undefined:
+                        // TODO
+                        optionsTotal += 0
+                }
             }
         }
         

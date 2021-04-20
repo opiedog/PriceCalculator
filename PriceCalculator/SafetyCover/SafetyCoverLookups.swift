@@ -25,7 +25,9 @@ enum SafetyCoverModel {
 enum UnitOfMeasure {
     case each
     case perimeter
+    case poolarea
     case coverarea
+    case linearfoot
     case undefined
 }
 
@@ -57,14 +59,14 @@ class DataLayer {
         else if(lcaseName == "Full Perimeter Anchor - Lawn Tubes".lowercased()) {
             item.uom = UnitOfMeasure.coverarea
             if(safetyCoverPanelSize == SafetyCoverPanelSize.fivebyfive) {
-                item.unitPrice = 99.9
+                item.unitPrice = 0.37
             }
             else if(safetyCoverPanelSize == SafetyCoverPanelSize.threebythree) {
-                item.unitPrice = 148.5
+                item.unitPrice = 0.55
             }
         }
         else if(lcaseName == "Partial Perimeter Anchor - Lawn Tubes".lowercased()) {
-            item.uom = UnitOfMeasure.perimeter
+            item.uom = UnitOfMeasure.linearfoot
             if(safetyCoverPanelSize == SafetyCoverPanelSize.fivebyfive) {
                 item.unitPrice = 2.89
             }
@@ -73,12 +75,12 @@ class DataLayer {
             }
         }
         else if(lcaseName == "Double D-Rings (Non-buckle) Option/not updgrade".lowercased()) {
-            item.uom = UnitOfMeasure.coverarea
+            item.uom = UnitOfMeasure.poolarea
             if(safetyCoverPanelSize == SafetyCoverPanelSize.fivebyfive) {
-                item.unitPrice = 61.5
+                item.unitPrice = 0.3
             }
             else if(safetyCoverPanelSize == SafetyCoverPanelSize.threebythree) {
-                item.unitPrice = 71.75
+                item.unitPrice = 0.35
             }
         }
 
