@@ -2,7 +2,11 @@
 //  SafetyCoverLookups.swift
 //  PriceCalculator
 //
-//  Created by John Tafoya on 4/18/21.
+// NOTE
+//  This is a hack to put something in place to represent a proper DAL.
+//  This is not meant to be a proposed implementation of a data layer. It's just a hack to
+//  "provide data" to the rest of the code to demonstrate calculations.
+//
 //
 
 import Foundation
@@ -41,7 +45,9 @@ struct SafetyCoverOptionItem {
 class DataLayer {
     //------------------------------------------------------------
     // Product options
-    //------------------------------------------------------------ , unitOfMeasure: UnitOfMeasure
+    //  I was going to create a dictionary but I wasn't sure how to
+    //  make that happen in Swift so I just did this quickly.
+    //------------------------------------------------------------
     func getSafetyCoverOptionItem(name: String, safetyCoverPanelSize: SafetyCoverPanelSize) -> SafetyCoverOptionItem {
         let lcaseName: String = name.lowercased()
         
