@@ -19,12 +19,6 @@ struct PriceResult {
     var calculatedPrice = 0.0
 }
 
-enum ShapeCharacterization {
-    case undefined
-    case freeform
-    case geometric
-}
-
 enum ShapeDescription {
     case undefined
     case rectangle
@@ -161,7 +155,8 @@ class SafetyCoverPriceCalculator {
         // TODO
 
         // Get the baseline for the square footage
-        priceResult.calculatedPrice = _dataLayer.getPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
+        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
+        priceResult.calculatedPrice = self._areaDimensions!.areaCover * unitPrice
 
         // Add the options
         priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
@@ -200,6 +195,11 @@ class SafetyCoverPriceCalculator {
         }
         
         return optionsTotal
+    }
+    
+    func getUnitPriceForArea() -> Double {
+        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
+        return unitPrice
     }
 }
 
