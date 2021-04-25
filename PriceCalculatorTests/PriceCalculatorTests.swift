@@ -89,14 +89,20 @@ class PriceCalculatorTests: XCTestCase {
         let area: Double = areaDims.areaCover
         
         // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
-        XCTAssertEqual(9, area)
+        let areaExpected: Double = 9
+        XCTAssertEqual(areaExpected, area)
 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let scModel = SafetyCoverModel.StandardMesh5000M
+        let scSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Calculate the price
         calculator.calculatePrice()
-        XCTAssertEqual(37.26, calculator.priceResult.calculatedPrice)
+        let expectedPrice = 37.26
+        XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
+        
+        printTestResult(area: areaExpected, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: expectedPrice)
     }
 
     //----------------------------------------------------
@@ -112,14 +118,20 @@ class PriceCalculatorTests: XCTestCase {
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
-        XCTAssertEqual(270, area)
+        let areaExpected: Double = 270
+        XCTAssertEqual(areaExpected, area)
 
         // Calculate the price
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let scModel = SafetyCoverModel.StandardMesh5000M
+        let scSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setAreaDimensions(areaDimensions: areaDims)
         
         calculator.calculatePrice()
-        XCTAssertEqual(1117.8, calculator.priceResult.calculatedPrice)
+        let expectedPrice = 1117.8
+        XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
+
+        printTestResult(area: areaExpected, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: expectedPrice)
     }
 
     //----------------------------------------------------
@@ -136,9 +148,12 @@ class PriceCalculatorTests: XCTestCase {
         let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: l, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
-        XCTAssertEqual(270, area)
+        let areaExpected: Double = 270
+        XCTAssertEqual(areaExpected, area)
 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let scModel = SafetyCoverModel.StandardMesh5000M
+        let scSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Set the options
@@ -167,8 +182,14 @@ class PriceCalculatorTests: XCTestCase {
         // Calculate the price
         calculator.calculatePrice()
 
-        XCTAssertEqual(1432.83, calculator.priceResult.calculatedPrice)
+        let expectedPrice = 1432.83
+        XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
         //XCTAssertEqual(1432.83, roundToHundredth(value: calculator.priceResult.calculatedPrice))
+
+//        let scModel = SafetyCoverModel.StandardMesh5000M
+//        let scSize = SafetyCoverPanelSize.fivebyfive
+//        let expectedPrice = 1117.8
+        printTestResult(area: areaExpected, safetyCoverModel: scModel, panelSize: scSize, optionList: options, price: expectedPrice)
 
         /*********
         // Add 1 more option
@@ -298,6 +319,56 @@ class PriceCalculatorTests: XCTestCase {
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
         XCTAssertEqual(43.35, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testDictionary() throws {
+        //struct XYZ {
+        //}
+        //var productOptionDict = [SafetyCoverPanelSize: SafetyCoverOptionItem]()
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPushToAPI() throws {
+        typealias MsgType = (area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, price: Double)
+        var msgs = [MsgType]()
+        
+        msgs.append(MsgType(area: 88.99, safetyCoverModel: SafetyCoverModel.HighShadeMesh7000M, panelSize: SafetyCoverPanelSize.fivebyfive, price: 123.45))
+        msgs.append(MsgType(area: 777.88, safetyCoverModel: SafetyCoverModel.StandardMesh5000M, panelSize: SafetyCoverPanelSize.threebythree, price: 1987.65))
+
+        for msg in msgs {
+            printTestResult(area: msg.area, safetyCoverModel: msg.safetyCoverModel, panelSize: msg.panelSize, optionList: nil, price: msg.price)
+        }
+    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+//    func printTestResult(area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+//        var optionMsg = ""
+//        if optionList != nil {
+//            optionMsg = "Selected Options: "
+//            for optionItem in optionList! {
+//                optionMsg += "\(optionItem.quantity) '\(optionItem.optionItem.name)'; "
+//            }
+//        }
+//        let msg = ">>> Test Passed: For area: \(area); Product: '\(safetyCoverModel)'" + "; Panel Size: '\(panelSize)'" + "\(optionMsg) price: $\(price)"
+//        print(msg)
+//    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func printTestResult(area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+        var optionMsg = ""
+        if optionList != nil {
+            optionMsg = "Selected Options: "
+            for optionItem in optionList! {
+                optionMsg += "\(optionItem.quantity) '\(optionItem.optionItem.name)'; "
+            }
+        }
+        let msg = "\(area)\\t'\(safetyCoverModel)'\\t'\(panelSize)'\\t\(optionMsg)\\t$\(price)"
+        print(msg)
     }
 
     //----------------------------------------------------
