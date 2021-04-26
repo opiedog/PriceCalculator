@@ -19,7 +19,8 @@ struct PriceResult {
     var calculatedPrice = 0.0
 }
 
-enum ShapeDescription {
+// Was ShapeDescription
+enum PoolShape {
     case undefined
     case rectangle
     case truel
@@ -34,8 +35,8 @@ struct SafetyCoverOptionSelection {
 // TODO
 //  - Add a field to capture the units (e.g. feet, meters)
 struct AreaDimensions {
-    var shapeCharacterization: ShapeCharacterization = .undefined
     var shapeDescription: ShapeDescription = .undefined
+    var poolShape: PoolShape = .undefined
     
     var areaPool: Double = 0    // The area of the pool
     var areaCover: Double = 0   // The area of the cover that includes an amount to be larger than the pool
@@ -56,19 +57,19 @@ struct AreaDimensions {
     var longDiagLength: Double = 0  //          //          // W1
     var shortDiagLength: Double = 0 //          //          // V3
 
-    init(shapeDescription: ShapeDescription, longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double, longDiagLength: Double, shortDiagLength: Double) {
+    init(poolShape: PoolShape, longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double, longDiagLength: Double, shortDiagLength: Double) {
         
-        if(shapeDescription == ShapeDescription.undefined) {
+        if(poolShape == PoolShape.undefined) {
             return
         }
         else {
-            self.shapeDescription = shapeDescription
+            self.poolShape = poolShape
         }
         
         var borderWidth: Double = 0
 
-        switch shapeDescription {
-            case ShapeDescription.rectangle:
+        switch poolShape {
+            case .rectangle:
                 self.longLength = longLength
                 self.longWidth = longWidth
                 
@@ -78,9 +79,9 @@ struct AreaDimensions {
 
                 self.perimeter = (2 * longLength) + (2 * longWidth)
 
-                self.shapeCharacterization = .geometric
+                self.shapeDescription = .geometric
 
-            case ShapeDescription.truel:
+            case .truel:
                 self.longLength = longLength
                 self.longWidth = longWidth
 
@@ -95,9 +96,9 @@ struct AreaDimensions {
 
                 self.perimeter = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
 
-                self.shapeCharacterization = .geometric
+                self.shapeDescription = .geometric
 
-            case ShapeDescription.lazyl:
+            case .lazyl:
                 self.longLength = longLength
                 self.longWidth = longWidth
 
@@ -107,7 +108,7 @@ struct AreaDimensions {
                 self.longDiagLength = longDiagLength
                 self.shortDiagLength = shortDiagLength
 
-                self.shapeCharacterization = .geometric
+                self.shapeDescription = .geometric
 
             default:
                 return
@@ -155,7 +156,7 @@ class SafetyCoverPriceCalculator {
         // TODO
 
         // Get the baseline for the square footage
-        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
+        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeDescription: self._areaDimensions!.shapeDescription, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
         priceResult.calculatedPrice = self._areaDimensions!.areaCover * unitPrice
 
         // Add the options
@@ -198,7 +199,7 @@ class SafetyCoverPriceCalculator {
     }
     
     func getUnitPriceForArea() -> Double {
-        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeCharacterization: self._areaDimensions!.shapeCharacterization, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
+        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeDescription: self._areaDimensions!.shapeDescription, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._areaDimensions!.areaCover)
         return unitPrice
     }
 }

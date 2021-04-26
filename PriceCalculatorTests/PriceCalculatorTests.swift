@@ -27,8 +27,8 @@ class PriceCalculatorTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        let poolShapeDesc: ShapeDescription = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let poolShape: PoolShape = .rectangle
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
         
         let area: Double = areaDims.areaCover
         XCTAssertEqual(9, area)
@@ -47,8 +47,8 @@ class PriceCalculatorTests: XCTestCase {
         let w: Double = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         XCTAssertEqual(20.5, w)
         
-        let poolShapeDesc: ShapeDescription = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let poolShape: PoolShape = .rectangle
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         XCTAssertEqual(270, area)
@@ -67,8 +67,8 @@ class PriceCalculatorTests: XCTestCase {
         let A: Double = helper.feetAndInchesToFeet(footVal: 14, inchVal: 7)
         XCTAssertEqual(14.5833, roundToTenThousandth(value: A))
         
-        let poolShapeDesc: ShapeDescription = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let poolShape: PoolShape = .rectangle
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         XCTAssertEqual(roundToTenThousandth(value: 667.4792), roundToTenThousandth(value: area))
@@ -81,10 +81,10 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testPriceForRectangularPool1() throws {
         // Set the dimensions
-        let poolShapeDesc: ShapeDescription = .rectangle
+        let poolShape: PoolShape = .rectangle
 
         // 1x1 pool
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         
@@ -109,13 +109,13 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testPriceForRectangularPool2() throws {
         // Set the dimensions
-        let poolShapeDesc: ShapeDescription = .rectangle
+        let poolShape: PoolShape = .rectangle
 
         // Set the dimensions of the pool and the pool type
         let helper = MeasurementHelper()
         let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         let areaExpected: Double = 270
@@ -138,14 +138,14 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testPriceForRectangularPool3() throws {
         // Set the dimensions
-        let poolShapeDesc: ShapeDescription = .rectangle
+        let poolShape: PoolShape = .rectangle
 
         // Set the dimensions of the pool and the pool type
         let l: Double = 10
         let helper = MeasurementHelper()
         let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: l, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: l, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         let areaExpected: Double = 270
@@ -158,12 +158,12 @@ class PriceCalculatorTests: XCTestCase {
         
         // Set the options
         var optionItem_step = SafetyCoverOptionItem()
-        optionItem_step.name = "Step w/pads <= 8"
+        optionItem_step.name = "Step w/pads <= 8'"
         var selectedOption_step: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_step)
         selectedOption_step.quantity = 1
 
         var optionItem_fullPerimLawnTube = SafetyCoverOptionItem()
-        optionItem_fullPerimLawnTube.name = "Full Perimeter Anchor - Lawn Tubes"
+        optionItem_fullPerimLawnTube.name = "Lawn Tubes: (18\" aluminum for non secure/no sub-deck)"
         var selectedOption_fullPerimLawnTube: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_fullPerimLawnTube)
         selectedOption_fullPerimLawnTube.quantity = 1
 
@@ -209,14 +209,14 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testPriceForRectangularPool4() throws {
         // Set the dimensions
-        let poolShapeDesc: ShapeDescription = .rectangle
+        let poolShape: PoolShape = .rectangle
 
         // Set the dimensions of the pool and the pool type
         let helper = MeasurementHelper()
         let A = helper.feetAndInchesToFeet(footVal: 19, inchVal: 11)
         let B = helper.feetAndInchesToFeet(footVal: 39, inchVal: 10)
 
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let area: Double = areaDims.areaCover
         XCTAssertEqual(916.8472, roundToTenThousandth(value: area))
@@ -239,7 +239,7 @@ class PriceCalculatorTests: XCTestCase {
         let safetyCoverModel = SafetyCoverModel.StandardMesh5000M
         let safetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
         
-        let optionName = "Full Perimeter Anchor - Lawn Tubes"
+        let optionName = "Lawn Tubes: (18\" aluminum for non secure/no sub-deck)"
         let qty = 1
         
         let amount = testSingleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
@@ -268,8 +268,8 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testSingleItemPrice_rect_area_core(lengthFractionalFoot: Double, widthFractionalFoot: Double, safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, optionName: String, quantity: Int) -> Double {
-        let poolShapeDesc: ShapeDescription = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: lengthFractionalFoot, longWidth: widthFractionalFoot, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let poolShape: PoolShape = .rectangle
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: lengthFractionalFoot, longWidth: widthFractionalFoot, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize)
         calculator.setAreaDimensions(areaDimensions: areaDims)
@@ -321,444 +321,290 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(43.35, amount)
     }
     
+    // COVER MATERIAL TESTS
     // 5000
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_StMesh5000M_5x5_geo_1() {
+    func testUnitPrice_StMesh5000M_5x5_geo_1() throws {
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 4.14
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_StMesh5000M_5x5_geo_2000() {
+    func testUnitPrice_StMesh5000M_5x5_geo_2000() throws {
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 2000                           // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 2000   // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 1.94
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_StMesh5000M_3x3_geo_1() {
+    func testUnitPrice_StMesh5000M_3x3_geo_1() throws {
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 4.88
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_StMesh5000M_3x3_freeform_1() {
+    func testUnitPrice_StMesh5000M_3x3_freeform_1() throws {
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.99
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        areaDims.shapeCharacterization = .freeform
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.freeform, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     // 7000
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HighShadeMesh7000MS_5x5_geo_1() {
+    func testUnitPrice_HighShadeMesh7000MS_5x5_geo_1() throws {
         let scModel = SafetyCoverModel.HighShadeMesh7000MS
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 4.90
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HighShadeMesh7000MS_5x5_geo_2000() {
+    func testUnitPrice_HighShadeMesh7000MS_5x5_geo_2000() throws {
         let scModel = SafetyCoverModel.HighShadeMesh7000MS
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 2000                           // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 2000   // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 2.48
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HighShadeMesh7000MS_3x3_geo_1() {
+    func testUnitPrice_HighShadeMesh7000MS_3x3_geo_1() throws {
         let scModel = SafetyCoverModel.HighShadeMesh7000MS
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.54
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HighShadeMesh7000MS_3x3_freeform_1() {
+    func testUnitPrice_HighShadeMesh7000MS_3x3_freeform_1() throws {
         let scModel = SafetyCoverModel.HighShadeMesh7000MS
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 7.66
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        areaDims.shapeCharacterization = .freeform
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.freeform, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     // 9000
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_MaxShadeMesh9000MX_5x5_geo_1() {
+    func testUnitPrice_MaxShadeMesh9000MX_5x5_geo_1() throws {
         let scModel = SafetyCoverModel.MaxShadeMesh9000MX
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.72
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_MaxShadeMesh9000MX_5x5_geo_2000() {
+    func testUnitPrice_MaxShadeMesh9000MX_5x5_geo_2000() throws {
         let scModel = SafetyCoverModel.MaxShadeMesh9000MX
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 2000                           // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 2000   // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 3.03
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_MaxShadeMesh9000MX_3x3_geo_1() {
+    func testUnitPrice_MaxShadeMesh9000MX_3x3_geo_1() throws {
         let scModel = SafetyCoverModel.MaxShadeMesh9000MX
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 6.48
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_MaxShadeMesh9000MX_3x3_freeform_1() {
+    func testUnitPrice_MaxShadeMesh9000MX_3x3_freeform_1() throws {
         let scModel = SafetyCoverModel.MaxShadeMesh9000MX
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 8.55
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        areaDims.shapeCharacterization = .freeform
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.freeform, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     // 1000
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HeavyDutySolid1000V_5x5_geo_1() {
+    func testUnitPrice_HeavyDutySolid1000V_5x5_geo_1() throws {
         let scModel = SafetyCoverModel.HeavyDutySolid1000V
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.12
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HeavyDutySolid1000V_5x5_geo_1000() {
+    func testUnitPrice_HeavyDutySolid1000V_5x5_geo_1000() throws {
         let scModel = SafetyCoverModel.HeavyDutySolid1000V
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1000                           // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1000   // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 2.92
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HeavyDutySolid1000V_3x3_geo_1() {
+    func testUnitPrice_HeavyDutySolid1000V_3x3_geo_1() throws {
         let scModel = SafetyCoverModel.HeavyDutySolid1000V
         let scSize = SafetyCoverPanelSize.threebythree
         let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.73
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_HeavyDutySolid1000V_3x3_freeform_1() {
+    func testUnitPrice_HeavyDutySolid1000V_3x3_freeform_1() throws {
         let scModel = SafetyCoverModel.HeavyDutySolid1000V
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 6.85
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        areaDims.shapeCharacterization = .freeform
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.freeform, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     // 500
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_LiteSolid500P_5x5_geo_1() {
+    func testUnitPrice_LiteSolid500P_5x5_geo_1() throws {
         let scModel = SafetyCoverModel.LiteSolid500P
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 4.86
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        let areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_LiteSolid500P_5x5_geo_1000() {
+    func testUnitPrice_LiteSolid500P_5x5_geo_1000() throws {
         let scModel = SafetyCoverModel.LiteSolid500P
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let sqFeet: Double = 1000                           // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1000   // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 2.58
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
-        
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_LiteSolid500P_3x3_geo_1() {
+    func testUnitPrice_LiteSolid500P_3x3_geo_1() throws {
         let scModel = SafetyCoverModel.LiteSolid500P
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 5.41
-
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
-        areaDims.areaCover = areaDims.areaPool
-
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
-        calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Get the price
-        let actualPrice: Double = calculator.getUnitPriceForArea()
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
         XCTAssertEqual(expectedPrice, actualPrice)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testUnitPrice_LiteSolid500P_3x3_freeform_1() {
+    func testUnitPrice_LiteSolid500P_3x3_freeform_1() throws {
         let scModel = SafetyCoverModel.LiteSolid500P
         let scSize = SafetyCoverPanelSize.threebythree
-        let sqFeet: Double = 1                              // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
+        let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 6.39
 
-        let poolShapeDesc: ShapeDescription = .rectangle    // Doesn't really matter
-        var areaDims: AreaDimensions = AreaDimensions(shapeDescription: poolShapeDesc, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.freeform, sqFeet: sqFeet)
+        XCTAssertEqual(expectedPrice, actualPrice)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func getUnitPriceCoverMaterial_rect(scModel: SafetyCoverModel, scSize: SafetyCoverPanelSize, shapeDescription: ShapeDescription, sqFeet: Double) -> Double {
+        let poolShape: PoolShape = .rectangle
+        var areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 1, longWidth: sqFeet, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
         
-        // This avoids using the adjusted area in the calculation since we're just testing the raw lookup value
+        // This avoids using the adjusted area (i.e. the area for the cover is greater than the area of the pool surface) in
+        // the calculation since we're just testing the raw lookup value.
         areaDims.areaCover = areaDims.areaPool
 
-        areaDims.shapeCharacterization = .freeform
+        areaDims.shapeDescription = shapeDescription
 
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setAreaDimensions(areaDimensions: areaDims)
         
         // Get the price
         let actualPrice: Double = calculator.getUnitPriceForArea()
-        XCTAssertEqual(expectedPrice, actualPrice)
+        
+        return actualPrice
     }
 
     //----------------------------------------------------
@@ -802,7 +648,7 @@ class PriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testPushToAPI() throws {
+    func testPushToAPI() {
         typealias MsgType = (area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, price: Double)
         var msgs = [MsgType]()
         
