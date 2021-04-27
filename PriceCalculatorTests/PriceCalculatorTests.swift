@@ -242,7 +242,7 @@ class PriceCalculatorTests: XCTestCase {
         let optionName = "Lawn Tubes: (18\" aluminum for non secure/no sub-deck)"
         let qty = 1
         
-        let amount = testSingleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
+        let amount = singleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
         
         XCTAssertEqual(99.9, amount)
     }
@@ -260,14 +260,14 @@ class PriceCalculatorTests: XCTestCase {
         let optionName = "Double D-Rings (Non-buckle) Option/not updgrade"
         let qty = 1
         
-        let amount = testSingleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
+        let amount = singleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: safetyCoverPanelSize, optionName: optionName, quantity: qty)
         
         XCTAssertEqual(61.5, amount)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testSingleItemPrice_rect_area_core(lengthFractionalFoot: Double, widthFractionalFoot: Double, safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, optionName: String, quantity: Int) -> Double {
+    func singleItemPrice_rect_area_core(lengthFractionalFoot: Double, widthFractionalFoot: Double, safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, optionName: String, quantity: Int) -> Double {
         let poolShape: PoolShape = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: lengthFractionalFoot, longWidth: widthFractionalFoot, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
@@ -291,16 +291,12 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testSingleItemPrice_PartialPerimeter_LawnTube_1() throws {
         // Set the options
-        var optionItem = SafetyCoverOptionItem()
-        optionItem.name = "Partial Perimeter Anchor - Lawn Tubes"
-        var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
-        selectedOption.quantity = 1
+        let optionName: String = "Partial Perimeter Anchor - Lawn Tubes"
+        let quantity: Int = 1
+        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let coverPanelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let amount: Double = getPriceForSingleItem_PartialPerimeter_base(optionItemName: optionName, quantity: quantity, safetyCoverModel: coverModel, safetyCoverPanelSize: coverPanelSize)
 
-        var options = [SafetyCoverOptionSelection]()
-        options.append(selectedOption)
-                
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
-        let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
         XCTAssertEqual(2.89, amount)
     }
 
@@ -308,17 +304,43 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testSingleItemPrice_PartialPerimeter_LawnTube_15() throws {
         // Set the options
+        let optionName: String = "Partial Perimeter Anchor - Lawn Tubes"
+        let quantity: Int = 15
+        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let coverPanelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let amount: Double = getPriceForSingleItem_PartialPerimeter_base(optionItemName: optionName, quantity: quantity, safetyCoverModel: coverModel, safetyCoverPanelSize: coverPanelSize)
+
+        XCTAssertEqual(43.35, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_PartialPerimeter_DeckTube_1() throws {
+        // Set the options
+        let optionName: String = "Deck Tube (10\" stainless steel for secure/sub deck)"
+        let quantity: Int = 1
+        let coverModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let coverPanelSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let amount: Double = getPriceForSingleItem_PartialPerimeter_base(optionItemName: optionName, quantity: quantity, safetyCoverModel: coverModel, safetyCoverPanelSize: coverPanelSize)
+
+        XCTAssertEqual(4.73, amount)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func getPriceForSingleItem_PartialPerimeter_base(optionItemName: String, quantity: Int, safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize) -> Double {
         var optionItem = SafetyCoverOptionItem()
-        optionItem.name = "Partial Perimeter Anchor - Lawn Tubes"
+        optionItem.name = optionItemName
         var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
-        selectedOption.quantity = 15
+        selectedOption.quantity = quantity
 
         var options = [SafetyCoverOptionSelection]()
         options.append(selectedOption)
                 
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.StandardMesh5000M, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: safetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize.fivebyfive)
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
-        XCTAssertEqual(43.35, amount)
+        
+        return amount
     }
     
     // COVER MATERIAL TESTS
