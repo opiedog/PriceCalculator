@@ -99,7 +99,7 @@ class DataLayer {
         optName = "RDM system (Anchor system for 20\" decks)"
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 0.49))
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 0.76))
-        optName = "Wood Deck Anchors (includes 4 screws)"
+        optName = "Wood Deck Anchors (includes 4 screws) - Full Perim"
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 0.21))
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 0.32))
         optName = "Brass Collars"
@@ -125,7 +125,7 @@ class DataLayer {
         optName = "RDM System  (Anchor system for decks 20\" - 35\")"
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 6.35))
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 9.52))
-        optName = "Wood Deck Anchors (includes 4 screws)"
+        optName = "Wood Deck Anchors (includes 4 screws) - Partial Perim"
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 2.42))
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 3.64))
         optName = "Brass Collars"
@@ -159,10 +159,15 @@ class DataLayer {
         
         // FASTENING SYSTEM
         optName = "Double D-Rings (Non-buckle) Option/not updgrade"
-        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.poolarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 0.3))
-        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.poolarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 0.35))
-        // TODO
-
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 0.3))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 0.35))
+        optName = "Extension Straps (Attached/unattached)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 3.01))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 3.01))
+        optName = "Top and Bottom Webbing"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 0.47))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 0.71))
+        
         // UP AND OVER OBSTRUCTION / MULTI-LEVEL DECK / RISER
         // TODO
         optName = "Obstruction/Multilevel Deck/Riser <24\" High 1 Level"
@@ -176,9 +181,20 @@ class DataLayer {
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 1383.46))
 
         // PADDING
-        optName = ""
-        // TODO
-
+        optName = "Perimeter Padding (sewn on)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 8.25))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 8.25))
+        optName = "Replaceable Perimeter Padding (velcro)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 6.24))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.linearfoot, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 6.24))
+        optName = "Perimeter Padding (2' x 20' loose)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 65.72))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 65.72))
+        optName = "Reverse Corner/Nose Pad (2'x2' sewn on)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 41.51))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 41.51))
+        
+        
         // COVER DRAINING (SOLID COVERS ONLY)
         optName = "Cover Pump (Fully Electronic)"
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 297.45))
@@ -208,8 +224,12 @@ class DataLayer {
         _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 1758.15))
         
         // OTHER
-        optName = ""
-        // TODO
+        optName = "Kem-Kap Screw on Cap"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: 47.28))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.each, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: 47.28))
+        optName = "No Hardware (Cover will ship without springs, anchors or installation tools)"
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.fivebyfive, unitPrice: -0.17))
+        _safetyCoverOptionsList.append(SafetyCoverOptionItem(name: optName, uom: UnitOfMeasure.coverarea, panelSize: SafetyCoverPanelSize.threebythree, unitPrice: -0.24))
     }
 
     //------------------------------------------------------------
