@@ -7,40 +7,12 @@
 //  This is not meant to be a proposed implementation of a data layer. It's just a hack to
 //  "provide data" to the rest of the code to demonstrate calculations.
 //
+//  The data can be pulled out of Excel with simple macros and can be done to copy-paste
+//  directly into MySQL (or wherever) to populate a relational DB.
+//
 //
 
 import Foundation
-
-// Was ShapeCharacterization
-enum ShapeDescription {
-    case undefined
-    case freeform
-    case geometric
-}
-
-enum SafetyCoverPanelSize {
-    case fivebyfive
-    case threebythree
-    case undefined
-}
-
-enum SafetyCoverModel {
-    case StandardMesh5000M
-    case HighShadeMesh7000MS
-    case MaxShadeMesh9000MX
-    case HeavyDutySolid1000V
-    case LiteSolid500P
-    case undefined
-}
-
-enum UnitOfMeasure {
-    case each
-    case perimeter
-    case poolarea
-    case coverarea
-    case linearfoot
-    case undefined
-}
 
 struct SafetyCoverOptionItem {
     var name: String = ""

@@ -27,6 +27,36 @@ enum PoolShape {
     case lazyl
 }
 
+enum ShapeDescription {
+    case undefined
+    case freeform
+    case geometric
+}
+
+enum SafetyCoverPanelSize {
+    case fivebyfive
+    case threebythree
+    case undefined
+}
+
+enum SafetyCoverModel {
+    case StandardMesh5000M
+    case HighShadeMesh7000MS
+    case MaxShadeMesh9000MX
+    case HeavyDutySolid1000V
+    case LiteSolid500P
+    case undefined
+}
+
+enum UnitOfMeasure {
+    case each
+    case perimeter
+    case poolarea
+    case coverarea
+    case linearfoot
+    case undefined
+}
+
 struct SafetyCoverOptionSelection {
     var optionItem: SafetyCoverOptionItem
     var quantity: Int = 0
@@ -273,15 +303,6 @@ class SafetyCoverPriceCalculator {
     
     func setSelectedOptions(selectedOptions: [SafetyCoverOptionSelection]) {
         _selectedOptions = selectedOptions
-    }
-
-    func validateAreaDimensions(areaDimensions: AreaDimensions) -> Bool {
-        //guard areaDimensions != nil else {
-        //    return false
-        //}
-        
-        // TODO
-        return true
     }
 
     //--------------------------------
