@@ -32,8 +32,18 @@ struct SafetyCoverOptionSelection {
     var quantity: Int = 0
 }
 
+//----------------------------------------------------------
+// This captures the info needed to describe the pool.
+// With the final solution, the area will be calculated from the
+// point cloud, so the length & width fields will be unnecessary.
+// But other stuff like the shape description and pool shape are
+// needed for lookups and for some calculations (e.g. the width
+// of the border/overlap is 12" per side for geometric pools,
+// and 18" per side for freeform pools (so 3' total overlap width).
+//
 // TODO
 //  - Add a field to capture the units (e.g. feet, meters)
+//----------------------------------------------------------
 struct AreaDimensions {
     var shapeDescription: ShapeDescription = .undefined
     var poolShape: PoolShape = .undefined
@@ -121,8 +131,8 @@ struct AreaDimensions {
     //---------------------------
     //---------------------------
     func getCoverArea_Rectangle() -> Double {
-        let borderWidth: Double = 2.0
-        let area: Double = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
+        let totalOverlap: Double = 2.0
+        let area: Double = (Double)((totalOverlap + longLength) * (totalOverlap + longWidth))
         return area
     }
     
@@ -136,7 +146,7 @@ struct AreaDimensions {
     //---------------------------
     //---------------------------
     func getCoverArea_TrueL() -> Double {
-        let borderWidth: Double = 2.0
+        let totalOverlap: Double = 2.0
 
         // B  == longLength  &&   B7 == shortLength
         // A1 == longWidth   &&    A == shortWidth
@@ -146,10 +156,10 @@ struct AreaDimensions {
         // don't actually exist.
         
         //                        B                             A
-        let area1 = (Double)(((longLength + borderWidth) * (shortWidth + borderWidth)))
+        let area1 = (Double)(((longLength + totalOverlap) * (shortWidth + totalOverlap)))
         
         //                         B7                           A1             A
-        let area2 = (Double) ((shortLength + borderWidth) * (longWidth - shortWidth))
+        let area2 = (Double) ((shortLength + totalOverlap) * (longWidth - shortWidth))
         
         let area = area1 + area2  // TODO - I don't think the Excel calculator includes the borderWidth
         
@@ -166,10 +176,17 @@ struct AreaDimensions {
     //---------------------------
     //---------------------------
     func getCoverArea_LazyL() -> Double {
-        let fbw: Double = 2.0       // Full border width
-        let hbw: Double = (fbw / 2) // Half border width
+        // Full overlap width
+        let fow: Double = 2.0
         
-        let area: Double = getArea_LazyL(a: longWidth + fbw, x1: longLength + hbw, w1: longDiagLength + hbw, a1: shortWidth + fbw, v3: shortDiagLength + hbw, t: shortLength + hbw)
+        // Half overlap width
+        // This is half of the full (actual) overlap width because the area
+        // calculation double-counts it.
+        // I'm not convinced that this isn't a bug but whatever, it's Latham's
+        // calc and we'll replace this with the real value from the scanner...
+        let how: Double = (fow / 2)
+        
+        let area: Double = getArea_LazyL(a: longWidth + fow, x1: longLength + how, w1: longDiagLength + how, a1: shortWidth + fow, v3: shortDiagLength + how, t: shortLength + how)
         
         return area
     }
@@ -181,6 +198,24 @@ struct AreaDimensions {
         return area
     }
 
+    //---------------------------
+    // This approach is what Latham did.
+    // The lazy L shape is a rectangle that's horizontal that is combined with
+    // one at an angle (which isn't always 45 degrees).
+    // So the top of each rect (e.g. "t") is shorter than the bottom (e.g. "x1").
+    //
+    // This approach adds the top and bottom lengths, multiplies times the width,
+    // and cuts in half, which basically averages the two different lengths.
+    //
+    //      t           x1
+    //  |------- - - - - - - -|
+    //  |                     |
+    //  |----------- - - - - -|
+    //        x1         t
+    //
+    // The same is done for both the horizontal rect and the angled rect,
+    // and the total area is the sum of the two.
+    //---------------------------
     func getArea_LazyL(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
         let horizSquareArea: Double = ((a * (t + x1)) / 2)
         let slantSquareArea: Double = ((a1 * (v3 + w1)) / 2)

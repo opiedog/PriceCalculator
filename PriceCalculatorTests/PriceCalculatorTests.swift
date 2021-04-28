@@ -210,6 +210,32 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(perimeterExpected, perimeterActual)
     }
 
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_LazyL3() throws {
+        let poolShape: PoolShape = .lazyl
+
+        let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 11, inchVal: 8)
+        let A1 = helper.feetAndInchesToFeet(footVal: 12, inchVal: 1)
+        let T = helper.feetAndInchesToFeet(footVal: 15, inchVal: 6)
+        let V3 = helper.feetAndInchesToFeet(footVal: 13, inchVal: 7)
+        let W1 = helper.feetAndInchesToFeet(footVal: 18, inchVal: 2)
+        let X1 = helper.feetAndInchesToFeet(footVal: 19, inchVal: 4)
+
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let areaCoverActual: Double = areaDims.areaCover
+        XCTAssertEqual(489.3507, roundToTenThousandth(value: areaCoverActual))
+        
+//        let areaPoolExpected: Double = 2
+//        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: areaDims.areaPool))
+//
+//        let perimeterExpected: Double = 6
+//        let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
+//        XCTAssertEqual(perimeterExpected, perimeterActual)
+    }
+
     // PRICE CHECKS
     //----------------------------------------------------
     //----------------------------------------------------
@@ -238,7 +264,9 @@ class PriceCalculatorTests: XCTestCase {
         let expectedPrice = 37.26
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
         
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: l, width: w, area: areaDims.areaCover, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculator.priceResult.calculatedPrice)
+        let dict: [String: Double] = ["A": l, "B": w]
+
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: areaDims.areaCover, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculator.priceResult.calculatedPrice)
     }
 
     //----------------------------------------------------
@@ -268,7 +296,8 @@ class PriceCalculatorTests: XCTestCase {
         let expectedPrice = 1117.8
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: l, width: w, area: areaDims.areaCover, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculator.priceResult.calculatedPrice)
+        let dict: [String: Double] = ["A": l, "B": w]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: areaDims.areaCover, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculator.priceResult.calculatedPrice)
     }
 
     //----------------------------------------------------
@@ -322,7 +351,8 @@ class PriceCalculatorTests: XCTestCase {
         let expectedPrice = 1432.83
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: l, width: w, area: areaDims.areaCover, safetyCoverModel: scModel, panelSize: scSize, optionList: options, price: calculator.priceResult.calculatedPrice)
+        let dict: [String: Double] = ["A": l, "B": w]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: areaDims.areaCover, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: options, price: calculator.priceResult.calculatedPrice)
     }
 
     //----------------------------------------------------
@@ -350,7 +380,8 @@ class PriceCalculatorTests: XCTestCase {
         calculator.calculatePrice()
         XCTAssertEqual(2099.5801, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: roundToHundredth(value: B), width: roundToHundredth(value: A), area: roundToHundredth(value: area), safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": roundToHundredth(value: A), "B": roundToHundredth(value: B)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     //----------------------------------------------------
@@ -380,7 +411,39 @@ class PriceCalculatorTests: XCTestCase {
         calculator.calculatePrice()
         XCTAssertEqual(2962.3261, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: roundToHundredth(value: B), width: roundToHundredth(value: A), area: roundToHundredth(value: area), safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "B": roundToHundredth(value: B), "B7": roundToHundredth(value: B7)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPriceFor_LazyL_1() throws {
+        let poolShape: PoolShape = .lazyl
+
+        let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 11, inchVal: 8)
+        let A1 = helper.feetAndInchesToFeet(footVal: 12, inchVal: 1)
+        let T = helper.feetAndInchesToFeet(footVal: 15, inchVal: 6)
+        let V3 = helper.feetAndInchesToFeet(footVal: 13, inchVal: 7)
+        let W1 = helper.feetAndInchesToFeet(footVal: 18, inchVal: 2)
+        let X1 = helper.feetAndInchesToFeet(footVal: 19, inchVal: 4)
+
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let area: Double = areaDims.areaCover
+        XCTAssertEqual(489.3507, roundToTenThousandth(value: area))
+
+        // Calculate the price
+        let scModel: SafetyCoverModel = SafetyCoverModel.MaxShadeMesh9000MX
+        let scSize: SafetyCoverPanelSize = SafetyCoverPanelSize.threebythree
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
+        calculator.setAreaDimensions(areaDimensions: areaDims)
+
+        calculator.calculatePrice()
+        XCTAssertEqual(2618.0262, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        
+        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     // SINGLE ITEM ADDERS
@@ -441,7 +504,8 @@ class PriceCalculatorTests: XCTestCase {
                 
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
         
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: roundToHundredth(value: lengthFractionalFoot), width: roundToHundredth(value: widthFractionalFoot), area: roundToHundredth(value: areaDims.areaCover), safetyCoverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, optionList: options, price: amount)
+        let dict: [String: Double] = ["A": roundToHundredth(value: lengthFractionalFoot), "B": roundToHundredth(value: widthFractionalFoot)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: roundToHundredth(value: areaDims.areaCover), dimensionDict: dict, safetyCoverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, optionList: options, price: amount)
         
         return amount
     }
@@ -522,7 +586,9 @@ class PriceCalculatorTests: XCTestCase {
 
         // Set a 1x1 area
         let poolShape: PoolShape = .rectangle
-        var areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let a: Double = 1
+        let b: Double = 1
+        var areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: a, longWidth: b, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
         
         // This avoids using the adjusted area (i.e. the area for the cover is greater than the area of the pool surface) in
         // the calculation since we're just testing the raw lookup value.
@@ -532,7 +598,8 @@ class PriceCalculatorTests: XCTestCase {
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
         let roundedAmount: Double = roundToHundredth(value: amount)
         
-        printTestResultForLathamValidation(priceType: PriceType.adder_only, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: 1, width: 1, area: 1, safetyCoverModel: scModel, panelSize: safetyCoverPanelSize, optionList: options, price: roundedAmount)
+        let dict: [String: Double] = ["A": a, "B": b]
+        printTestResultForLathamValidation(priceType: PriceType.adder_only, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: 1, dimensionDict: dict, safetyCoverModel: scModel, panelSize: safetyCoverPanelSize, optionList: options, price: roundedAmount)
 
         return amount
     }
@@ -822,14 +889,17 @@ class PriceCalculatorTests: XCTestCase {
         let actualPrice: Double = calculator.getUnitPriceForArea()
 
         let roundedAmount: Double = roundToHundredth(value: actualPrice)
-        printTestResultForLathamValidation(priceType: PriceType.per_unit_area, shapeDesc: areaDims.shapeDescription, shape: poolShape, length: l, width: sqFeet, area: sqFeet, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundedAmount)
+        
+        let dict: [String: Double] = ["A": l, "B": sqFeet]
+        printTestResultForLathamValidation(priceType: PriceType.per_unit_area, shapeDesc: areaDims.shapeDescription, shape: poolShape, area: sqFeet, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundedAmount)
 
         return actualPrice
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, length: Double, width: Double, area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+//    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, length: Double, width: Double, area: Double, safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double],safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
         var optionMsg = ""
         if optionList != nil {
             optionMsg = "Selected Option(s): "
@@ -849,12 +919,30 @@ class PriceCalculatorTests: XCTestCase {
                 prefix = prefix + "For unit-price lookup for area '\(area) sq ft' - "
                 
             case .per_pool_size:
-                prefix = prefix + "For \(shapeDesc) \(shape) pool [length, width, area]: [\(length), \(width), \(area)]; Cover product: '\(safetyCoverModel)'; "
+                let dims: String = getDimensionStringForPoolShapeFromDict(shape: shape, dimensionDict: dimensionDict)
+                prefix = prefix + "For \(shapeDesc) \(shape) pool area: \(area); Dimensions: \(dims); Cover product: '\(safetyCoverModel)'; "
         }
         
         let msg = prefix + "Panel Size: '\(panelSize)'; \(optionMsg) Price: $\(price)"
         
         print(msg)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func getDimensionStringForPoolShapeFromDict(shape: PoolShape, dimensionDict: [String: Double]) -> String {
+        var dims: String = ""
+        switch shape {
+            case .rectangle:
+                dims = "A: \(dimensionDict["A"]!), B: \(dimensionDict["B"]!)"
+            case .truel:
+                dims = "A: \(dimensionDict["A"]!), A1: \(dimensionDict["A1"]!), B: \(dimensionDict["B"]!), B7: \(dimensionDict["B7"]!)"
+            case .lazyl:
+                dims = "A: \(dimensionDict["A"]!), A1: \(dimensionDict["A1"]!), T: \(dimensionDict["T"]!), V3: \(dimensionDict["V3"]!), W1: \(dimensionDict["W1"]!), X1: \(dimensionDict["X1"]!)"
+            default:
+                break
+        }
+        return dims
     }
 
     //----------------------------------------------------
