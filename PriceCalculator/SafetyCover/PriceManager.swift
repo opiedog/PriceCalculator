@@ -41,7 +41,7 @@ struct AreaDimensions {
     var areaPool: Double = 0    // The area of the pool
     var areaCover: Double = 0   // The area of the cover that includes an amount to be larger than the pool
     
-    var perimeter: Double = 0
+    var perimeter: Double = 0   // This is the pool perimeter, not the cover
 
     //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
     //                              // Rect     // TrueL    // LazyL
@@ -66,7 +66,7 @@ struct AreaDimensions {
             self.poolShape = poolShape
         }
         
-        var borderWidth: Double = 0
+        //var borderWidth: Double = 0
 
         switch poolShape {
             case .rectangle:
@@ -74,10 +74,9 @@ struct AreaDimensions {
                 self.longWidth = longWidth
                 
                 self.areaPool = (Double)(longLength * longWidth)
-                borderWidth = 2.0
-                self.areaCover = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
-
-                self.perimeter = (2 * longLength) + (2 * longWidth)
+                
+                self.areaCover = getCoverArea_Rectangle()
+                self.perimeter = getPerimeter_Rectangle()
 
                 self.shapeDescription = .geometric
 
@@ -91,10 +90,9 @@ struct AreaDimensions {
                 let area1 = (Double)(longLength * shortWidth)
                 let area2 = (Double)(shortLength * (longWidth - shortWidth))
                 self.areaPool = area1 + area2
-                borderWidth = 3.0
-                self.areaCover = area1 + area2  // TODO - I don't think the Excel calculator includes the borderWidth
-
-                self.perimeter = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
+                
+                self.areaCover = getCoverArea_TrueL()
+                self.perimeter = getPerimeter_TrueL()
 
                 self.shapeDescription = .geometric
 
@@ -113,6 +111,51 @@ struct AreaDimensions {
             default:
                 return
         }
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getCoverArea_Rectangle() -> Double {
+        let borderWidth: Double = 2.0
+        let area: Double = (Double)((borderWidth + longLength) * (borderWidth + longWidth))
+        return area
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getPerimeter_Rectangle() -> Double {
+        let p: Double = (2 * longLength) + (2 * longWidth)
+        return p
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getCoverArea_TrueL() -> Double {
+        let borderWidth: Double = 2.0
+
+        // B  == longLength  &&   B7 == shortLength
+        // A1 == longWidth   &&    A == shortWidth
+        // We are calculating two separate areas and combining them.
+        // We will add the borderWidth to each side since the cover must be bigger than the pool
+        // But with this L shape, we need to remove the sizes of the two separate areas that
+        // don't actually exist.
+        
+        //                        B                             A
+        let area1 = (Double)(((longLength + borderWidth) * (shortWidth + borderWidth)))
+        
+        //                         B7                           A1             A
+        let area2 = (Double) ((shortLength + borderWidth) * (longWidth - shortWidth))
+        
+        let area = area1 + area2  // TODO - I don't think the Excel calculator includes the borderWidth
+        
+        return area
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getPerimeter_TrueL() -> Double {
+        let p: Double = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
+        return p
     }
 }
 
@@ -182,9 +225,7 @@ class SafetyCoverPriceCalculator {
                         optionsTotal += (rawItem.unitPrice * self._areaDimensions!.areaPool)
                     case .coverarea:
                         optionsTotal += (rawItem.unitPrice * self._areaDimensions!.areaCover)
-//                    case .linearfoot:
-//                        // TODO
-//                        optionsTotal += 0
+
                     case .perimeter:
                         // TODO
                         optionsTotal += 0
