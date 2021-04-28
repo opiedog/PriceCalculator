@@ -107,7 +107,12 @@ struct AreaDimensions {
                 self.shortDiagLength = shortDiagLength
 
                 self.shapeDescription = .geometric
+                
+                self.areaPool = getPoolArea_LazyL()
+                self.areaCover = getCoverArea_LazyL()
 
+                self.perimeter = getPerimeter_LazyL()
+                
             default:
                 return
         }
@@ -155,6 +160,57 @@ struct AreaDimensions {
     //---------------------------
     func getPerimeter_TrueL() -> Double {
         let p: Double = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
+        return p
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getCoverArea_LazyL() -> Double {
+        let fbw: Double = 2.0       // Full border width
+        let hbw: Double = (fbw / 2) // Half border width
+        
+        let area: Double = getArea_LazyL(a: longWidth + fbw, x1: longLength + hbw, w1: longDiagLength + hbw, a1: shortWidth + fbw, v3: shortDiagLength + hbw, t: shortLength + hbw)
+        
+        return area
+    }
+    
+    //---------------------------
+    //---------------------------
+    func getPoolArea_LazyL() -> Double {
+        let area: Double = getArea_LazyL(a: longWidth, x1: longLength, w1: longDiagLength, a1: shortWidth, v3: shortDiagLength, t: shortLength)
+        return area
+    }
+
+    func getArea_LazyL(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
+        let horizSquareArea: Double = ((a * (t + x1)) / 2)
+        let slantSquareArea: Double = ((a1 * (v3 + w1)) / 2)
+        
+        let area: Double = horizSquareArea + slantSquareArea
+        
+        return area
+    }
+
+//    func getArea_LazyL(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
+//        let horizSquareArea: Double = (a * t)
+//        let slantSquareArea: Double = (a1 * v3)
+//
+////        // Assuming the lazy L slants up at 45 degrees
+////        let degrees: Double = (45 / 2)
+////        let radians: Double = (degrees * .pi / 180)
+////        let extraLenFactor: Double = tan(radians)
+//
+//        let horizTriangeArea: Double = (0.5 * (a * (x1 - t)))
+//        let slantTriangleArea: Double = (0.5 * (a1 * (w1 - v3)))
+//
+//        let area: Double = horizSquareArea + slantSquareArea + horizTriangeArea + slantTriangleArea
+//
+//        return area
+//    }
+    
+    //---------------------------
+    //---------------------------
+    func getPerimeter_LazyL() -> Double {
+        let p: Double = (longLength + longWidth + shortLength + shortWidth + longDiagLength + shortDiagLength)
         return p
     }
 }

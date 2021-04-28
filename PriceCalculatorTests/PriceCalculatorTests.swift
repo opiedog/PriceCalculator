@@ -89,6 +89,31 @@ class PriceCalculatorTests: XCTestCase {
         let poolShape: PoolShape = .truel
 
         let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 5, inchVal: 0)
+        let A1 = helper.feetAndInchesToFeet(footVal: 5, inchVal: 0)
+        let B = helper.feetAndInchesToFeet(footVal: 5, inchVal: 0)
+        let B7 = helper.feetAndInchesToFeet(footVal: 0, inchVal: 0)
+
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A1, shortLength: B7, shortWidth: A, longDiagLength: 0, shortDiagLength: 0)
+
+        let areaCoverActual: Double = areaDims.areaCover
+        XCTAssertEqual(49, roundToTenThousandth(value: areaCoverActual))
+        
+        //let areaPoolExpected: Double = roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
+        let areaPoolExpected: Double = 25
+        XCTAssertEqual(areaPoolExpected, roundToTenThousandth(value: areaDims.areaPool))
+        
+        let perimeterExpected: Double = roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
+        let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
+        XCTAssertEqual(perimeterExpected, perimeterActual)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_TrueL2() throws {
+        let poolShape: PoolShape = .truel
+
+        let helper = MeasurementHelper()
         let A = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
         let A1 = helper.feetAndInchesToFeet(footVal: 5, inchVal: 0)
         let B = helper.feetAndInchesToFeet(footVal: 10, inchVal: 0)
@@ -109,7 +134,7 @@ class PriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testPoolAreaAndPerimeter_TrueL2() throws {
+    func testPoolAreaAndPerimeter_TrueL3() throws {
         let poolShape: PoolShape = .truel
 
         let helper = MeasurementHelper()
@@ -127,6 +152,60 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(areaPoolExpected, roundToTenThousandth(value: areaDims.areaPool))
         
         let perimeterExpected: Double = roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
+        let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
+        XCTAssertEqual(perimeterExpected, perimeterActual)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_LazyL1() throws {
+        let poolShape: PoolShape = .lazyl
+
+        let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+        let A1 = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+        let T = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+        let V3 = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+        let X1 = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+        let W1 = helper.feetAndInchesToFeet(footVal: 1, inchVal: 0)
+
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let areaCoverActual: Double = areaDims.areaCover
+        XCTAssertEqual(12, roundToTenThousandth(value: areaCoverActual))
+        
+        let areaPoolExpected: Double = 2
+        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: areaDims.areaPool))
+
+        let perimeterExpected: Double = 6
+        let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
+        XCTAssertEqual(perimeterExpected, perimeterActual)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_LazyL2() throws {
+        let poolShape: PoolShape = .lazyl
+
+        let helper = MeasurementHelper()
+        let A = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
+        let A1 = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
+        let T = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
+        let V3 = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
+        //let X1 = helper.feetAndInchesToFeet(footVal: 0, inchVal: 0)
+        //let W1 = helper.feetAndInchesToFeet(footVal: 3, inchVal: 0)
+        let X1: Double = (3 * 0.414214)
+        let W1: Double = (3 * 0.414214)
+
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let areaCoverActual: Double = areaDims.areaCover
+        XCTAssertEqual(31.2132, roundToTenThousandth(value: areaCoverActual))
+        
+        let areaPoolExpected: Double = 12.727926
+        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: areaDims.areaPool))
+
+        let perimeterExpected: Double = roundToHundredth(value: (A + X1 + W1 + A1 + V3 + T))
         let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
         XCTAssertEqual(perimeterExpected, perimeterActual)
     }
