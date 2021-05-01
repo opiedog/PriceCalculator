@@ -19,12 +19,20 @@ struct PriceResult {
     var calculatedPrice = 0.0
 }
 
-// Was ShapeDescription
 enum PoolShape {
+    // Geometric shapes
     case undefined
     case rectangle
+    case oval
+    case grecian
     case truel
     case lazyl
+    case roman
+
+    // Freeform shapes
+    case oasis
+    case tahiti
+    case lagoon
 }
 
 enum ShapeDescription {
@@ -61,6 +69,53 @@ struct SafetyCoverOptionSelection {
     var optionItem: SafetyCoverOptionItem
     var quantity: Int = 0
 }
+
+class RectangleBase {
+    var length: Double = 0      // B        // B        // X1
+    var width: Double = 0       // A        // A1       // A
+    var totalOverlap: Double = 2.0
+    var areaPool: Double = 0
+    var areaCover: Double = 0
+    var perimeterPool: Double = 0
+    var shapeDescription: ShapeDescription = .geometric
+    var poolShape: PoolShape = .rectangle
+
+    init(length: Double, width: Double) {
+        self.length = length
+        self.width = width
+        
+        calculateAreaPool()
+        calculateAreaCover()
+        calculatePerimeterPool()
+    }
+    
+    //---------------------------
+    //---------------------------
+    func calculateAreaPool() {
+        self.areaPool = (Double)(self.length * self.width)
+    }
+
+    //---------------------------
+    //---------------------------
+    func calculateAreaCover() {
+        self.areaCover = (Double)((self.totalOverlap + self.length) * (self.totalOverlap + self.width))
+    }
+
+    //---------------------------
+    //---------------------------
+     func calculatePerimeterPool() {
+        self.perimeterPool = (2 * self.length) + (2 * self.width)
+     }
+}
+
+class Rectangle: RectangleBase {
+}
+
+//class Grecian: RectangleBase {
+//    override func calculatePerimeter() {
+//       self.perimeter = (2 * self.length) + (2 * self.width)
+//    }
+//}
 
 //----------------------------------------------------------
 // This captures the info needed to describe the pool.
@@ -110,67 +165,148 @@ struct AreaDimensions {
 
         switch poolShape {
             case .rectangle:
-                self.longLength = longLength
-                self.longWidth = longWidth
-                
-                self.areaPool = (Double)(longLength * longWidth)
-                
-                self.areaCover = getCoverArea_Rectangle()
-                self.perimeter = getPerimeter_Rectangle()
+                capturePoolShape_Rectangle(length: longLength, width: longWidth)
 
-                self.shapeDescription = .geometric
+            case .oval:
+                capturePoolShape_Oval(length: longLength, width: longWidth)
+
+            case .grecian:
+                capturePoolShape_Grecian(length: longLength, width: longWidth)
+
+            case .roman:
+                capturePoolShape_Roman(length: longLength, width: longWidth)
 
             case .truel:
-                self.longLength = longLength
-                self.longWidth = longWidth
-
-                self.shortLength = shortLength
-                self.shortWidth = shortWidth
-                
-                let area1 = (Double)(longLength * shortWidth)
-                let area2 = (Double)(shortLength * (longWidth - shortWidth))
-                self.areaPool = area1 + area2
-                
-                self.areaCover = getCoverArea_TrueL()
-                self.perimeter = getPerimeter_TrueL()
-
-                self.shapeDescription = .geometric
+                capturePoolShape_TrueL(longLength: longLength, longWidth: longWidth, shortLength: shortLength, shortWidth: shortWidth)
 
             case .lazyl:
-                self.longLength = longLength
-                self.longWidth = longWidth
+                capturePoolShape_LazyL(longLength: longLength, longWidth: longWidth, shortLength: shortLength, shortWidth: shortWidth, longDiagLength: longDiagLength, shortDiagLength: shortDiagLength)
 
-                self.shortLength = shortLength
-                self.shortWidth = shortWidth
-                
-                self.longDiagLength = longDiagLength
-                self.shortDiagLength = shortDiagLength
+            case .oasis:
+                capturePoolShape_Oasis(length: longLength, width: longWidth)
 
-                self.shapeDescription = .geometric
-                
-                self.areaPool = getPoolArea_LazyL()
-                self.areaCover = getCoverArea_LazyL()
+            case .tahiti:
+                capturePoolShape_Tahiti(length: longLength, width: longWidth)
 
-                self.perimeter = getPerimeter_LazyL()
+            case .lagoon:
+                capturePoolShape_Lagoon(longLength: longLength, longWidth: longWidth, shortLength: shortLength, shortWidth: shortWidth)
                 
             default:
                 return
         }
     }
-    
+
     //---------------------------
     //---------------------------
-    func getCoverArea_Rectangle() -> Double {
-        let totalOverlap: Double = 2.0
-        let area: Double = (Double)((totalOverlap + longLength) * (totalOverlap + longWidth))
-        return area
+    mutating func capturePoolShape_Rectangle(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        self.areaPool = (Double)(longLength * longWidth)
+        
+        //self.areaCover = getCoverArea_Rectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 2.0)
+        self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .geometric
     }
+
+    //---------------------------
+    //---------------------------
+    // func getCoverArea_Rectangle() -> Double {
+    //     let totalOverlap: Double = 2.0
+    //     //let area: Double = (Double)((totalOverlap + longLength) * (totalOverlap + longWidth))
+    //     //getAreaWithOverlap_Rectangle(totalOverlap)
+    //     getAreaWithOverlap(self.longLength, self.longWidth, totalOverlap)
+    //     return area
+    // }
+
+    //---------------------------
+    //---------------------------
+    // func getCoverArea_FreeformRectangle() -> Double {
+    //     let totalOverlap: Double = 3.0
+    //     getAreaWithOverlap(self.longLength, self.longWidth, totalOverlap)
+    //     return area
+    // }
     
     //---------------------------
     //---------------------------
-    func getPerimeter_Rectangle() -> Double {
-        let p: Double = (2 * longLength) + (2 * longWidth)
-        return p
+     func getPerimeter_Rectangle() -> Double {
+         let p: Double = (2 * longLength) + (2 * longWidth)
+         return p
+     }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Oval(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        // TODO - This is obviously not correct
+        self.areaPool = (Double)(self.longLength * self.longWidth)
+        
+        //self.areaCover = getCoverArea_Rectangle()
+        areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 2.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        shapeDescription = .geometric
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Grecian(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        // TODO - This is obviously not correct
+        self.areaPool = (Double)(self.longLength * self.longWidth)
+        
+        //self.areaCover = getCoverArea_Rectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 2.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .geometric
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Roman(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        // TODO - This is obviously not correct
+        self.areaPool = (Double)(self.longLength * self.longWidth)
+        
+        //self.areaCover = getCoverArea_Rectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 2.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .geometric
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_TrueL(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double) {
+        self.longLength = longLength
+        self.longWidth = longWidth
+
+        self.shortLength = shortLength
+        self.shortWidth = shortWidth
+        
+        let area1 = (Double)(longLength * shortWidth)
+        let area2 = (Double)(shortLength * (longWidth - shortWidth))
+        self.areaPool = area1 + area2
+        
+        self.areaCover = getCoverArea_TrueL()
+        self.perimeter = getPerimeter_TrueL()
+
+        self.shapeDescription = .geometric
     }
     
     //---------------------------
@@ -202,7 +338,27 @@ struct AreaDimensions {
         let p: Double = (longWidth + shortWidth + (longWidth - shortWidth)) + (longLength + shortLength + (longLength - shortLength))
         return p
     }
-    
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_LazyL(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double, longDiagLength: Double, shortDiagLength: Double) {
+        self.longLength = longLength
+        self.longWidth = longWidth
+
+        self.shortLength = shortLength
+        self.shortWidth = shortWidth
+        
+        self.longDiagLength = longDiagLength
+        self.shortDiagLength = shortDiagLength
+
+        self.shapeDescription = .geometric
+        
+        self.areaPool = getPoolArea_LazyL()
+        self.areaCover = getCoverArea_LazyL()
+
+        self.perimeter = getPerimeter_LazyL()
+    }
+
     //---------------------------
     //---------------------------
     func getCoverArea_LazyL() -> Double {
@@ -277,6 +433,73 @@ struct AreaDimensions {
     func getPerimeter_LazyL() -> Double {
         let p: Double = (longLength + longWidth + shortLength + shortWidth + longDiagLength + shortDiagLength)
         return p
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Oasis(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        // TODO - This is obviously not correct
+        //self.areaPool = (Double)(longLength * longWidth)
+        
+        //self.areaCover = getCoverArea_FreeformRectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .freeform
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Tahiti(length: Double, width: Double) {
+        self.longLength = length
+        self.longWidth = width
+        
+        // TODO - This is obviously not correct
+        //self.areaPool = (Double)(longLength * longWidth)
+        
+        //self.areaCover = getCoverArea_FreeformRectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .freeform
+    }
+
+    //---------------------------
+    //---------------------------
+    mutating func capturePoolShape_Lagoon(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double) {
+        self.longLength = longLength
+        self.longWidth = longWidth
+
+        self.shortLength = shortLength
+        self.shortWidth = shortWidth
+        
+        // TODO - This is obviously not correct
+        //self.areaPool = (Double)(longLength * longWidth)
+        self.areaPool = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 0)
+        self.areaPool += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 0)
+        
+        //self.areaCover = getCoverArea_FreeformRectangle()
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
+        self.areaCover += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 3.0)
+
+        // TODO - This is obviously not correct
+        //self.perimeter = getPerimeter_Rectangle()
+
+        self.shapeDescription = .freeform
+    }
+
+    //---------------------------
+    //---------------------------
+    func getAreaWithOverlap(length: Double, width: Double, totalOverlap: Double) -> Double {
+        let area: Double = (Double)((totalOverlap + length) * (totalOverlap + width))
+        return area
     }
 }
 

@@ -29,43 +29,43 @@ class PriceCalculatorTests: XCTestCase {
     // SIMPLE AREA AND PERIMETER TESTS
     //----------------------------------------------------
     //----------------------------------------------------
-    func testRectanglularPoolAreaAndPerimeter1() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testPoolAreaAndPerimeter_Rectangle1() throws {
+        let rect = Rectangle(length: 1, width: 1)
+        
+        let areaPool: Double = rect.areaPool
+        XCTAssertEqual(1, areaPool)
+        
+        let areaCover: Double = rect.areaCover
+        XCTAssertEqual(9, areaCover)
 
-        let poolShape: PoolShape = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 1, longWidth: 1, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
-        
-        let area: Double = areaDims.areaCover
-        XCTAssertEqual(9, area)
-        
-        let perimeter: Double = areaDims.perimeter
-        XCTAssertEqual((1 * 2) + (1 * 2), perimeter)
+        let perimeter: Double = rect.perimeterPool
+        XCTAssertEqual(4, perimeter)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testRectanglularPoolAreaAndPerimeter2() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-
+    func testPoolAreaAndPerimeter_Rectangle2() throws {
+        let l: Double = 10
         let helper = MeasurementHelper()
         let w: Double = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         XCTAssertEqual(20.5, w)
-        
-        let poolShape: PoolShape = .rectangle
-        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: 10, longWidth: w, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.areaCover
-        XCTAssertEqual(270, area)
+        let rect = Rectangle(length: l, width: w)
         
-        let perimeter: Double = areaDims.perimeter
-        XCTAssertEqual((20.5 * 2) + (10 * 2), perimeter)
+        let areaPool: Double = rect.areaPool
+        XCTAssertEqual(205, areaPool)
+        
+        let areaCover: Double = rect.areaCover
+        XCTAssertEqual(270, areaCover)
+
+        let pActual: Double = rect.perimeterPool
+        let pExpected: Double = (w * 2) + (l * 2)
+        XCTAssertEqual(pExpected, pActual)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testRectanglularPoolAreaAndPerimeter3() throws {
+    func testPoolAreaAndPerimeter_Rectangle3() throws {
         let helper = MeasurementHelper()
         let B: Double = helper.feetAndInchesToFeet(footVal: 38, inchVal: 3)
         XCTAssertEqual(38.25, B)
@@ -73,14 +73,101 @@ class PriceCalculatorTests: XCTestCase {
         let A: Double = helper.feetAndInchesToFeet(footVal: 14, inchVal: 7)
         XCTAssertEqual(14.5833, roundToTenThousandth(value: A))
         
+        let rect = Rectangle(length: B, width: A)
+        
+        let areaPool: Double = rect.areaPool
+        XCTAssertEqual(557.8125, roundToTenThousandth(value: areaPool))
+        
+        let areaCover: Double = rect.areaCover
+        XCTAssertEqual(667.4792, roundToTenThousandth(value: areaCover))
+
+        let pActual: Double = rect.perimeterPool
+        let pExpected: Double = (B * 2) + (A * 2)
+        XCTAssertEqual(pExpected, pActual)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Rectangle_34x16() throws {
+        let B: Double = 34
+        let A: Double = 16
+        
         let poolShape: PoolShape = .rectangle
         let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
 
-        let area: Double = areaDims.areaCover
-        XCTAssertEqual(roundToTenThousandth(value: 667.4792), roundToTenThousandth(value: area))
+        var area: Double = areaDims.areaCover
+        XCTAssertEqual(648, roundToTenThousandth(value: area))
+
+        area = areaDims.areaPool
+        XCTAssertEqual(544, roundToTenThousandth(value: area))
         
         let perimeter: Double = areaDims.perimeter
-        XCTAssertEqual((B * 2) + (A * 2), perimeter)
+        XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.geometric, areaDims.shapeDescription)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Oval_38x18() throws {
+        let B: Double = 38
+        let A: Double = 18
+        
+        let poolShape: PoolShape = .oval
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        var area: Double = areaDims.areaCover
+        XCTAssertEqual(800, roundToTenThousandth(value: area))
+
+        area = areaDims.areaPool
+        XCTAssertEqual(684, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.geometric, areaDims.shapeDescription)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Grecian_31x17() throws {
+        let B: Double = 31
+        let A: Double = 17
+        
+        let poolShape: PoolShape = .grecian
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        var area: Double = areaDims.areaCover
+        XCTAssertEqual(627, roundToTenThousandth(value: area))
+
+        area = areaDims.areaPool
+        XCTAssertEqual(527, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.geometric, areaDims.shapeDescription)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Roman_36x16() throws {
+        let B: Double = 36
+        let A: Double = 16
+        
+        let poolShape: PoolShape = .grecian
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        var area: Double = areaDims.areaCover
+        XCTAssertEqual(684, roundToTenThousandth(value: area))
+
+        area = areaDims.areaPool
+        XCTAssertEqual(576, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.geometric, areaDims.shapeDescription)
     }
 
     //----------------------------------------------------
@@ -234,6 +321,71 @@ class PriceCalculatorTests: XCTestCase {
 //        let perimeterExpected: Double = 6
 //        let perimeterActual: Double = roundToHundredth(value: areaDims.perimeter)
 //        XCTAssertEqual(perimeterExpected, perimeterActual)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Oasis_34x16() throws {
+        let B: Double = 34
+        let A: Double = 16
+        
+        let poolShape: PoolShape = .oasis
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        let area: Double = areaDims.areaCover
+        XCTAssertEqual(703, roundToTenThousandth(value: area))
+
+        //area = areaDims.areaPool
+        //XCTAssertEqual(544, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Tahiti_32x18() throws {
+        let B: Double = 32
+        let A: Double = 18
+        
+        let poolShape: PoolShape = .tahiti
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+
+        let area: Double = areaDims.areaCover
+        XCTAssertEqual(735, roundToTenThousandth(value: area))
+
+        //area = areaDims.areaPool
+        //XCTAssertEqual(576, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_Lagoon_32x16_16x12() throws {
+        let BL: Double = 32
+        let AL: Double = 16
+        let BS: Double = 16
+        let AS: Double = 12
+    
+        let poolShape: PoolShape = .lagoon
+        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: BL, longWidth: AL, shortLength: BS, shortWidth: AS, longDiagLength: 0, shortDiagLength: 0)
+
+        let area: Double = areaDims.areaCover
+        XCTAssertEqual(950, roundToTenThousandth(value: area))
+
+        //area = areaDims.areaPool
+        //XCTAssertEqual(704, roundToTenThousandth(value: area))
+        
+        // let perimeter: Double = areaDims.perimeter
+        // XCTAssertEqual(100, perimeter)
+
+        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
     }
 
     // PRICE CHECKS
