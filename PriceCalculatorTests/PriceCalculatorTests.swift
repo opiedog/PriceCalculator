@@ -306,10 +306,10 @@ class PriceCalculatorTests: XCTestCase {
         let areaCoverActual: Double = lazyL.areaCover
         XCTAssertEqual(489.3507, roundToTenThousandth(value: areaCoverActual))
         
-//        let areaPoolExpected: Double = 2
+//        let areaPoolExpected: Double = 1
 //        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
 //
-//        let perimeterExpected: Double = 6
+//        let perimeterExpected: Double = 1
 //        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
 //        XCTAssertEqual(perimeterExpected, perimeterActual)
         
@@ -322,10 +322,9 @@ class PriceCalculatorTests: XCTestCase {
         let B: Double = 34
         let A: Double = 16
         
-        let poolShape: PoolShape = .oasis
-        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let oasis = Oasis(length: B, width: A)
 
-        let area: Double = areaDims.areaCover
+        let area: Double = oasis.areaCover
         XCTAssertEqual(703, roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
@@ -334,7 +333,7 @@ class PriceCalculatorTests: XCTestCase {
         // let perimeter: Double = areaDims.perimeter
         // XCTAssertEqual(100, perimeter)
 
-        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
+        XCTAssertEqual(ShapeDescription.freeform, oasis.shapeDescription)
     }
 
     //----------------------------------------------------
@@ -343,10 +342,9 @@ class PriceCalculatorTests: XCTestCase {
         let B: Double = 32
         let A: Double = 18
         
-        let poolShape: PoolShape = .tahiti
-        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: B, longWidth: A, shortLength: 0, shortWidth: 0, longDiagLength: 0, shortDiagLength: 0)
+        let tahiti = Tahiti(length: B, width: A)
 
-        let area: Double = areaDims.areaCover
+        let area: Double = tahiti.areaCover
         XCTAssertEqual(735, roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
@@ -355,7 +353,7 @@ class PriceCalculatorTests: XCTestCase {
         // let perimeter: Double = areaDims.perimeter
         // XCTAssertEqual(100, perimeter)
 
-        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
+        XCTAssertEqual(ShapeDescription.freeform, tahiti.shapeDescription)
     }
 
     //----------------------------------------------------
@@ -366,10 +364,9 @@ class PriceCalculatorTests: XCTestCase {
         let BS: Double = 16
         let AS: Double = 12
     
-        let poolShape: PoolShape = .lagoon
-        let areaDims: AreaDimensions = AreaDimensions(poolShape: poolShape, longLength: BL, longWidth: AL, shortLength: BS, shortWidth: AS, longDiagLength: 0, shortDiagLength: 0)
+        let lagoon = Lagoon(longLength: BL, longWidth: AL, shortLength: BS, shortWidth: AS)
 
-        let area: Double = areaDims.areaCover
+        let area: Double = lagoon.areaCover
         XCTAssertEqual(950, roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
@@ -378,7 +375,7 @@ class PriceCalculatorTests: XCTestCase {
         // let perimeter: Double = areaDims.perimeter
         // XCTAssertEqual(100, perimeter)
 
-        XCTAssertEqual(ShapeDescription.freeform, areaDims.shapeDescription)
+        XCTAssertEqual(ShapeDescription.freeform, lagoon.shapeDescription)
     }
 
     // PRICE CHECKS

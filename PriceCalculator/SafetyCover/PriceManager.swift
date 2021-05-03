@@ -74,7 +74,6 @@ struct SafetyCoverOptionSelection {
 class RectangleBase {
     var length: Double = 0      // B        // B        // X1
     var width: Double = 0       // A        // A1       // A
-    var totalOverlap: Double = 2.0
     var areaPool: Double = 0
     var areaCover: Double = 0
     var perimeterPool: Double = 0
@@ -97,7 +96,8 @@ class RectangleBase {
     //---------------------------
     //---------------------------
     func calculateAreaCover() {
-        self.areaCover = (Double)((self.totalOverlap + self.length) * (self.totalOverlap + self.width))
+        let totalCoverOverlap: Double = 2.0
+        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
     }
 
     //---------------------------
@@ -125,6 +125,86 @@ class Grecian: RectangleBase {
 class Roman: RectangleBase {
     var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .roman
+}
+
+class Oasis: RectangleBase {
+    var shapeDescription: ShapeDescription = .freeform
+    var poolShape: PoolShape = .oasis
+
+    //---------------------------
+    //---------------------------
+    override func calculateAreaCover() {
+        let totalCoverOverlap: Double = 3.0
+        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
+    }
+}
+
+class Tahiti: RectangleBase {
+    var shapeDescription: ShapeDescription = .freeform
+    var poolShape: PoolShape = .tahiti
+
+    //---------------------------
+    //---------------------------
+    override func calculateAreaCover() {
+        let totalCoverOverlap: Double = 3.0
+        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
+    }
+}
+
+class Lagoon {
+    var shapeDescription: ShapeDescription = .freeform
+    var poolShape: PoolShape = .lagoon
+    //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
+    //                              // Rect     // TrueL    // LazyL
+    var longLength: Double = 0      // B        // B        // X1
+    var longWidth: Double = 0       // A        // A1       // A
+    
+    var shortLength: Double = 0     //          // B7       // T
+    var shortWidth: Double = 0      //          // A        // A1
+
+    var areaPool: Double = 0
+    var areaCover: Double = 0
+    var perimeterPool: Double = 0
+    
+    //var rect1: Rectangle
+    //var rect2: Rectangle
+    
+    init(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double) {
+        self.longLength = longLength
+        self.longWidth = longWidth
+        self.shortLength = shortLength
+        self.shortWidth = shortWidth
+        
+        calculateAreaPool()
+        calculateAreaCover()
+    }
+    
+    //---------------------------
+    //---------------------------
+    func calculateAreaPool() {
+        self.areaPool = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 0)
+        self.areaPool += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 0)
+    }
+
+    //---------------------------
+    //---------------------------
+    func calculateAreaCover() {
+        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
+        self.areaCover += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 3.0)
+    }
+
+    //---------------------------
+    //---------------------------
+//     func calculatePerimeterPool() {
+//        self.perimeterPool = (2 * self.length) + (2 * self.width)
+//     }
+
+    //---------------------------
+    //---------------------------
+    func getAreaWithOverlap(length: Double, width: Double, totalOverlap: Double) -> Double {
+        let area: Double = (Double)((totalOverlap + length) * (totalOverlap + width))
+        return area
+    }
 }
 
 //===========================================================
