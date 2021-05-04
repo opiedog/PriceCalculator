@@ -252,8 +252,13 @@ class PriceCalculatorTests: XCTestCase {
         let lazyL = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let areaCoverActual: Double = lazyL.areaCover
-        XCTAssertEqual(12, roundToTenThousandth(value: areaCoverActual))
-        
+        if(lazyL.useExcelCoverCalcMethod) {
+            XCTAssertEqual(12, roundToTenThousandth(value: areaCoverActual))
+        }
+        else {
+            XCTAssertEqual(18, roundToTenThousandth(value: areaCoverActual))
+        }
+
         let areaPoolExpected: Double = 2
         XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
 
@@ -278,8 +283,13 @@ class PriceCalculatorTests: XCTestCase {
         let lazyL = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let areaCoverActual: Double = lazyL.areaCover
-        XCTAssertEqual(31.2132, roundToTenThousandth(value: areaCoverActual))
-        
+        if(lazyL.useExcelCoverCalcMethod) {
+            XCTAssertEqual(31.2132, roundToTenThousandth(value: areaCoverActual))
+        }
+        else {
+            XCTAssertEqual(41.2132, roundToTenThousandth(value: areaCoverActual))
+        }
+
         let areaPoolExpected: Double = 12.727926
         XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
 
@@ -304,14 +314,50 @@ class PriceCalculatorTests: XCTestCase {
         let lazyL = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let areaCoverActual: Double = lazyL.areaCover
-        XCTAssertEqual(489.3507, roundToTenThousandth(value: areaCoverActual))
-        
+        if(lazyL.useExcelCoverCalcMethod) {
+            XCTAssertEqual(489.3507, roundToTenThousandth(value: areaCoverActual))
+        }
+        else {
+            XCTAssertEqual(523.1806, roundToTenThousandth(value: areaCoverActual))
+        }
+
 //        let areaPoolExpected: Double = 1
 //        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
 //
 //        let perimeterExpected: Double = 1
 //        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
 //        XCTAssertEqual(perimeterExpected, perimeterActual)
+        
+        XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
+    }
+
+    //----------------------------------------------------
+    // These values are from "SC Sq ft.pdf"
+    //----------------------------------------------------
+    func testPoolAreaAndPerimeter_LazyL4() throws {
+        let A: Double = 16.0
+        let A1: Double = 16.0
+        let T: Double = 24.0
+        let V3: Double = 13.0
+        let W1: Double = 6.0
+        let X1: Double = 17.0
+
+        let lazyL = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let areaPoolExpected: Double = ((A * T) + (W1 * A1))
+        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
+
+        let areaCoverActual: Double = lazyL.areaCover
+        if(lazyL.useExcelCoverCalcMethod) {
+            XCTAssertEqual(576, roundToTenThousandth(value: areaCoverActual))
+        }
+        else {
+            XCTAssertEqual(612, roundToTenThousandth(value: areaCoverActual))
+        }
+        
+        let perimeterExpected: Double = (A + T + V3 + A1 + W1 + X1)
+        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
+        XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
     }
@@ -569,7 +615,12 @@ class PriceCalculatorTests: XCTestCase {
         let pool = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let area: Double = pool.areaCover
-        XCTAssertEqual(489.3507, roundToTenThousandth(value: area))
+        if(pool.useExcelCoverCalcMethod) {
+            XCTAssertEqual(489.3507, roundToTenThousandth(value: area))
+        }
+        else {
+            XCTAssertEqual(523.1806, roundToTenThousandth(value: area))
+        }
 
         // Calculate the price
         let scModel: SafetyCoverModel = SafetyCoverModel.MaxShadeMesh9000MX
@@ -580,8 +631,53 @@ class PriceCalculatorTests: XCTestCase {
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        XCTAssertEqual(2618.0262, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
-        
+        if(pool.useExcelCoverCalcMethod) {
+            XCTAssertEqual(2618.0262, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        }
+        else {
+            XCTAssertEqual(2563.5847, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        }
+
+        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPriceFor_LazyL_2() throws {
+        let A: Double = 16
+        let A1: Double = 16
+        let T: Double = 24
+        let V3: Double = 13
+        let W1: Double = 6
+        let X1: Double = 17
+
+        let pool = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
+
+        let area: Double = pool.areaCover
+        if(pool.useExcelCoverCalcMethod) {
+            XCTAssertEqual(576, roundToTenThousandth(value: area))
+        }
+        else {
+            XCTAssertEqual(612, roundToTenThousandth(value: area))
+        }
+
+        // Calculate the price
+        let scModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
+        let scSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
+        calculator.setArea(area: pool.areaCover)
+        calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+
+        calculator.calculatePrice()
+        XCTAssertTrue(calculator.priceResult.wasSuccessful)
+        if(pool.useExcelCoverCalcMethod) {
+            XCTAssertEqual(1612.80, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        }
+        else {
+            XCTAssertEqual(1646.28, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        }
+
         let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
         printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
@@ -754,6 +850,19 @@ class PriceCalculatorTests: XCTestCase {
         let scSize = SafetyCoverPanelSize.fivebyfive
         let sqFeet: Double = 1      // Will be multiplied by longLength of 1 so we'll set this to whatever area we want to test
         let expectedPrice = 4.14
+
+        // Get the price
+        let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)
+        XCTAssertEqual(expectedPrice, actualPrice)
+    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testUnitPrice_StMesh5000M_5x5_geo_612() throws {
+        let scModel = SafetyCoverModel.StandardMesh5000M
+        let scSize = SafetyCoverPanelSize.fivebyfive
+        let sqFeet: Double = 612
+        let expectedPrice = 2.69
 
         // Get the price
         let actualPrice: Double = getUnitPriceCoverMaterial_rect(scModel: scModel, scSize: scSize, shapeDescription: ShapeDescription.geometric, sqFeet: sqFeet)

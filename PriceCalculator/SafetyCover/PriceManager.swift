@@ -255,9 +255,9 @@ class TrueL {
         // B  == longLength  &&   B7 == shortLength
         // A1 == longWidth   &&    A == shortWidth
         // We are calculating two separate areas and combining them.
-        // We will add the borderWidth to each side since the cover must be bigger than the pool
-        // But with this L shape, we need to remove the sizes of the two separate areas that
-        // don't actually exist.
+        // We will add the overlap to each side since the cover must be bigger than the pool.
+        // But with this L shape, we need to ignore the sides of the two separate areas of
+        // the rectangles that cross over the pool surface.
         
         //                        B                             A
         let area1 = (Double)(((longLength + totalOverlap) * (shortWidth + totalOverlap)))
@@ -265,7 +265,7 @@ class TrueL {
         //                         B7                           A1             A
         let area2 = (Double) ((shortLength + totalOverlap) * (longWidth - shortWidth))
         
-        let area = area1 + area2  // TODO - I don't think the Excel calculator includes the borderWidth
+        let area = area1 + area2  // TODO - I don't think the Excel calculator includes the overlap
         
         return area
     }
@@ -302,6 +302,11 @@ class LazyL {
     var longDiagLength: Double = 0  //          //          // W1
     var shortDiagLength: Double = 0 //          //          // V3
 
+    // This is here to test/compare/contrast between the method Latham
+    // uses in the Excel price calculator, and the method defined in
+    // the "SC Sq ft.pdf" file they recently sent.
+    var useExcelCoverCalcMethod: Bool = true
+    
     //---------------------------
     //---------------------------
     init(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double, longDiagLength: Double, shortDiagLength: Double) {
@@ -317,7 +322,7 @@ class LazyL {
         calculateAreaPool()
         calculateAreaCover()
 
-        getPerimeterPool()
+        calculatePerimeterPool()
     }
 
     //---------------------------
@@ -331,20 +336,37 @@ class LazyL {
         // calculation double-counts it.
         // I'm not convinced that this isn't a bug but whatever, it's Latham's
         // calc and we'll replace this with the real value from the scanner...
-        let how: Double = (fow / 2)
-        
+        var how: Double = (fow / 2)
+        if(!self.useExcelCoverCalcMethod) {
+            how = fow
+        }
+
         let area: Double = getAreaBase(a: longWidth + fow, x1: longLength + how, w1: longDiagLength + how, a1: shortWidth + fow, v3: shortDiagLength + how, t: shortLength + how)
         
         self.areaCover = area
     }
-    
+
+    //
+    func getAreaBase(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
+        //let useExcelCoverCalcMethod: Bool = false
+        
+        var area: Double = 0
+        if(self.useExcelCoverCalcMethod) {
+            area = getAreaBase_perExcelCoverCalculator(a: a, x1: x1, w1: w1, a1: a1, v3: v3, t: t)
+        }
+        else {
+            area = getAreaBase_perSCSqFtPDF(a: a, x1: x1, w1: w1, a1: a1, v3: v3, t: t)
+        }
+        return area
+    }
+
     //---------------------------
     //---------------------------
     func calculateAreaPool() {
         let area: Double = getAreaBase(a: longWidth, x1: longLength, w1: longDiagLength, a1: shortWidth, v3: shortDiagLength, t: shortLength)
         self.areaPool = area
     }
-
+    
     //---------------------------
     // This approach is what Latham did.
     // The lazy L shape is a rectangle that's horizontal that is combined with
@@ -363,9 +385,19 @@ class LazyL {
     // The same is done for both the horizontal rect and the angled rect,
     // and the total area is the sum of the two.
     //---------------------------
-    func getAreaBase(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
+    func getAreaBase_perExcelCoverCalculator(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
         let horizSquareArea: Double = ((a * (t + x1)) / 2)
         let slantSquareArea: Double = ((a1 * (v3 + w1)) / 2)
+        
+        let area: Double = horizSquareArea + slantSquareArea
+        
+        return area
+    }
+
+    //
+    func getAreaBase_perSCSqFtPDF(a: Double, x1: Double, w1: Double, a1: Double, v3: Double, t: Double) -> Double {
+        let horizSquareArea: Double = (a * t)
+        let slantSquareArea: Double = (a1 * w1)
         
         let area: Double = horizSquareArea + slantSquareArea
         
@@ -391,7 +423,7 @@ class LazyL {
 
     //---------------------------
     //---------------------------
-    func getPerimeterPool() {
+    func calculatePerimeterPool() {
         let p: Double = (longLength + longWidth + shortLength + shortWidth + longDiagLength + shortDiagLength)
         self.perimeter = p
     }
