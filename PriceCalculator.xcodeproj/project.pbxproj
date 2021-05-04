@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */; };
 		6361AF76262CD5BB0067A8DD /* SafetyCoverLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */; };
+		6388F6C32641F99400EAAD4A /* PoolShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6388F6C22641F99400EAAD4A /* PoolShapes.swift */; };
 		63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */; };
 		63CD679F2628F392002B92F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679E2628F392002B92F9 /* ContentView.swift */; };
 		63CD67A12628F394002B92F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63CD67A02628F394002B92F9 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementHelpers.swift; sourceTree = "<group>"; };
 		6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyCoverLookups.swift; sourceTree = "<group>"; };
+		6388F6C22641F99400EAAD4A /* PoolShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoolShapes.swift; sourceTree = "<group>"; };
 		63CD67992628F392002B92F9 /* PriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorApp.swift; sourceTree = "<group>"; };
 		63CD679E2628F392002B92F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				63CD67A02628F394002B92F9 /* Assets.xcassets */,
 				63CD67A52628F394002B92F9 /* Info.plist */,
 				63CD67A22628F394002B92F9 /* Preview Content */,
+				6388F6C22641F99400EAAD4A /* PoolShapes.swift */,
 			);
 			path = PriceCalculator;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */,
+				6388F6C32641F99400EAAD4A /* PoolShapes.swift in Sources */,
 				63CD67CC2628F4E9002B92F9 /* PriceManager.swift in Sources */,
 				63CD679F2628F392002B92F9 /* ContentView.swift in Sources */,
 				63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */,

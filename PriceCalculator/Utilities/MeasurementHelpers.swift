@@ -16,3 +16,13 @@ struct MeasurementHelper {
         return val3
     }
 }
+
+//---------------------------------------------------------------------
+//---------------------------------------------------------------------
+func getArea_geometric(aFeet: Double, aInches: Double, bFeet: Double, bInches: Double) -> Double {
+    let aVal: Double = (2 + (aFeet + (aInches / 12)))
+    let bVal: Double = (2 + (bFeet + (bInches / 12)))
+    let area = aVal * bVal
+    
+    return area
+}
