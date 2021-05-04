@@ -9,9 +9,8 @@ The data source is simply a fake data access layer with item prices emitted as S
 
 The key files in this project are:
 <ol>
-<li>[PriceCalculatorTests.swift](https://github.com/opiedog/PriceCalculator/blob/main/PriceCalculatorTests/PriceCalculatorTests.swift)</li>
+<li>PriceCalculatorTests.swift</li>
 Implementations of various tests to confirm proper implementations for areas and perimeters, and then for proper per-unit prices (to make sure we're using the right values), and for generating prices for covers with or without various options
-[PriceCalculatorTests.swift](https://github.com/opiedog/PriceCalculator/blob/main/PriceCalculatorTests/PriceCalculatorTests.swift)
 <li>PriceManager.swift</li>
 Makes fake DAL calls into SafetyCoverLookups.swift
 <li>SafetyCoverLookups.swift</li>
