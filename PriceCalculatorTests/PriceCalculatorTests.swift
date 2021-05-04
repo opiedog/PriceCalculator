@@ -669,13 +669,25 @@ class PriceCalculatorTests: XCTestCase {
         calculator.setArea(area: pool.areaCover)
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
 
+        var optionItem = SafetyCoverOptionItem()
+        optionItem.name = "Reverse Corner/Nose Pad (2'x2' sewn on)"
+        var selectedOption: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem)
+        selectedOption.quantity = 1
+        // This should be $41.51
+        let selectedOptionCostExpected: Double = 41.51
+
+        var options = [SafetyCoverOptionSelection]()
+        options.append(selectedOption)
+        
+        calculator.setSelectedOptions(selectedOptions: options)
+
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
         if(pool.useExcelCoverCalcMethod) {
-            XCTAssertEqual(1612.80, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual((1612.80 + selectedOptionCostExpected), roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
         else {
-            XCTAssertEqual(1646.28, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual((1646.28 + selectedOptionCostExpected), roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
 
         let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
