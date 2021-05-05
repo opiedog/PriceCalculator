@@ -53,11 +53,9 @@ struct SafetyCoverOptionSelection {
     var quantity: Int = 0
 }
 
-
 //====================================
 class SafetyCoverPriceCalculator {
     private let _dataLayer: DataLayer = DataLayer()
-    //private var _areaDimensions: AreaDimensions?
     private var _area: Double?
     private var _shapeDescription: ShapeDescription?
     private var _safetyCoverModel: SafetyCoverModel
@@ -74,6 +72,7 @@ class SafetyCoverPriceCalculator {
         _selectedOptions = nil
     }
     
+
     func setArea(area: Double) {
         _area = area
     }

@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum ShapeDescription {
+    case undefined
+    case freeform
+    case geometric
+}
+
 enum PoolShape {
     // Geometric shapes
     case undefined
@@ -21,12 +27,6 @@ enum PoolShape {
     case oasis
     case tahiti
     case lagoon
-}
-
-enum ShapeDescription {
-    case undefined
-    case freeform
-    case geometric
 }
 
 //===========================================================

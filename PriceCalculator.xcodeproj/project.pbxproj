@@ -10,6 +10,9 @@
 		630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */; };
 		6361AF76262CD5BB0067A8DD /* SafetyCoverLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */; };
 		6388F6C32641F99400EAAD4A /* PoolShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6388F6C22641F99400EAAD4A /* PoolShapes.swift */; };
+		6388F6C62641FCE500EAAD4A /* LinerPriceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6388F6C52641FCE500EAAD4A /* LinerPriceCalculator.swift */; };
+		6388F6C8264200A400EAAD4A /* LinerLookups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6388F6C7264200A400EAAD4A /* LinerLookups.swift */; };
+		6388F6CA2642017D00EAAD4A /* LinerPriceCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6388F6C92642017D00EAAD4A /* LinerPriceCalculatorTests.swift */; };
 		63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */; };
 		63CD679F2628F392002B92F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CD679E2628F392002B92F9 /* ContentView.swift */; };
 		63CD67A12628F394002B92F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63CD67A02628F394002B92F9 /* Assets.xcassets */; };
@@ -40,6 +43,9 @@
 		630D21E6262F5CD0002FFFC3 /* MeasurementHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementHelpers.swift; sourceTree = "<group>"; };
 		6361AF75262CD5BB0067A8DD /* SafetyCoverLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyCoverLookups.swift; sourceTree = "<group>"; };
 		6388F6C22641F99400EAAD4A /* PoolShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoolShapes.swift; sourceTree = "<group>"; };
+		6388F6C52641FCE500EAAD4A /* LinerPriceCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerPriceCalculator.swift; sourceTree = "<group>"; };
+		6388F6C7264200A400EAAD4A /* LinerLookups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerLookups.swift; sourceTree = "<group>"; };
+		6388F6C92642017D00EAAD4A /* LinerPriceCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinerPriceCalculatorTests.swift; sourceTree = "<group>"; };
 		63CD67992628F392002B92F9 /* PriceCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PriceCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceCalculatorApp.swift; sourceTree = "<group>"; };
 		63CD679E2628F392002B92F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,6 +94,15 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		6388F6C42641FCBC00EAAD4A /* Liner */ = {
+			isa = PBXGroup;
+			children = (
+				6388F6C52641FCE500EAAD4A /* LinerPriceCalculator.swift */,
+				6388F6C7264200A400EAAD4A /* LinerLookups.swift */,
+			);
+			path = Liner;
+			sourceTree = "<group>";
+		};
 		63CD67902628F392002B92F9 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +126,7 @@
 		63CD679B2628F392002B92F9 /* PriceCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				6388F6C42641FCBC00EAAD4A /* Liner */,
 				630D21E5262F5CA5002FFFC3 /* Utilities */,
 				63CD67CA2628F492002B92F9 /* SafetyCover */,
 				63CD679C2628F392002B92F9 /* PriceCalculatorApp.swift */,
@@ -136,6 +152,7 @@
 			children = (
 				63CD67AE2628F394002B92F9 /* PriceCalculatorTests.swift */,
 				63CD67B02628F394002B92F9 /* Info.plist */,
+				6388F6C92642017D00EAAD4A /* LinerPriceCalculatorTests.swift */,
 			);
 			path = PriceCalculatorTests;
 			sourceTree = "<group>";
@@ -289,7 +306,9 @@
 			files = (
 				630D21E7262F5CD0002FFFC3 /* MeasurementHelpers.swift in Sources */,
 				6388F6C32641F99400EAAD4A /* PoolShapes.swift in Sources */,
+				6388F6C62641FCE500EAAD4A /* LinerPriceCalculator.swift in Sources */,
 				63CD67CC2628F4E9002B92F9 /* PriceManager.swift in Sources */,
+				6388F6C8264200A400EAAD4A /* LinerLookups.swift in Sources */,
 				63CD679F2628F392002B92F9 /* ContentView.swift in Sources */,
 				63CD679D2628F392002B92F9 /* PriceCalculatorApp.swift in Sources */,
 				6361AF76262CD5BB0067A8DD /* SafetyCoverLookups.swift in Sources */,
@@ -300,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6388F6CA2642017D00EAAD4A /* LinerPriceCalculatorTests.swift in Sources */,
 				63CD67AF2628F394002B92F9 /* PriceCalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
