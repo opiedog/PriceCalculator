@@ -47,15 +47,15 @@ class LinerPriceCalculator {
     private let _dataLayer: DataLayer_Liner = DataLayer_Liner()
     
     private var _area: Double
-    //private var _shapeDescription: ShapeDescription?
+    private var _dealerDiscountPercentage: Double
     private var _linerBrand: LinerBrand
     private var _selectedOptions: [LinerOptionSelection]?
 
     var priceResult: PriceResult = PriceResult()
 
-    init(linerBrand: LinerBrand) {
+    init(linerBrand: LinerBrand, dealerDiscountPercentage: Double = 0) {
         _area = 0
-        //_shapeDescription = ShapeDescription.undefined
+        _dealerDiscountPercentage = dealerDiscountPercentage
         _linerBrand = linerBrand
         _selectedOptions = nil
     }
@@ -67,11 +67,6 @@ class LinerPriceCalculator {
         _area = DoubleHelper.roundToHundredth(value: area)
     }
     
-//    func setPoolCharacteristics(shapeDescription: ShapeDescription) {   //, shape: PoolShape
-//        _shapeDescription = shapeDescription
-//        //_poolShape = shape
-//    }
-
     func setSelectedOptions(selectedOptions: [LinerOptionSelection]) {
         _selectedOptions = selectedOptions
     }
@@ -118,6 +113,11 @@ class LinerPriceCalculator {
         
         // Now add in the adders
         priceResult.calculatedPrice += optionsPriceSet.optionsTotalPrice
+        
+        // Apply any dealer discount
+        if(_dealerDiscountPercentage > 0) {
+            priceResult.calculatedPrice -= (priceResult.calculatedPrice * _dealerDiscountPercentage)
+        }
     }
 
     //--------------------------------
@@ -148,16 +148,16 @@ class LinerPriceCalculator {
                         linerOptionSet.optionsTotalPrice += (unitPrice * (Double(selectedOption.quantity)))
                     case .linearfoot:
                         linerOptionSet.optionsTotalPrice += (unitPrice * (Double(selectedOption.quantity)))
+                        
+                    // No affect from the following
                     case .poolarea:
-//                        optionsTotal += (unitPrice * self._area!)
                         linerOptionSet.optionsTotalPrice += 0
                     case .coverarea:
-//                        optionsTotal += (unitPrice * self._area!)
                         linerOptionSet.optionsTotalPrice += 0
-
                     case .perimeter:
                         // TODO
                         linerOptionSet.optionsTotalPrice += 0
+
                     case .undefined:
                         // TODO
                         linerOptionSet.optionsTotalPrice += 0

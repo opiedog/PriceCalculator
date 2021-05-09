@@ -403,7 +403,8 @@ class LinerPriceCalculatorTests: XCTestCase {
         let pool = Rectangle(length: l, width: w)
         XCTAssertEqual(areaExpected, pool.areaPool)
 
-        let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
+        let discountRate: Double = 0.07 // 7%
+        let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand, dealerDiscountPercentage: discountRate)
         calculator.setArea(area: pool.areaPool)
 
         // Define the options
@@ -432,8 +433,9 @@ class LinerPriceCalculatorTests: XCTestCase {
         //let expectedPrice: Double = (3.45 * areaExpected) //724.9313
         // This is diff from immediately above due to the weird rounding Latham
         // does in the Excel calculator (they round the (l*w) product)
-        //let expectedPrice: Double = 724.95    // without options
-        let expectedPrice: Double = 1233.95     // with options
+        //let expectedPrice: Double = 724.95    // without options, no discountrate
+        //let expectedPrice: Double = 1233.95     // with options, no discountrate
+        let expectedPrice: Double = 1147.57     // with options, with discount
 
         XCTAssertEqual(expectedPrice, DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
 

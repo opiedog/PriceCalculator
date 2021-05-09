@@ -4,6 +4,8 @@
 //
 //  Created by John Tafoya on 4/15/21.
 //
+//  THIS MODULE IS FOR SAFETY COVERS - I should have named it SafetyCoverPriceCalculatorTests...
+//
 
 import XCTest
 @testable import PriceCalculator
@@ -425,7 +427,7 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(ShapeDescription.freeform, lagoon.shapeDescription)
     }
 
-    // PRICE CHECKS
+    // FUNCTIONAL PRICE CHECKS
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool1() throws {
@@ -444,14 +446,16 @@ class PriceCalculatorTests: XCTestCase {
 
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.fivebyfive
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
+        let dealerDiscountRate: Double = 0.06
+        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize, dealerDiscountPercentage: dealerDiscountRate)
         calculator.setArea(area: pool.areaCover)
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
         
         // Calculate the price
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        let expectedPrice = 37.26
+        //let expectedPrice = 37.26   // Without discount
+        let expectedPrice = 35.0244   // With 6% discount
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
         
         let dict: [String: Double] = ["A": l, "B": w]
@@ -695,7 +699,7 @@ class PriceCalculatorTests: XCTestCase {
         printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
-    // SINGLE ITEM ADDERS
+    // SINGLE ITEM ADDER UNIT TESTS
     //----------------------------------------------------
     //----------------------------------------------------
     func testSingleItemPrice_FullPerimeter_LawnTube_geo_270() throws {

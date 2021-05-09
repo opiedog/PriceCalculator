@@ -57,6 +57,7 @@ struct SafetyCoverOptionSelection {
 class SafetyCoverPriceCalculator {
     private let _dataLayer: DataLayer = DataLayer()
     private var _area: Double?
+    private var _dealerDiscountPercentage: Double
     private var _shapeDescription: ShapeDescription?
     private var _safetyCoverModel: SafetyCoverModel
     private var _safetyCoverPanelSize: SafetyCoverPanelSize
@@ -64,8 +65,9 @@ class SafetyCoverPriceCalculator {
 
     var priceResult: PriceResult = PriceResult()
 
-    init(safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize) {
+    init(safetyCoverModel: SafetyCoverModel, safetyCoverPanelSize: SafetyCoverPanelSize, dealerDiscountPercentage: Double = 0) {
         _area = nil
+        _dealerDiscountPercentage = dealerDiscountPercentage
         _shapeDescription = ShapeDescription.undefined
         _safetyCoverModel = safetyCoverModel
         _safetyCoverPanelSize = safetyCoverPanelSize
@@ -100,6 +102,11 @@ class SafetyCoverPriceCalculator {
 
             // Add the options
             priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
+            
+            // Apply any dealer discount
+            if(_dealerDiscountPercentage > 0) {
+                priceResult.calculatedPrice -= (priceResult.calculatedPrice * _dealerDiscountPercentage)
+            }
         }
         else {
             priceResult.wasSuccessful = false
