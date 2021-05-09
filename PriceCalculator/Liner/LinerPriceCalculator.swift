@@ -32,8 +32,14 @@ struct LinerOptionSelection {
 }
 
 struct LinerOptionSet {
+    // Sum total of the options that were inspected
     var optionsTotalPrice: Double = 0
+    
+    // Sum total of the discount items
     var linerDeductionPercentage: Double = 0
+    
+    // This is used to facilitate processing
+    var priceUnit: PriceUnit = PriceUnit.currency
 }
 
 //====================================
@@ -92,10 +98,12 @@ class LinerPriceCalculator {
     }
 
     //--------------------------------
+    // This returns a value instead of just updating a class property
+    // to facilitate testing.
+    //--------------------------------
     func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> LinerOptionSet {
         var linerOptionSet = LinerOptionSet()
         linerOptionSet.optionsTotalPrice = 0.0
-        //var optionsTotal: Double = 0.0
         
         if(selectedOptions != nil) {
             for selectedOption in selectedOptions! {
@@ -105,10 +113,10 @@ class LinerPriceCalculator {
                 // Multiple its unit price times the quantity and add it to the total
                 let unitPrice = rawItem.unitPrice
                 if(rawItem.priceUnit == PriceUnit.percentage) {
-                    // TODO
-                    // Not sure how to deal with this
+                    // This is a percentage value so capture it as such
+                    // and move on to the next item.
                     linerOptionSet.linerDeductionPercentage += unitPrice
-                    linerOptionSet.optionsTotalPrice += unitPrice
+                    linerOptionSet.priceUnit = PriceUnit.percentage
                     continue
                 }
                 

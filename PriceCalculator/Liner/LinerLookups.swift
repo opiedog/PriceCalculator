@@ -10,6 +10,7 @@ import Foundation
 enum PriceUnit {
     case currency
     case percentage
+    case undefined
 }
 
 struct LinerOptionItem {

@@ -14,7 +14,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         case per_unit_area
         case per_pool_size
     }
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -34,8 +34,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(313.00, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
     
     //----------------------------------------------------
@@ -47,8 +51,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual((3 * 313.00), amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
     
     //----------------------------------------------------
@@ -60,8 +68,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.StraightOrRomanStep
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(418.00, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
     
     //----------------------------------------------------
@@ -73,8 +85,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.FreeformOrWeddingCake
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(441.00, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
 
     //----------------------------------------------------
@@ -86,8 +102,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(577, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
 
     //----------------------------------------------------
@@ -99,8 +119,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.FreeformOrWeddingCake
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(836, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
 
     //----------------------------------------------------
@@ -112,8 +136,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(182, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
 
     //----------------------------------------------------
@@ -125,8 +153,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(56, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
     
     // Add On Charges
@@ -139,8 +171,12 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(167, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
     }
 
     // Special Options
@@ -153,13 +189,34 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.linerDeductionPercentage
         XCTAssertEqual(-0.1, amount)
+        
+        XCTAssertEqual(PriceUnit.percentage, optionSet.priceUnit)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func getAmountSingleItemPrice_base(optionName: String, stairSwimoutOption: StairAndSwimoutOption, uom: UnitOfMeasure, quantity: Int) -> Double {
+    func testSingleItemPrice_AddOnCharges_CantedWallsCovedBottoms_1() throws {
+        // Set the options
+        let optionName: String = "Canted (Non-Plumb Side Walls) or Coved bottoms"
+        let quantity: Int = 1
+        let uom = UnitOfMeasure.each
+        let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
+
+        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        
+        let amount: Double = optionSet.optionsTotalPrice
+        XCTAssertEqual(139, amount)
+        
+        XCTAssertEqual(PriceUnit.currency, optionSet.priceUnit)
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func getAmountSingleItemPrice_base(optionName: String, stairSwimoutOption: StairAndSwimoutOption, uom: UnitOfMeasure, quantity: Int) -> LinerOptionSet {
         var option = LinerOptionItem()
         option.name = optionName
         option.stairSwimoutOption = stairSwimoutOption
@@ -171,10 +228,8 @@ class LinerPriceCalculatorTests: XCTestCase {
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: LinerBrand.undefined)
         
-        var linerOptionSet: LinerOptionSet = calculator.getTotalForOptionsList(selectedOptions: options)
-        let amount: Double = linerOptionSet.optionsTotalPrice
-        
-        return amount
+        let linerOptionSet: LinerOptionSet = calculator.getTotalForOptionsList(selectedOptions: options)
+        return linerOptionSet
     }
 
     // PRICE CHECKS
