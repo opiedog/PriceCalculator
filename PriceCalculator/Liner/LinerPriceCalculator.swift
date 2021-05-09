@@ -31,7 +31,7 @@ struct LinerOptionSelection {
     var quantity: Int = 0
 }
 
-struct LinerOptionSet {
+struct LinerOptionsTotalPriceSet {
     // Sum total of the options that were inspected
     var optionsTotalPrice: Double = 0
     
@@ -61,17 +61,20 @@ class LinerPriceCalculator {
     }
 
     func setArea(area: Double) {
-        _area = area
+        //_area = area
+        
+        // This is done to match Latham's Excel price calculator implementation
+        _area = DoubleHelper.roundToHundredth(value: area)
     }
     
 //    func setPoolCharacteristics(shapeDescription: ShapeDescription) {   //, shape: PoolShape
 //        _shapeDescription = shapeDescription
 //        //_poolShape = shape
 //    }
-//
-//    func setSelectedOptions(selectedOptions: [LinerOptionSelection]) {
-//        _selectedOptions = selectedOptions
-//    }
+
+    func setSelectedOptions(selectedOptions: [LinerOptionSelection]) {
+        _selectedOptions = selectedOptions
+    }
 
     //--------------------------------
     func calculatePrice() {
@@ -80,29 +83,49 @@ class LinerPriceCalculator {
 
         // Get the baseline for the square footage
         let uomPrice: UnitOfMeasurePrice = _dataLayer.getUnitPriceForArea(linerBrand: self._linerBrand, area: self._area)
-        //var uom: UnitOfMeasure = UnitOfMeasure
         
         // This is a crappy implementation done just to get this done ASAP
         if(uomPrice.uom == UnitOfMeasure.each) {
+            // The price is a set amount independent of the exact area in this scenario
             priceResult.calculatedPrice = uomPrice.price
         }
         else if(uomPrice.price >= 0) {
+            // It's not .each so calculate based on area
             priceResult.calculatedPrice = self._area * uomPrice.price
-
-            // Add the options
-            //priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
         }
         else {
             priceResult.wasSuccessful = false
         }
+
+        // Add the options
+        //priceResult.calculatedPrice += getTotalForOptionsList(selectedOptions: _selectedOptions)
+        let optionsPriceSet = getTotalForOptionsList(selectedOptions: _selectedOptions)
+        
+        // Deal with prices first with % discounts off the baseline
+        if(optionsPriceSet.linerDeductionPercentage > 0) {
+            if(optionsPriceSet.linerDeductionPercentage > 1) {
+                // This really should check against a total discount of maybe 50%+
+                // but for now we'll make sure it's at least not more than 100%.
+                //throw
+                //let ex: NSException = NSException()
+                //throw ex
+            }
+            
+            // FYI: Latham defines discounts as negative values
+            let discountAmt: Double = (priceResult.calculatedPrice * optionsPriceSet.linerDeductionPercentage)
+            priceResult.calculatedPrice = priceResult.calculatedPrice - abs(discountAmt)
+        }
+        
+        // Now add in the adders
+        priceResult.calculatedPrice += optionsPriceSet.optionsTotalPrice
     }
 
     //--------------------------------
     // This returns a value instead of just updating a class property
     // to facilitate testing.
     //--------------------------------
-    func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> LinerOptionSet {
-        var linerOptionSet = LinerOptionSet()
+    func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> LinerOptionsTotalPriceSet {
+        var linerOptionSet = LinerOptionsTotalPriceSet()
         linerOptionSet.optionsTotalPrice = 0.0
         
         if(selectedOptions != nil) {

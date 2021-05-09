@@ -34,7 +34,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(313.00, amount)
@@ -51,7 +51,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual((3 * 313.00), amount)
@@ -68,7 +68,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.StraightOrRomanStep
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(418.00, amount)
@@ -85,7 +85,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.FreeformOrWeddingCake
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(441.00, amount)
@@ -102,7 +102,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(577, amount)
@@ -119,7 +119,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.FreeformOrWeddingCake
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(836, amount)
@@ -136,7 +136,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(182, amount)
@@ -153,7 +153,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(56, amount)
@@ -171,7 +171,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(167, amount)
@@ -189,7 +189,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.linerDeductionPercentage
         XCTAssertEqual(-0.1, amount)
@@ -206,7 +206,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let uom = UnitOfMeasure.each
         let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
 
-        let optionSet: LinerOptionSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        let optionSet: LinerOptionsTotalPriceSet = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
         
         let amount: Double = optionSet.optionsTotalPrice
         XCTAssertEqual(139, amount)
@@ -216,7 +216,7 @@ class LinerPriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func getAmountSingleItemPrice_base(optionName: String, stairSwimoutOption: StairAndSwimoutOption, uom: UnitOfMeasure, quantity: Int) -> LinerOptionSet {
+    func getAmountSingleItemPrice_base(optionName: String, stairSwimoutOption: StairAndSwimoutOption, uom: UnitOfMeasure, quantity: Int) -> LinerOptionsTotalPriceSet {
         var option = LinerOptionItem()
         option.name = optionName
         option.stairSwimoutOption = stairSwimoutOption
@@ -228,11 +228,11 @@ class LinerPriceCalculatorTests: XCTestCase {
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: LinerBrand.undefined)
         
-        let linerOptionSet: LinerOptionSet = calculator.getTotalForOptionsList(selectedOptions: options)
+        let linerOptionSet: LinerOptionsTotalPriceSet = calculator.getTotalForOptionsList(selectedOptions: options)
         return linerOptionSet
     }
 
-    // PRICE CHECKS
+    // LINER BASE-PRICE CHECKS
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool_Latham_1() throws {
@@ -241,18 +241,14 @@ class LinerPriceCalculatorTests: XCTestCase {
         let l: Double = 1
         let w: Double = 1
         let brand = LinerBrand.Latham
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
 
-        XCTAssertEqual(1, pool.areaPool)
-
-        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
-        let areaExpected: Double = 9
-        XCTAssertEqual(areaExpected, pool.areaCover)
+        XCTAssertEqual(areaExpected, pool.areaPool)
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
@@ -268,27 +264,21 @@ class LinerPriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     func testPriceForRectangularPool_Latham_100() throws {
         // Set the dimensions
-        // 1x1 pool
         let l: Double = 1
         let w: Double = 100
         let brand = LinerBrand.Latham
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
-
-        XCTAssertEqual(100, pool.areaPool)
-
-        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (100 + 2) == 306
-        let areaExpected: Double = 306
-        XCTAssertEqual(areaExpected, pool.areaCover)
+        XCTAssertEqual(areaExpected, pool.areaPool)
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        let expectedPrice: Double = (3.45 * areaExpected) //1055.70
+        let expectedPrice: Double = (3.45 * areaExpected) //345.00
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
         let dict: [String: Double] = ["A": l, "B": w]
@@ -297,28 +287,24 @@ class LinerPriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testPriceForRectangularPool_Latham_1249() throws {
+    func testPriceForRectangularPool_Latham_1248() throws {
         // Set the dimensions
         // 1x1 pool
         let l: Double = 1
-        let w: Double = 1249
+        let w: Double = 1248
         let brand = LinerBrand.Latham
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
-
         XCTAssertEqual(w, pool.areaPool)
 
-        let areaExpected: Double = ((1+2) * (w+2))
-        XCTAssertEqual(areaExpected, pool.areaCover)
-
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        let expectedPrice: Double = (2.82 * areaExpected) //1055.70
+        let expectedPrice: Double = (2.82 * areaExpected) //3519.36
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
         let dict: [String: Double] = ["A": l, "B": w]
@@ -333,18 +319,13 @@ class LinerPriceCalculatorTests: XCTestCase {
         let l: Double = 1
         let w: Double = 1
         let brand = LinerBrand.Premier
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
-
-        XCTAssertEqual(1, pool.areaPool)
-
-        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
-        let areaExpected: Double = 9
-        XCTAssertEqual(areaExpected, pool.areaCover)
+        XCTAssertEqual(areaExpected, pool.areaPool)
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
@@ -364,18 +345,13 @@ class LinerPriceCalculatorTests: XCTestCase {
         let l: Double = 1
         let w: Double = 100
         let brand = LinerBrand.Premier
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
-
-        XCTAssertEqual(100, pool.areaPool)
-
-        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (100 + 2) == 306
-        let areaExpected: Double = 306
-        XCTAssertEqual(areaExpected, pool.areaCover)
+        XCTAssertEqual(areaExpected, pool.areaPool)
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
@@ -389,33 +365,82 @@ class LinerPriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func testPriceForRectangularPool_Premier_1249() throws {
+    func testPriceForRectangularPool_Premier_1248() throws {
         // Set the dimensions
         // 1x1 pool
         let l: Double = 1
-        let w: Double = 1249
+        let w: Double = 1248
         let brand = LinerBrand.Premier
+        let areaExpected: Double = (l * w)
 
         let pool = Rectangle(length: l, width: w)
-
         XCTAssertEqual(w, pool.areaPool)
 
-        let areaExpected: Double = ((1+2) * (w+2))
-        XCTAssertEqual(areaExpected, pool.areaCover)
-
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
-        calculator.setArea(area: pool.areaCover)
-        //calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        calculator.setArea(area: pool.areaPool)
 
         // Calculate the price
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        let expectedPrice: Double = (2.82 * areaExpected) //1055.70
+        let expectedPrice: Double = (2.82 * areaExpected) //$3,519.36
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
         let dict: [String: Double] = ["A": l, "B": w]
         printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, linerBrand: brand, optionList: nil, price: calculator.priceResult.calculatedPrice)
     }
+
+    // FUNCTIONAL TESTS
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testPriceForRectangularPool_WithAdders_Latham_100() throws {
+        // Set the dimensions
+        // 1x1 pool
+        let l: Double = 10.25
+        let w: Double = 20.5
+        let brand = LinerBrand.Latham
+        let areaExpected: Double = (l * w)
+
+        let pool = Rectangle(length: l, width: w)
+        XCTAssertEqual(areaExpected, pool.areaPool)
+
+        let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand)
+        calculator.setArea(area: pool.areaPool)
+
+        // Define the options
+        var optionItem_VinylOverStair = LinerOptionItem()
+        optionItem_VinylOverStair.name = "<12' (Rod Pockets, Hook/Loop or Beaded)"
+        optionItem_VinylOverStair.stairSwimoutOption = StairAndSwimoutOption.StraightOrRomanStep
+        var selectedOption_VinylOverStair: LinerOptionSelection = LinerOptionSelection(optionItem: optionItem_VinylOverStair)
+        selectedOption_VinylOverStair.quantity = 1
+
+        var optionItem_AddOnStripe = LinerOptionItem()
+        optionItem_AddOnStripe.name = "Solid Color Break Stripe at Shallow End Break-Off"
+        optionItem_VinylOverStair.stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
+        var selectedOption_AddOnStripe: LinerOptionSelection = LinerOptionSelection(optionItem: optionItem_AddOnStripe)
+        selectedOption_AddOnStripe.quantity = 1
+
+        var options = [LinerOptionSelection]()
+        options.append(selectedOption_VinylOverStair)
+        options.append(selectedOption_AddOnStripe)
+
+        calculator.setSelectedOptions(selectedOptions: options)
+
+        // Calculate the price
+        calculator.calculatePrice()
+        XCTAssertTrue(calculator.priceResult.wasSuccessful)
+        
+        //let expectedPrice: Double = (3.45 * areaExpected) //724.9313
+        // This is diff from immediately above due to the weird rounding Latham
+        // does in the Excel calculator (they round the (l*w) product)
+        //let expectedPrice: Double = 724.95    // without options
+        let expectedPrice: Double = 1233.95     // with options
+
+        XCTAssertEqual(expectedPrice, DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
+
+        let dict: [String: Double] = ["A": l, "B": w]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, linerBrand: brand, optionList: nil, price: calculator.priceResult.calculatedPrice)
+    }
+
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        self.measure {
