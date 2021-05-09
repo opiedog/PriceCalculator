@@ -26,3 +26,19 @@ func getArea_geometric(aFeet: Double, aInches: Double, bFeet: Double, bInches: D
     
     return area
 }
+
+class DoubleHelper {
+    //----------------------------------------------------
+    //----------------------------------------------------
+    static func roundToHundredth(value: Double) -> Double {
+        let rounded: Double = round(value * 100) / 100.0
+        return rounded
+    }
+
+    //----------------------------------------------------
+    //----------------------------------------------------
+    static func roundToTenThousandth(value: Double) -> Double {
+        let rounded: Double = round(value * 10000) / 10000.0
+        return rounded
+    }
+}

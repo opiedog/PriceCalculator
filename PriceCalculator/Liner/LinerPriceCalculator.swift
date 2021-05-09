@@ -13,11 +13,26 @@ enum LinerBrand {
     case LathamModel3
     case Premier
     case Signature
+    case undefined
+}
+
+enum StairAndSwimoutOption {
+    case SingleTreadOrBench
+    case StraightOrRomanStep
+    case FreeformOrWeddingCake
+    case SingleTreadOrBenchEx
+    case StraightOrRomanStepEx
+    case FreeformOrWeddingCakeEx
+    case undefined
 }
 
 struct LinerOptionSelection {
     var optionItem: LinerOptionItem
     var quantity: Int = 0
+}
+
+struct LinerOptionSet {
+    
 }
 
 //====================================
@@ -27,7 +42,7 @@ class LinerPriceCalculator {
     private var _area: Double
     //private var _shapeDescription: ShapeDescription?
     private var _linerBrand: LinerBrand
-    //private var _selectedOptions: [LinerOptionSelection]?
+    private var _selectedOptions: [LinerOptionSelection]?
 
     var priceResult: PriceResult = PriceResult()
 
@@ -35,7 +50,7 @@ class LinerPriceCalculator {
         _area = 0
         //_shapeDescription = ShapeDescription.undefined
         _linerBrand = linerBrand
-        //_selectedOptions = nil
+        _selectedOptions = nil
     }
 
     func setArea(area: Double) {
@@ -74,4 +89,45 @@ class LinerPriceCalculator {
             priceResult.wasSuccessful = false
         }
     }
- }
+
+    //--------------------------------
+    func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> Double {
+        var optionsTotal: Double = 0.0
+        
+        if(selectedOptions != nil) {
+            for selectedOption in selectedOptions! {
+                // Get the item from the data layer
+                let rawItem: LinerOptionItem = _dataLayer.getLinerOptionItem(name: selectedOption.optionItem.name, stairSwimoutOption: selectedOption.optionItem.stairSwimoutOption)
+                
+                // Multiple its unit price times the quantity and add it to the total
+                let unitPrice = rawItem.unitPrice
+                if(rawItem.priceUnit == PriceUnit.percentage) {
+                    // TODO
+                    // Not sure how to deal with this
+                }
+                
+                switch(rawItem.uom) {
+                    case .each:
+                        optionsTotal += (unitPrice * (Double(selectedOption.quantity)))
+                    case .linearfoot:
+                        optionsTotal += (unitPrice * (Double(selectedOption.quantity)))
+                    case .poolarea:
+//                        optionsTotal += (unitPrice * self._area!)
+                        optionsTotal += 0
+                    case .coverarea:
+//                        optionsTotal += (unitPrice * self._area!)
+                        optionsTotal += 0
+
+                    case .perimeter:
+                        // TODO
+                        optionsTotal += 0
+                    case .undefined:
+                        // TODO
+                        optionsTotal += 0
+                }
+            }
+        }
+        
+        return optionsTotal
+    }
+}

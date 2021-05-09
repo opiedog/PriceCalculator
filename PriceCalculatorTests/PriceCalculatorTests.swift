@@ -14,6 +14,7 @@ class PriceCalculatorTests: XCTestCase {
         case per_unit_area
         case per_pool_size
     }
+    
     //----------------------------------------------------
     //----------------------------------------------------
     override func setUpWithError() throws {
@@ -75,15 +76,15 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(38.25, B)
 
         let A: Double = helper.feetAndInchesToFeet(footVal: 14, inchVal: 7)
-        XCTAssertEqual(14.5833, roundToTenThousandth(value: A))
+        XCTAssertEqual(14.5833, DoubleHelper.roundToTenThousandth(value: A))
         
         let rect = Rectangle(length: B, width: A)
         
         let areaPool: Double = rect.areaPool
-        XCTAssertEqual(557.8125, roundToTenThousandth(value: areaPool))
+        XCTAssertEqual(557.8125, DoubleHelper.roundToTenThousandth(value: areaPool))
         
         let areaCover: Double = rect.areaCover
-        XCTAssertEqual(667.4792, roundToTenThousandth(value: areaCover))
+        XCTAssertEqual(667.4792, DoubleHelper.roundToTenThousandth(value: areaCover))
 
         let pActual: Double = rect.perimeterPool
         let pExpected: Double = (B * 2) + (A * 2)
@@ -99,10 +100,10 @@ class PriceCalculatorTests: XCTestCase {
         let rect = Rectangle(length: B, width: A)
         
         let areaPool: Double = rect.areaPool
-        XCTAssertEqual(544, roundToTenThousandth(value: areaPool))
+        XCTAssertEqual(544, DoubleHelper.roundToTenThousandth(value: areaPool))
         
         let areaCover: Double = rect.areaCover
-        XCTAssertEqual(648, roundToTenThousandth(value: areaCover))
+        XCTAssertEqual(648, DoubleHelper.roundToTenThousandth(value: areaCover))
 
         let pActual: Double = rect.perimeterPool
         let pExpected: Double = 100
@@ -118,10 +119,10 @@ class PriceCalculatorTests: XCTestCase {
         let rect = Oval(length: B, width: A)
         
         let areaPool: Double = rect.areaPool
-        XCTAssertEqual(684, roundToTenThousandth(value: areaPool))
+        XCTAssertEqual(684, DoubleHelper.roundToTenThousandth(value: areaPool))
         
         let areaCover: Double = rect.areaCover
-        XCTAssertEqual(800, roundToTenThousandth(value: areaCover))
+        XCTAssertEqual(800, DoubleHelper.roundToTenThousandth(value: areaCover))
 
 //        let pActual: Double = rect.perimeterPool
 //        let pExpected: Double = 100
@@ -137,10 +138,10 @@ class PriceCalculatorTests: XCTestCase {
         let rect = Grecian(length: B, width: A)
         
         let areaPool: Double = rect.areaPool
-        XCTAssertEqual(527, roundToTenThousandth(value: areaPool))
+        XCTAssertEqual(527, DoubleHelper.roundToTenThousandth(value: areaPool))
         
         let areaCover: Double = rect.areaCover
-        XCTAssertEqual(627, roundToTenThousandth(value: areaCover))
+        XCTAssertEqual(627, DoubleHelper.roundToTenThousandth(value: areaCover))
 
         //        let pActual: Double = rect.perimeterPool
         //        let pExpected: Double = 100
@@ -156,10 +157,10 @@ class PriceCalculatorTests: XCTestCase {
         let rect = Grecian(length: B, width: A)
         
         let areaPool: Double = rect.areaPool
-        XCTAssertEqual(576, roundToTenThousandth(value: areaPool))
+        XCTAssertEqual(576, DoubleHelper.roundToTenThousandth(value: areaPool))
         
         let areaCover: Double = rect.areaCover
-        XCTAssertEqual(684, roundToTenThousandth(value: areaCover))
+        XCTAssertEqual(684, DoubleHelper.roundToTenThousandth(value: areaCover))
 
         // let perimeter: Double = areaDims.perimeter
         // XCTAssertEqual(100, perimeter)
@@ -177,14 +178,14 @@ class PriceCalculatorTests: XCTestCase {
         let trueL = TrueL(longLength: B, longWidth: A1, shortLength: B7, shortWidth: A)
 
         let areaCoverActual: Double = trueL.areaCover
-        XCTAssertEqual(49, roundToTenThousandth(value: areaCoverActual))
+        XCTAssertEqual(49, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         
         //let areaPoolExpected: Double = roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
         let areaPoolExpected: Double = 25
-        XCTAssertEqual(areaPoolExpected, roundToTenThousandth(value: trueL.areaPool))
+        XCTAssertEqual(areaPoolExpected, DoubleHelper.roundToTenThousandth(value: trueL.areaPool))
         
-        let perimeterExpected: Double = roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
-        let perimeterActual: Double = roundToHundredth(value: trueL.perimeterPool)
+        let perimeterExpected: Double = DoubleHelper.roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: trueL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.truel, trueL.poolShape)
@@ -202,13 +203,13 @@ class PriceCalculatorTests: XCTestCase {
         let trueL = TrueL(longLength: B, longWidth: A1, shortLength: B7, shortWidth: A)
 
         let areaCoverActual: Double = trueL.areaCover
-        XCTAssertEqual(72, roundToTenThousandth(value: areaCoverActual))
+        XCTAssertEqual(72, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         
-        let areaPoolExpected: Double = roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
-        XCTAssertEqual(areaPoolExpected, roundToTenThousandth(value: trueL.areaPool))
+        let areaPoolExpected: Double = DoubleHelper.roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
+        XCTAssertEqual(areaPoolExpected, DoubleHelper.roundToTenThousandth(value: trueL.areaPool))
         
-        let perimeterExpected: Double = roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
-        let perimeterActual: Double = roundToHundredth(value: trueL.perimeterPool)
+        let perimeterExpected: Double = DoubleHelper.roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: trueL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.truel, trueL.poolShape)
@@ -226,13 +227,13 @@ class PriceCalculatorTests: XCTestCase {
         let trueL = TrueL(longLength: B, longWidth: A1, shortLength: B7, shortWidth: A)
 
         let areaCoverActual: Double = trueL.areaCover
-        XCTAssertEqual(763.4861, roundToTenThousandth(value: areaCoverActual))
+        XCTAssertEqual(763.4861, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         
-        let areaPoolExpected: Double = roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
-        XCTAssertEqual(areaPoolExpected, roundToTenThousandth(value: trueL.areaPool))
+        let areaPoolExpected: Double = DoubleHelper.roundToTenThousandth(value: (((B - B7) * A) + (A1 * B7)))
+        XCTAssertEqual(areaPoolExpected, DoubleHelper.roundToTenThousandth(value: trueL.areaPool))
         
-        let perimeterExpected: Double = roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
-        let perimeterActual: Double = roundToHundredth(value: trueL.perimeterPool)
+        let perimeterExpected: Double = DoubleHelper.roundToHundredth(value: (B + A1 + B7 + (A1 - A) + (B - B7) + A))
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: trueL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.truel, trueL.poolShape)
@@ -253,17 +254,17 @@ class PriceCalculatorTests: XCTestCase {
 
         let areaCoverActual: Double = lazyL.areaCover
         if(lazyL.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(12, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(12, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
         else {
-            XCTAssertEqual(18, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(18, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
 
         let areaPoolExpected: Double = 2
-        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
+        XCTAssertEqual(DoubleHelper.roundToTenThousandth(value: areaPoolExpected), DoubleHelper.roundToTenThousandth(value: lazyL.areaPool))
 
         let perimeterExpected: Double = 6
-        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -284,17 +285,17 @@ class PriceCalculatorTests: XCTestCase {
 
         let areaCoverActual: Double = lazyL.areaCover
         if(lazyL.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(31.2132, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(31.2132, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
         else {
-            XCTAssertEqual(41.2132, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(41.2132, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
 
         let areaPoolExpected: Double = 12.727926
-        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
+        XCTAssertEqual(DoubleHelper.roundToTenThousandth(value: areaPoolExpected), DoubleHelper.roundToTenThousandth(value: lazyL.areaPool))
 
-        let perimeterExpected: Double = roundToHundredth(value: (A + X1 + W1 + A1 + V3 + T))
-        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
+        let perimeterExpected: Double = DoubleHelper.roundToHundredth(value: (A + X1 + W1 + A1 + V3 + T))
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -315,17 +316,17 @@ class PriceCalculatorTests: XCTestCase {
 
         let areaCoverActual: Double = lazyL.areaCover
         if(lazyL.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(489.3507, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(489.3507, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
         else {
-            XCTAssertEqual(523.1806, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(523.1806, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
 
 //        let areaPoolExpected: Double = 1
 //        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
 //
 //        let perimeterExpected: Double = 1
-//        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
+//        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
 //        XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -345,18 +346,18 @@ class PriceCalculatorTests: XCTestCase {
         let lazyL = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let areaPoolExpected: Double = ((A * T) + (W1 * A1))
-        XCTAssertEqual(roundToTenThousandth(value: areaPoolExpected), roundToTenThousandth(value: lazyL.areaPool))
+        XCTAssertEqual(DoubleHelper.roundToTenThousandth(value: areaPoolExpected), DoubleHelper.roundToTenThousandth(value: lazyL.areaPool))
 
         let areaCoverActual: Double = lazyL.areaCover
         if(lazyL.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(576, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(576, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
         else {
-            XCTAssertEqual(612, roundToTenThousandth(value: areaCoverActual))
+            XCTAssertEqual(612, DoubleHelper.roundToTenThousandth(value: areaCoverActual))
         }
         
         let perimeterExpected: Double = (A + T + V3 + A1 + W1 + X1)
-        let perimeterActual: Double = roundToHundredth(value: lazyL.perimeter)
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -371,7 +372,7 @@ class PriceCalculatorTests: XCTestCase {
         let oasis = Oasis(length: B, width: A)
 
         let area: Double = oasis.areaCover
-        XCTAssertEqual(703, roundToTenThousandth(value: area))
+        XCTAssertEqual(703, DoubleHelper.roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
         //XCTAssertEqual(544, roundToTenThousandth(value: area))
@@ -391,7 +392,7 @@ class PriceCalculatorTests: XCTestCase {
         let tahiti = Tahiti(length: B, width: A)
 
         let area: Double = tahiti.areaCover
-        XCTAssertEqual(735, roundToTenThousandth(value: area))
+        XCTAssertEqual(735, DoubleHelper.roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
         //XCTAssertEqual(576, roundToTenThousandth(value: area))
@@ -413,7 +414,7 @@ class PriceCalculatorTests: XCTestCase {
         let lagoon = Lagoon(longLength: BL, longWidth: AL, shortLength: BS, shortWidth: AS)
 
         let area: Double = lagoon.areaCover
-        XCTAssertEqual(950, roundToTenThousandth(value: area))
+        XCTAssertEqual(950, DoubleHelper.roundToTenThousandth(value: area))
 
         //area = areaDims.areaPool
         //XCTAssertEqual(704, roundToTenThousandth(value: area))
@@ -554,7 +555,7 @@ class PriceCalculatorTests: XCTestCase {
         let pool = Rectangle(length: B, width: A)
 
         let area: Double = pool.areaCover
-        XCTAssertEqual(916.8472, roundToTenThousandth(value: area))
+        XCTAssertEqual(916.8472, DoubleHelper.roundToTenThousandth(value: area))
 
         // Calculate the price
         let scModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
@@ -565,10 +566,10 @@ class PriceCalculatorTests: XCTestCase {
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        XCTAssertEqual(2099.5801, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        XCTAssertEqual(2099.5801, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
-        let dict: [String: Double] = ["A": roundToHundredth(value: A), "B": roundToHundredth(value: B)]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "B": DoubleHelper.roundToHundredth(value: B)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     //----------------------------------------------------
@@ -584,7 +585,7 @@ class PriceCalculatorTests: XCTestCase {
         let pool = TrueL(longLength: B, longWidth: A1, shortLength: B7, shortWidth: A)
 
         let area: Double = pool.areaCover
-        XCTAssertEqual(763.4861, roundToTenThousandth(value: area))
+        XCTAssertEqual(763.4861, DoubleHelper.roundToTenThousandth(value: area))
 
         // Calculate the price
         let scModel: SafetyCoverModel = SafetyCoverModel.HighShadeMesh7000MS
@@ -595,10 +596,10 @@ class PriceCalculatorTests: XCTestCase {
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        XCTAssertEqual(2962.3261, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        XCTAssertEqual(2962.3261, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
-        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "B": roundToHundredth(value: B), "B7": roundToHundredth(value: B7)]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "A1": DoubleHelper.roundToHundredth(value: A1), "B": DoubleHelper.roundToHundredth(value: B), "B7": DoubleHelper.roundToHundredth(value: B7)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     //----------------------------------------------------
@@ -616,10 +617,10 @@ class PriceCalculatorTests: XCTestCase {
 
         let area: Double = pool.areaCover
         if(pool.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(489.3507, roundToTenThousandth(value: area))
+            XCTAssertEqual(489.3507, DoubleHelper.roundToTenThousandth(value: area))
         }
         else {
-            XCTAssertEqual(523.1806, roundToTenThousandth(value: area))
+            XCTAssertEqual(523.1806, DoubleHelper.roundToTenThousandth(value: area))
         }
 
         // Calculate the price
@@ -632,14 +633,14 @@ class PriceCalculatorTests: XCTestCase {
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
         if(pool.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(2618.0262, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual(2618.0262, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
         else {
-            XCTAssertEqual(2563.5847, roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual(2563.5847, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
 
-        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "A1": DoubleHelper.roundToHundredth(value: A1), "T": DoubleHelper.roundToHundredth(value: T), "V3": DoubleHelper.roundToHundredth(value: V3), "W1": DoubleHelper.roundToHundredth(value: W1), "X1": DoubleHelper.roundToHundredth(value: X1)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     //----------------------------------------------------
@@ -656,10 +657,10 @@ class PriceCalculatorTests: XCTestCase {
 
         let area: Double = pool.areaCover
         if(pool.useDiffSideAvgerageMethod) {
-            XCTAssertEqual(576, roundToTenThousandth(value: area))
+            XCTAssertEqual(576, DoubleHelper.roundToTenThousandth(value: area))
         }
         else {
-            XCTAssertEqual(612, roundToTenThousandth(value: area))
+            XCTAssertEqual(612, DoubleHelper.roundToTenThousandth(value: area))
         }
 
         // Calculate the price
@@ -684,14 +685,14 @@ class PriceCalculatorTests: XCTestCase {
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
         if(pool.useDiffSideAvgerageMethod) {
-            XCTAssertEqual((1612.80 + selectedOptionCostExpected), roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual((1612.80 + selectedOptionCostExpected), DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
         else {
-            XCTAssertEqual((1646.28 + selectedOptionCostExpected), roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+            XCTAssertEqual((1646.28 + selectedOptionCostExpected), DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
 
-        let dict: [String: Double] = ["A": roundToHundredth(value: A), "A1": roundToHundredth(value: A1), "T": roundToHundredth(value: T), "V3": roundToHundredth(value: V3), "W1": roundToHundredth(value: W1), "X1": roundToHundredth(value: X1)]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundToHundredth(value: calculator.priceResult.calculatedPrice))
+        let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "A1": DoubleHelper.roundToHundredth(value: A1), "T": DoubleHelper.roundToHundredth(value: T), "V3": DoubleHelper.roundToHundredth(value: V3), "W1": DoubleHelper.roundToHundredth(value: W1), "X1": DoubleHelper.roundToHundredth(value: X1)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
     }
 
     // SINGLE ITEM ADDERS
@@ -727,7 +728,7 @@ class PriceCalculatorTests: XCTestCase {
         let qty = 1
         
         let amount = singleItemPrice_rect_area_core(lengthFractionalFoot: l, widthFractionalFoot: w, safetyCoverModel: scModel, safetyCoverPanelSize: scSize, optionName: optionName, quantity: qty)
-        let roundedAmount: Double = roundToHundredth(value: amount)
+        let roundedAmount: Double = DoubleHelper.roundToHundredth(value: amount)
         
         XCTAssertEqual(116.98, roundedAmount)
     }
@@ -754,8 +755,8 @@ class PriceCalculatorTests: XCTestCase {
                 
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
         
-        let dict: [String: Double] = ["A": roundToHundredth(value: lengthFractionalFoot), "B": roundToHundredth(value: widthFractionalFoot)]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: roundToHundredth(value: pool.areaCover), dimensionDict: dict, safetyCoverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, optionList: options, price: amount)
+        let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: lengthFractionalFoot), "B": DoubleHelper.roundToHundredth(value: widthFractionalFoot)]
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: pool.areaCover), dimensionDict: dict, safetyCoverModel: safetyCoverModel, panelSize: safetyCoverPanelSize, optionList: options, price: amount)
         
         return amount
     }
@@ -845,7 +846,7 @@ class PriceCalculatorTests: XCTestCase {
         calculator.setArea(area: pool.areaCover)
 
         let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
-        let roundedAmount: Double = roundToHundredth(value: amount)
+        let roundedAmount: Double = DoubleHelper.roundToHundredth(value: amount)
         
         let dict: [String: Double] = ["A": a, "B": b]
         printTestResultForLathamValidation(priceType: PriceType.adder_only, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: 1, dimensionDict: dict, safetyCoverModel: scModel, panelSize: safetyCoverPanelSize, optionList: options, price: roundedAmount)
@@ -1149,7 +1150,7 @@ class PriceCalculatorTests: XCTestCase {
         // Get the price
         let actualPrice: Double = calculator.getUnitPriceForArea()
 
-        let roundedAmount: Double = roundToHundredth(value: actualPrice)
+        let roundedAmount: Double = DoubleHelper.roundToHundredth(value: actualPrice)
         
         let dict: [String: Double] = ["A": l, "B": sqFeet]
         printTestResultForLathamValidation(priceType: PriceType.per_unit_area, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: sqFeet, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: roundedAmount)
@@ -1159,7 +1160,7 @@ class PriceCalculatorTests: XCTestCase {
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double],safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double], safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
         var optionMsg = ""
         if optionList != nil {
             optionMsg = "Selected Option(s): "
@@ -1168,7 +1169,7 @@ class PriceCalculatorTests: XCTestCase {
             }
         }
         
-        var prefix: String = ">>> Test Passed: "
+        var prefix: String = ">>> Test Passed (Cover): "
         
         switch priceType {
             case .adder_only:
@@ -1215,19 +1216,26 @@ class PriceCalculatorTests: XCTestCase {
 //    }
 
     
-    //----------------------------------------------------
-    //----------------------------------------------------
-    func roundToHundredth(value: Double) -> Double {
-        let rounded: Double = round(value * 100) / 100.0
-        return rounded
-    }
-
-    //----------------------------------------------------
-    //----------------------------------------------------
-    func roundToTenThousandth(value: Double) -> Double {
-        let rounded: Double = round(value * 10000) / 10000.0
-        return rounded
-    }
+//    //----------------------------------------------------
+//    //----------------------------------------------------
+//    func roundToHundredth(value: Double) -> Double {
+//        let rounded: Double = round(value * 100) / 100.0
+//        return rounded
+//    }
+//
+//    func roundToHundredth(value: Double) -> Double {
+//        return DoubleHelper.roundToHundredth(value: value)
+//    }
+//
+//    //----------------------------------------------------
+//    //----------------------------------------------------
+//    func roundToTenThousandth(value: Double) -> Double {
+//        let rounded: Double = round(value * 10000) / 10000.0
+//        return rounded
+//    }
+//    func roundToTenThousandth(value: Double) -> Double {
+//        return DoubleHelper.roundToTenThousandth(value: value)
+//    }
 
     //----------------------------------------------------
     //----------------------------------------------------
