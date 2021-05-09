@@ -32,7 +32,8 @@ struct LinerOptionSelection {
 }
 
 struct LinerOptionSet {
-    
+    var optionsTotalPrice: Double = 0
+    var linerDeductionPercentage: Double = 0
 }
 
 //====================================
@@ -91,8 +92,10 @@ class LinerPriceCalculator {
     }
 
     //--------------------------------
-    func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> Double {
-        var optionsTotal: Double = 0.0
+    func getTotalForOptionsList(selectedOptions: [LinerOptionSelection]?) -> LinerOptionSet {
+        var linerOptionSet = LinerOptionSet()
+        linerOptionSet.optionsTotalPrice = 0.0
+        //var optionsTotal: Double = 0.0
         
         if(selectedOptions != nil) {
             for selectedOption in selectedOptions! {
@@ -104,30 +107,33 @@ class LinerPriceCalculator {
                 if(rawItem.priceUnit == PriceUnit.percentage) {
                     // TODO
                     // Not sure how to deal with this
+                    linerOptionSet.linerDeductionPercentage += unitPrice
+                    linerOptionSet.optionsTotalPrice += unitPrice
+                    continue
                 }
                 
                 switch(rawItem.uom) {
                     case .each:
-                        optionsTotal += (unitPrice * (Double(selectedOption.quantity)))
+                        linerOptionSet.optionsTotalPrice += (unitPrice * (Double(selectedOption.quantity)))
                     case .linearfoot:
-                        optionsTotal += (unitPrice * (Double(selectedOption.quantity)))
+                        linerOptionSet.optionsTotalPrice += (unitPrice * (Double(selectedOption.quantity)))
                     case .poolarea:
 //                        optionsTotal += (unitPrice * self._area!)
-                        optionsTotal += 0
+                        linerOptionSet.optionsTotalPrice += 0
                     case .coverarea:
 //                        optionsTotal += (unitPrice * self._area!)
-                        optionsTotal += 0
+                        linerOptionSet.optionsTotalPrice += 0
 
                     case .perimeter:
                         // TODO
-                        optionsTotal += 0
+                        linerOptionSet.optionsTotalPrice += 0
                     case .undefined:
                         // TODO
-                        optionsTotal += 0
+                        linerOptionSet.optionsTotalPrice += 0
                 }
             }
         }
         
-        return optionsTotal
+        return linerOptionSet
     }
 }

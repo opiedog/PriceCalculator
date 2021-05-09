@@ -143,6 +143,19 @@ class LinerPriceCalculatorTests: XCTestCase {
         XCTAssertEqual(167, amount)
     }
 
+    // Special Options
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSingleItemPrice_SpecialOptions_FlatBottomDeduction_1() throws {
+        // Set the options
+        let optionName: String = "Flat Bottom (Depth=wall height up to 60\") (Deduction)"
+        let quantity: Int = 1
+        let uom = UnitOfMeasure.each
+        let stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
+
+        let amount: Double = getAmountSingleItemPrice_base(optionName: optionName, stairSwimoutOption: stairSwimoutOption, uom: uom, quantity: quantity)
+        XCTAssertEqual(-0.1, amount)
+    }
 
     //----------------------------------------------------
     //----------------------------------------------------
@@ -157,7 +170,10 @@ class LinerPriceCalculatorTests: XCTestCase {
         let options: [LinerOptionSelection] = [optionSel]
 
         let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: LinerBrand.undefined)
-        let amount: Double = calculator.getTotalForOptionsList(selectedOptions: options)
+        
+        var linerOptionSet: LinerOptionSet = calculator.getTotalForOptionsList(selectedOptions: options)
+        let amount: Double = linerOptionSet.optionsTotalPrice
+        
         return amount
     }
 
