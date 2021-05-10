@@ -431,62 +431,74 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool1() throws {
-        // Set the dimensions
+        // INPUTS
         // 1x1 pool
         let l: Double = 1
         let w: Double = 1
-
         let pool = Rectangle(length: l, width: w)
-        
-        let area: Double = pool.areaCover
-        
-        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
-        let areaExpected: Double = 9
-        XCTAssertEqual(areaExpected, area)
-
         let scModel = SafetyCoverModel.StandardMesh5000M
         let scSize = SafetyCoverPanelSize.fivebyfive
+
+        // Area is the actual size val plus a constant border amount (e.g. 2) - so (1 + 2) x (1 + 2) == 9
+        let areaExpected: Double = 9
         let dealerDiscountRate: Double = 0.06
-        let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize, dealerDiscountPercentage: dealerDiscountRate)
-        calculator.setArea(area: pool.areaCover)
-        calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        let expectedPriceNoDiscount = 37.26         // Without discount
+        let expectedPriceWithDiscount = 35.0244     // With 6% discount
+        // END INPUTS
+                
+        let area: Double = pool.areaCover
+        XCTAssertEqual(areaExpected, area)
         
-        // Calculate the price
-        calculator.calculatePrice()
-        XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        //let expectedPrice = 37.26   // Without discount
-        let expectedPrice = 35.0244   // With 6% discount
-        XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
+        // Test w/o discount
+        let calculatorNoDiscount: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize, dealerDiscountPercentage: 0)
+        calculatorNoDiscount.setArea(area: pool.areaCover)
+        calculatorNoDiscount.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        
+        calculatorNoDiscount.calculatePrice()
+        XCTAssertTrue(calculatorNoDiscount.priceResult.wasSuccessful)
+        XCTAssertEqual(expectedPriceNoDiscount, calculatorNoDiscount.priceResult.calculatedPrice)
+
+        // Test with discount
+        let calculatorWithDiscount: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize, dealerDiscountPercentage: dealerDiscountRate)
+        calculatorWithDiscount.setArea(area: pool.areaCover)
+        calculatorWithDiscount.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
+        
+        calculatorWithDiscount.calculatePrice()
+        XCTAssertTrue(calculatorWithDiscount.priceResult.wasSuccessful)
+        XCTAssertEqual(expectedPriceWithDiscount, calculatorWithDiscount.priceResult.calculatedPrice)
         
         let dict: [String: Double] = ["A": l, "B": w]
 
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculator.priceResult.calculatedPrice)
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: calculatorWithDiscount.priceResult.calculatedPrice, discount: dealerDiscountRate)
     }
 
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool2() throws {
-        // Set the dimensions of the pool and the pool type
+        // INPUTS
         let l: Double = 10
         let helper = MeasurementHelper()
         let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
         
         let pool = Rectangle(length: l, width: w)
+        let scModel = SafetyCoverModel.StandardMesh5000M
+        let scSize = SafetyCoverPanelSize.fivebyfive
 
         let area: Double = pool.areaCover
         let areaExpected: Double = 270
+
+        let expectedPrice = 1117.8
+        // END INPUTS
+
         XCTAssertEqual(areaExpected, area)
 
         // Calculate the price
-        let scModel = SafetyCoverModel.StandardMesh5000M
-        let scSize = SafetyCoverPanelSize.fivebyfive
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setArea(area: pool.areaCover)
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        let expectedPrice = 1117.8
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
         let dict: [String: Double] = ["A": l, "B": w]
@@ -496,15 +508,20 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool3() throws {
-        // Set the dimensions of the pool and the pool type
-        let l: Double = 10
         let helper = MeasurementHelper()
+
+        // INPUTS
+        let l: Double = 10
         let w = helper.feetAndInchesToFeet(footVal: 20, inchVal: 6)
-        
         let pool = Rectangle(length: l, width: w)
+        let areaExpected: Double = 270
+        let option_name_qty_Inputs = [(name: "Step w/pads <= 8'", qty: 1),
+                                      (name: "Lawn Tubes: (18\" aluminum for non secure/no sub-deck)", qty: 1),
+                                      (name: "Partial Perimeter Anchor - Lawn Tubes", qty: 15)]
+        let expectedPrice = 1432.83
+        // END INPUTS
 
         let area: Double = pool.areaCover
-        let areaExpected: Double = 270
         XCTAssertEqual(areaExpected, area)
 
         let scModel = SafetyCoverModel.StandardMesh5000M
@@ -514,26 +531,15 @@ class PriceCalculatorTests: XCTestCase {
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
 
         // Set the options
-        var optionItem_step = SafetyCoverOptionItem()
-        optionItem_step.name = "Step w/pads <= 8'"
-        var selectedOption_step: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_step)
-        selectedOption_step.quantity = 1
-
-        var optionItem_fullPerimLawnTube = SafetyCoverOptionItem()
-        optionItem_fullPerimLawnTube.name = "Lawn Tubes: (18\" aluminum for non secure/no sub-deck)"
-        var selectedOption_fullPerimLawnTube: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_fullPerimLawnTube)
-        selectedOption_fullPerimLawnTube.quantity = 1
-
-        var optionItem_partialPerimLawnTube = SafetyCoverOptionItem()
-        optionItem_partialPerimLawnTube.name = "Partial Perimeter Anchor - Lawn Tubes"
-        var selectedOption_partialPerimLawnTube: SafetyCoverOptionSelection = SafetyCoverOptionSelection(optionItem: optionItem_partialPerimLawnTube)
-        selectedOption_partialPerimLawnTube.quantity = 15
-
         var options = [SafetyCoverOptionSelection]()
-        options.append(selectedOption_step)
-        options.append(selectedOption_fullPerimLawnTube)
-        options.append(selectedOption_partialPerimLawnTube)
-        
+        for optInput in option_name_qty_Inputs {
+            var optionItem = SafetyCoverOptionItem()
+            optionItem.name = optInput.name
+            var selectedOption = SafetyCoverOptionSelection(optionItem: optionItem)
+            selectedOption.quantity = optInput.qty
+            options.append(selectedOption)
+        }
+
         calculator.setSelectedOptions(selectedOptions: options)
 
         // Calculate the price
@@ -541,7 +547,6 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
 
-        let expectedPrice = 1432.83
         XCTAssertEqual(expectedPrice, calculator.priceResult.calculatedPrice)
 
         let dict: [String: Double] = ["A": l, "B": w]
@@ -551,26 +556,30 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool4() throws {
-        // Set the dimensions of the pool and the pool type
+        // INPUTS
         let helper = MeasurementHelper()
         let A = helper.feetAndInchesToFeet(footVal: 19, inchVal: 11)
         let B = helper.feetAndInchesToFeet(footVal: 39, inchVal: 10)
+        let areaExpected: Double = 916.8472
 
         let pool = Rectangle(length: B, width: A)
-
-        let area: Double = pool.areaCover
-        XCTAssertEqual(916.8472, DoubleHelper.roundToTenThousandth(value: area))
-
-        // Calculate the price
         let scModel: SafetyCoverModel = SafetyCoverModel.StandardMesh5000M
         let scSize: SafetyCoverPanelSize = SafetyCoverPanelSize.fivebyfive
+
+        let area: Double = pool.areaCover
+        let priceExpected: Double = 2099.5801
+        // END INPUTS
+        
+        XCTAssertEqual(areaExpected, DoubleHelper.roundToTenThousandth(value: area))
+
+        // Calculate the price
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setArea(area: pool.areaCover)
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        XCTAssertEqual(2099.5801, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        XCTAssertEqual(priceExpected, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
         let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "B": DoubleHelper.roundToHundredth(value: B)]
         printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
@@ -1164,7 +1173,7 @@ class PriceCalculatorTests: XCTestCase {
     
     //----------------------------------------------------
     //----------------------------------------------------
-    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double], safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double], safetyCoverModel: SafetyCoverModel, panelSize: SafetyCoverPanelSize, optionList: [SafetyCoverOptionSelection]?, price: Double, discount: Double = 0) {
         var optionMsg = ""
         if optionList != nil {
             optionMsg = "Selected Option(s): "
@@ -1188,7 +1197,13 @@ class PriceCalculatorTests: XCTestCase {
                 prefix = prefix + "For \(shapeDesc) \(shape) pool area: \(area); Dimensions: \(dims); Cover product: '\(safetyCoverModel)'; "
         }
         
-        let msg = prefix + "Panel Size: '\(panelSize)'; \(optionMsg) Price: $\(price)"
+        var msg = prefix + "Panel Size: '\(panelSize)'; \(optionMsg) Price: $\(price)"
+        if(discount > 0) {
+            msg += " (with \(DoubleHelper.roundToHundredth(value: discount) * 100)% discount)."
+        }
+        else {
+            msg += "."
+        }
         
         print(msg)
     }

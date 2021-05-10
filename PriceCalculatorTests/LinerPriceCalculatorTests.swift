@@ -393,42 +393,15 @@ class LinerPriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool_WithAdders_Latham_100() throws {
-        // Set the dimensions
-        // 1x1 pool
+        // INPUTS
         let l: Double = 10.25
         let w: Double = 20.5
+        let pool = Rectangle(length: l, width: w)
         let brand = LinerBrand.Latham
         let areaExpected: Double = (l * w)
-
-        let pool = Rectangle(length: l, width: w)
-        XCTAssertEqual(areaExpected, pool.areaPool)
-
         let discountRate: Double = 0.07 // 7%
-        let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand, dealerDiscountPercentage: discountRate)
-        calculator.setArea(area: pool.areaPool)
-
-        // Define the options
-        var optionItem_VinylOverStair = LinerOptionItem()
-        optionItem_VinylOverStair.name = "<12' (Rod Pockets, Hook/Loop or Beaded)"
-        optionItem_VinylOverStair.stairSwimoutOption = StairAndSwimoutOption.StraightOrRomanStep
-        var selectedOption_VinylOverStair: LinerOptionSelection = LinerOptionSelection(optionItem: optionItem_VinylOverStair)
-        selectedOption_VinylOverStair.quantity = 1
-
-        var optionItem_AddOnStripe = LinerOptionItem()
-        optionItem_AddOnStripe.name = "Solid Color Break Stripe at Shallow End Break-Off"
-        optionItem_VinylOverStair.stairSwimoutOption = StairAndSwimoutOption.SingleTreadOrBench
-        var selectedOption_AddOnStripe: LinerOptionSelection = LinerOptionSelection(optionItem: optionItem_AddOnStripe)
-        selectedOption_AddOnStripe.quantity = 1
-
-        var options = [LinerOptionSelection]()
-        options.append(selectedOption_VinylOverStair)
-        options.append(selectedOption_AddOnStripe)
-
-        calculator.setSelectedOptions(selectedOptions: options)
-
-        // Calculate the price
-        calculator.calculatePrice()
-        XCTAssertTrue(calculator.priceResult.wasSuccessful)
+        let option_name_qty_Inputs = [(name: "<12' (Rod Pockets, Hook/Loop or Beaded)", stairSwimoutOption: StairAndSwimoutOption.StraightOrRomanStep, qty: 1),
+                                      (name: "Solid Color Break Stripe at Shallow End Break-Off", stairSwimoutOption: StairAndSwimoutOption.SingleTreadOrBench, qty: 1)]
         
         //let expectedPrice: Double = (3.45 * areaExpected) //724.9313
         // This is diff from immediately above due to the weird rounding Latham
@@ -436,11 +409,33 @@ class LinerPriceCalculatorTests: XCTestCase {
         //let expectedPrice: Double = 724.95    // without options, no discountrate
         //let expectedPrice: Double = 1233.95     // with options, no discountrate
         let expectedPrice: Double = 1147.57     // with options, with discount
+        // END INPUTS
+
+        XCTAssertEqual(areaExpected, pool.areaPool)
+
+        // Populate the options
+        var options = [LinerOptionSelection]()
+        for optInput in option_name_qty_Inputs {
+            var optionItem = LinerOptionItem()
+            optionItem.name = optInput.name
+            optionItem.stairSwimoutOption = optInput.stairSwimoutOption
+            var selectedOption = LinerOptionSelection(optionItem: optionItem)
+            selectedOption.quantity = optInput.qty
+            options.append(selectedOption)
+        }
+
+        let calculator: LinerPriceCalculator = LinerPriceCalculator(linerBrand: brand, dealerDiscountPercentage: discountRate)
+        calculator.setArea(area: pool.areaPool)
+        calculator.setSelectedOptions(selectedOptions: options)
+
+        // Calculate the price
+        calculator.calculatePrice()
+        XCTAssertTrue(calculator.priceResult.wasSuccessful)
 
         XCTAssertEqual(expectedPrice, DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))
 
         let dict: [String: Double] = ["A": l, "B": w]
-        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, linerBrand: brand, optionList: nil, price: calculator.priceResult.calculatedPrice)
+        printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: pool.areaCover, dimensionDict: dict, linerBrand: brand, optionList: nil, price: calculator.priceResult.calculatedPrice, discount: discountRate)
     }
 
 //    func testPerformanceExample() throws {
@@ -452,7 +447,7 @@ class LinerPriceCalculatorTests: XCTestCase {
 
     //----------------------------------------------------
     //----------------------------------------------------
-    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double], linerBrand: LinerBrand, optionList: [SafetyCoverOptionSelection]?, price: Double) {
+    func printTestResultForLathamValidation(priceType: PriceType, shapeDesc: ShapeDescription, shape: PoolShape, area: Double, dimensionDict: [String: Double], linerBrand: LinerBrand, optionList: [SafetyCoverOptionSelection]?, price: Double, discount: Double = 0) {
         var optionMsg = ""
         if optionList != nil {
             optionMsg = "Selected Option(s): "
@@ -476,8 +471,14 @@ class LinerPriceCalculatorTests: XCTestCase {
                 prefix = prefix + "For \(shapeDesc) \(shape) pool for brand '\(linerBrand)' with area: \(area); Dimensions: \(dims); "
         }
         
-        let msg = prefix + "Price: $\(price)"
-        
+        var msg = prefix + "Price: $\(price)"
+        if(discount > 0) {
+            msg += " (with \(DoubleHelper.roundToHundredth(value: discount) * 100)% discount)."
+        }
+        else {
+            msg += "."
+        }
+
         print(msg)
     }
 
