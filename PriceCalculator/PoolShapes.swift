@@ -52,14 +52,16 @@ class RectangleBase {
     //---------------------------
     //---------------------------
     func calculateAreaPool() {
-        self.areaPool = (Double)(self.length * self.width)
+        let totalCoverOverlap: Double = 0
+        self.areaPool = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: totalCoverOverlap)
+
     }
 
     //---------------------------
     //---------------------------
     func calculateAreaCover() {
         let totalCoverOverlap: Double = 2.0
-        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
+        self.areaCover = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: totalCoverOverlap)
     }
 
     //---------------------------
@@ -97,7 +99,7 @@ class Oasis: RectangleBase {
     //---------------------------
     override func calculateAreaCover() {
         let totalCoverOverlap: Double = 3.0
-        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
+        self.areaCover = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: totalCoverOverlap)
     }
 }
 
@@ -109,7 +111,7 @@ class Tahiti: RectangleBase {
     //---------------------------
     override func calculateAreaCover() {
         let totalCoverOverlap: Double = 3.0
-        self.areaCover = (Double)((totalCoverOverlap + self.length) * (totalCoverOverlap + self.width))
+        self.areaCover = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: totalCoverOverlap)
     }
 }
 
@@ -161,12 +163,16 @@ class TrueL {
         // But with this L shape, we need to ignore the sides of the two separate areas of
         // the rectangles that cross over the pool surface.
         
-        //                        B                             A
-        let area1 = (Double)(((longLength + totalOverlap) * (shortWidth + totalOverlap)))
-        
+        //                                             B                  A
+        let area1 = getAreaRectWithOverlap(length: longLength, width: shortWidth, totalOverlap: totalOverlap)
+
         //                         B7                           A1             A
         let area2 = (Double) ((shortLength + totalOverlap) * (longWidth - shortWidth))
-        
+        //                                                    ^^^^^^^^^^^^^^^^^^^^^^
+        //                                                    Note that this doesn't include the overlap
+        //                                                    since this area is technically over the water.
+        // We therefore can't use the standard getAreaRectWithOverlap function.
+
         let area = area1 + area2  // TODO - I don't think the Excel calculator includes the overlap
         
         return area
@@ -370,15 +376,15 @@ class Lagoon {
     //---------------------------
     //---------------------------
     func calculateAreaPool() {
-        self.areaPool = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 0)
-        self.areaPool += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 0)
+        self.areaPool = getAreaRectWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 0)
+        self.areaPool += getAreaRectWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 0)
     }
 
     //---------------------------
     //---------------------------
     func calculateAreaCover() {
-        self.areaCover = getAreaWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
-        self.areaCover += getAreaWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 3.0)
+        self.areaCover = getAreaRectWithOverlap(length: self.longLength, width: self.longWidth, totalOverlap: 3.0)
+        self.areaCover += getAreaRectWithOverlap(length: self.shortLength, width: self.shortWidth, totalOverlap: 3.0)
     }
 
     //---------------------------
@@ -386,12 +392,12 @@ class Lagoon {
 //     func calculatePerimeterPool() {
 //        self.perimeterPool = (2 * self.length) + (2 * self.width)
 //     }
+}
 
-    //---------------------------
-    //---------------------------
-    func getAreaWithOverlap(length: Double, width: Double, totalOverlap: Double) -> Double {
-        let area: Double = (Double)((totalOverlap + length) * (totalOverlap + width))
-        return area
-    }
+//---------------------------
+//---------------------------
+func getAreaRectWithOverlap(length: Double, width: Double, totalOverlap: Double) -> Double {
+    let area: Double = (Double)((totalOverlap + length) * (totalOverlap + width))
+    return area
 }
 
