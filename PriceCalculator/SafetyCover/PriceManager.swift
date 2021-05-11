@@ -4,6 +4,8 @@
 //
 //  Created by John Tafoya on 4/15/21.
 //
+//  **THIS MODULE IMPLEMENTS BUSINESS LOGIC**
+//
 
 import Foundation
 
@@ -81,11 +83,29 @@ class SafetyCoverPriceCalculator {
     
     func setPoolCharacteristics(shapeDescription: ShapeDescription) {   //, shape: PoolShape
         _shapeDescription = shapeDescription
+
+        // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
+        //  - "All freeform covers will be built with 3' x 3' spacing"
+        if(_shapeDescription == ShapeDescription.freeform) {
+            if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
+                // TODO
+                // Notify the user to explain why the value the user set
+                // cannot be used. This should be controlled by the UI but
+                // just in case...
+            }
+            _safetyCoverPanelSize = SafetyCoverPanelSize.threebythree
+        }
+
         //_poolShape = shape
     }
     
     func setSelectedOptions(selectedOptions: [SafetyCoverOptionSelection]) {
         _selectedOptions = selectedOptions
+    }
+    
+    // Needed by tests (if nothing else)
+    func getSafetyCoverPanelSize() -> SafetyCoverPanelSize {
+        return _safetyCoverPanelSize
     }
 
     //--------------------------------
@@ -94,7 +114,7 @@ class SafetyCoverPriceCalculator {
         // TODO
 
         // Get the baseline for the square footage
-        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeDescription: self._shapeDescription!, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._area!)
+        let unitPrice: Double = _dataLayer.getUnitPriceForArea(shapeDescription: _shapeDescription!, coverModel: _safetyCoverModel, panelSize: _safetyCoverPanelSize, area: self._area!)
         
         // This is a crappy implementation done just to get this done ASAP
         if(unitPrice >= 0) {

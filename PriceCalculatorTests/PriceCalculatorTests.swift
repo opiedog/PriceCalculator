@@ -426,6 +426,62 @@ class PriceCalculatorTests: XCTestCase {
 
         XCTAssertEqual(ShapeDescription.freeform, lagoon.shapeDescription)
     }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSafetyCoverSizeOverrideHappens() throws {
+        // INPUTS
+        let shapeDescription = ShapeDescription.freeform
+        let scSize = SafetyCoverPanelSize.fivebyfive        // Not allowed by rule
+        // END INPUTS
+
+        let calc: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.undefined, safetyCoverPanelSize: scSize)
+        calc.setPoolCharacteristics(shapeDescription: shapeDescription)
+        
+        XCTAssertEqual(SafetyCoverPanelSize.threebythree, calc.getSafetyCoverPanelSize())
+    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSafetyCoverSizeOverrideNotNeededFreeform3x3() throws {
+        // INPUTS
+        let shapeDescription = ShapeDescription.freeform
+        let scSize = SafetyCoverPanelSize.threebythree
+        // END INPUTS
+
+        let calc: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.undefined, safetyCoverPanelSize: scSize)
+        calc.setPoolCharacteristics(shapeDescription: shapeDescription)
+        
+        XCTAssertEqual(SafetyCoverPanelSize.threebythree, calc.getSafetyCoverPanelSize())
+    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSafetyCoverSizeOverrideNotNeededGeometric5x5() throws {
+        // INPUTS
+        let shapeDescription = ShapeDescription.geometric
+        let scSize = SafetyCoverPanelSize.fivebyfive
+        // END INPUTS
+
+        let calc: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.undefined, safetyCoverPanelSize: scSize)
+        calc.setPoolCharacteristics(shapeDescription: shapeDescription)
+        
+        XCTAssertEqual(SafetyCoverPanelSize.fivebyfive, calc.getSafetyCoverPanelSize())
+    }
+    
+    //----------------------------------------------------
+    //----------------------------------------------------
+    func testSafetyCoverSizeOverrideNotNeededGeometric3x3() throws {
+        // INPUTS
+        let shapeDescription = ShapeDescription.geometric
+        let scSize = SafetyCoverPanelSize.threebythree
+        // END INPUTS
+
+        let calc: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: SafetyCoverModel.undefined, safetyCoverPanelSize: scSize)
+        calc.setPoolCharacteristics(shapeDescription: shapeDescription)
+        
+        XCTAssertEqual(SafetyCoverPanelSize.threebythree, calc.getSafetyCoverPanelSize())
+    }
 
     // FUNCTIONAL PRICE CHECKS
     //----------------------------------------------------

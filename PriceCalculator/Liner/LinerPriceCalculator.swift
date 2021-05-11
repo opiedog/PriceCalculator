@@ -4,6 +4,8 @@
 //
 //  Created by John Tafoya on 5/4/21.
 //
+//  **THIS MODULE IMPLEMENTS BUSINESS LOGIC**
+//
 
 import Foundation
 

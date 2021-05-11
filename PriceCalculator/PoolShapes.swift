@@ -4,6 +4,8 @@
 //
 //  Created by John Tafoya on 5/4/21.
 //
+//  **THIS MODULE IMPLEMENTS BUSINESS LOGIC**
+//
 
 import Foundation
 
@@ -14,7 +16,7 @@ enum ShapeDescription {
 }
 
 enum PoolShape {
-    // Geometric shapes
+    // Geometric/rectangle shapes
     case undefined
     case rectangle
     case oval
@@ -29,6 +31,7 @@ enum PoolShape {
     case lagoon
 }
 
+//===========================================================
 //===========================================================
 class RectangleBase {
     var length: Double = 0      // B        // B        // X1
@@ -332,6 +335,10 @@ class LazyL {
     }
 }
 
+// FREEFORM SHAPES
+//===========================================================
+// Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
+//  - "Manufactured with approximately 18" overlap" (so 18" (1.5') per side, which means 3' total overlap)
 //===========================================================
 class Lagoon {
     var shapeDescription: ShapeDescription = .freeform
