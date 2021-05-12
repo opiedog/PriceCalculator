@@ -32,6 +32,10 @@ class DataLayer_Liner {
         populateOptions()
     }
     
+    func getFreeformIrregularShapeChargeAmount() -> Double {
+        return 177
+    }
+    
     //------------------------------------------------------------
     // Base product price
     //------------------------------------------------------------

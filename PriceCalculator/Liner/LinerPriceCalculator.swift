@@ -52,27 +52,48 @@ class LinerPriceCalculator {
     private var _dealerDiscountPercentage: Double
     private var _linerBrand: LinerBrand
     private var _selectedOptions: [LinerOptionSelection]?
+    private var _pool: PoolBase?
 
     var priceResult: PriceResult = PriceResult()
 
-    init(linerBrand: LinerBrand, dealerDiscountPercentage: Double = 0) {
+    //--------------------------------
+    //--------------------------------
+    init(pool: PoolBase?, area: Double, linerBrand: LinerBrand, dealerDiscountPercentage: Double = 0) {
         _area = 0
         _dealerDiscountPercentage = dealerDiscountPercentage
         _linerBrand = linerBrand
         _selectedOptions = nil
+        _pool = pool
+        
+        setArea(area: area)
     }
 
-    func setArea(area: Double) {
-        //_area = area
-        
+    //--------------------------------
+    //--------------------------------
+    private func setArea(area: Double) {
         // This is done to match Latham's Excel price calculator implementation
         _area = DoubleHelper.roundToHundredth(value: area)
     }
     
+    //--------------------------------
+    //--------------------------------
+    var isIrregularPool : Bool {
+        // If the pool is not set (i.e. nil), then by definition it's considered
+        // to be not irregular and thus will not add the extra fee.
+        (_pool?.isIrregular ?? false)
+    }
+    
+    //--------------------------------
+    //--------------------------------
     func setSelectedOptions(selectedOptions: [LinerOptionSelection]) {
         _selectedOptions = selectedOptions
     }
+    
+    func getFreeformIrregularShapeChargeAmount() -> Double {
+        return _dataLayer.getFreeformIrregularShapeChargeAmount()
+    }
 
+    //--------------------------------
     //--------------------------------
     func calculatePrice() {
         // Validate inputs
@@ -92,6 +113,12 @@ class LinerPriceCalculator {
         }
         else {
             priceResult.wasSuccessful = false
+        }
+
+        if(priceResult.wasSuccessful) {
+            if(self.isIrregularPool) {
+                priceResult.calculatedPrice += self.getFreeformIrregularShapeChargeAmount()
+            }
         }
 
         // Add the options

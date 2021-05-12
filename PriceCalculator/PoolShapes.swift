@@ -38,14 +38,43 @@ enum PoolShape {
 
 //===========================================================
 //===========================================================
-class RectangleBase {
-    var length: Double = 0      // B        // B        // X1
-    var width: Double = 0       // A        // A1       // A
+class PoolBase {
+    var shapeDescription: ShapeDescription = .geometric
     var areaPool: Double = 0
     var areaCover: Double = 0
     var perimeterPool: Double = 0
+    
+    init() {
+        // This is somewhat arbitrary to use this as the default
+        // but that's the gist of it. Subclasses can change it.
+        shapeDescription = .geometric
+        
+        areaPool = 0
+        areaCover = 0
+        perimeterPool = 0
+    }
+    
+    var isIrregular: Bool {
+        (shapeDescription == ShapeDescription.freeform)
+    }
+}
 
+//===========================================================
+//===========================================================
+class RectangleBase : PoolBase {
+    var length: Double = 0      // B        // B        // X1
+    var width: Double = 0       // A        // A1       // A
+
+    override init() {
+        super.init()
+
+        self.length = 0
+        self.width = 0
+    }
+    
     init(length: Double, width: Double) {
+        super.init()
+        
         self.length = length
         self.width = width
         
@@ -78,34 +107,37 @@ class RectangleBase {
 
 //===========================================================
 //===========================================================
-class Rectangle: RectangleBase {
-    var shapeDescription: ShapeDescription = .geometric
+class Rectangle : RectangleBase {
     var poolShape: PoolShape = .rectangle
 }
 
 //===========================================================
-class Oval: RectangleBase {
-    var shapeDescription: ShapeDescription = .geometric
+class Oval : RectangleBase {
     var poolShape: PoolShape = .oval
 }
 
 //===========================================================
-class Grecian: RectangleBase {
-    var shapeDescription: ShapeDescription = .geometric
+class Grecian : RectangleBase {
     var poolShape: PoolShape = .grecian
 }
 
 //===========================================================
-class Roman: RectangleBase {
-    var shapeDescription: ShapeDescription = .geometric
+class Roman : RectangleBase {
     var poolShape: PoolShape = .roman
 }
 
 //===========================================================
-class Oasis: RectangleBase {
-    var shapeDescription: ShapeDescription = .freeform
+class Oasis : RectangleBase {
     var poolShape: PoolShape = .oasis
 
+    //---------------------------
+    //---------------------------
+    override init(length: Double, width: Double) {
+        super.init(length: length, width: width)
+        
+        self.shapeDescription = .freeform
+    }
+    
     //---------------------------
     //---------------------------
     override func calculateAreaCover() {
@@ -115,10 +147,18 @@ class Oasis: RectangleBase {
 }
 
 //===========================================================
-class Tahiti: RectangleBase {
-    var shapeDescription: ShapeDescription = .freeform
+class Tahiti : RectangleBase {
+    private let _sd = ShapeDescription.freeform
     var poolShape: PoolShape = .tahiti
 
+    //---------------------------
+    //---------------------------
+    override init(length: Double, width: Double) {
+        super.init(length: length, width: width)
+
+        self.shapeDescription = _sd
+    }
+    
     //---------------------------
     //---------------------------
     override func calculateAreaCover() {
@@ -137,15 +177,26 @@ class Tahiti: RectangleBase {
 //  Gemini / Omni / Oasis / Cypress; Mountain Lake / Crystal Lake
 //  Liberty; Odyssey; Keyhole; Taormina; Sentra / Michigan
 //===========================================================
-class DoubleWidthRectangle: RectangleBase {
-    var shapeDescription: ShapeDescription = .freeform
+class DoubleWidthRectangle : RectangleBase {
+    private let _sd = ShapeDescription.freeform
     var poolShape: PoolShape = .doublewidthrect
     
     private var _lesserWidth: Double = 0    // This is the width at the shallow end that is less than the width at the deep end (by definition)
     
+    //---------------------------
+    //---------------------------
+    override init() {
+        super.init()
+        
+        self.shapeDescription = _sd
+    }
+    
+    //---------------------------
+    //---------------------------
     init(length: Double, width: Double, lesserWidth: Double) {
         super.init(length: length, width: width)
         
+        self.shapeDescription = _sd
         _lesserWidth = lesserWidth
         calculateAreaPool()
     }
@@ -168,7 +219,7 @@ class DoubleWidthRectangle: RectangleBase {
 //}
 
 //===========================================================
-class TrueL {
+class TrueL : PoolBase {
     //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
     //                              // Rect     // TrueL    // LazyL
     // Something described by an enclosing rectangle
@@ -180,15 +231,13 @@ class TrueL {
     var shortWidth: Double = 0      //          // A        // A1
 
     var totalOverlap: Double = 2.0
-    var areaPool: Double = 0
-    var areaCover: Double = 0
-    var perimeterPool: Double = 0
-    var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .truel
 
     //---------------------------
     //---------------------------
     init(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double) {
+        super.init()
+        
         self.longLength = longLength
         self.longWidth = longWidth
 
@@ -239,15 +288,9 @@ class TrueL {
 }
 
 //===========================================================
-class LazyL {
-    var shapeDescription: ShapeDescription = .geometric
+class LazyL : PoolBase {
     var poolShape: PoolShape = .lazyl
     
-    var areaPool: Double = 0    // The area of the pool
-    var areaCover: Double = 0   // The area of the cover that includes an amount to be larger than the pool
-    
-    var perimeter: Double = 0   // This is the pool perimeter, not the cover
-
     //                              // These values/names are re "2021 US Safety Cover Calculator.xlsm" on the 'Setup' tab
     //                              // Rect     // TrueL    // LazyL
     // Something described by an enclosing rectangle
@@ -274,6 +317,8 @@ class LazyL {
     //---------------------------
     //---------------------------
     init(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double, longDiagLength: Double, shortDiagLength: Double) {
+        super.init()
+        
         self.longLength = longLength
         self.longWidth = longWidth
 
@@ -389,7 +434,7 @@ class LazyL {
     //---------------------------
     func calculatePerimeterPool() {
         let p: Double = (longLength + longWidth + shortLength + shortWidth + longDiagLength + shortDiagLength)
-        self.perimeter = p
+        self.perimeterPool = p
     }
 }
 
@@ -398,8 +443,8 @@ class LazyL {
 // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
 //  - "Manufactured with approximately 18" overlap" (so 18" (1.5') per side, which means 3' total overlap)
 //===========================================================
-class Lagoon {
-    var shapeDescription: ShapeDescription = .freeform
+class Lagoon : PoolBase {
+    private let _sd: ShapeDescription = .freeform
     var poolShape: PoolShape = .lagoon
 
     var longLength: Double = 0
@@ -407,15 +452,12 @@ class Lagoon {
     
     var shortLength: Double = 0
     var shortWidth: Double = 0
-
-    var areaPool: Double = 0
-    var areaCover: Double = 0
-    var perimeterPool: Double = 0
-    
-    //var rect1: Rectangle
-    //var rect2: Rectangle
     
     init(longLength: Double, longWidth: Double, shortLength: Double, shortWidth: Double) {
+        super.init()
+        
+        self.shapeDescription = _sd
+        
         self.longLength = longLength
         self.longWidth = longWidth
         self.shortLength = shortLength

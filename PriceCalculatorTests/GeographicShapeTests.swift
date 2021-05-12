@@ -255,7 +255,7 @@ class GeographicShapeTests: XCTestCase {
         XCTAssertEqual(DoubleHelper.roundToTenThousandth(value: areaPoolExpected), DoubleHelper.roundToTenThousandth(value: lazyL.areaPool))
 
         let perimeterExpected: Double = 6
-        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -286,7 +286,7 @@ class GeographicShapeTests: XCTestCase {
         XCTAssertEqual(DoubleHelper.roundToTenThousandth(value: areaPoolExpected), DoubleHelper.roundToTenThousandth(value: lazyL.areaPool))
 
         let perimeterExpected: Double = DoubleHelper.roundToHundredth(value: (A + X1 + W1 + A1 + V3 + T))
-        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
@@ -348,7 +348,7 @@ class GeographicShapeTests: XCTestCase {
         }
         
         let perimeterExpected: Double = (A + T + V3 + A1 + W1 + X1)
-        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeter)
+        let perimeterActual: Double = DoubleHelper.roundToHundredth(value: lazyL.perimeterPool)
         XCTAssertEqual(perimeterExpected, perimeterActual)
         
         XCTAssertEqual(PoolShape.lazyl, lazyL.poolShape)
