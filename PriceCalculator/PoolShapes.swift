@@ -181,7 +181,18 @@ class DoubleWidthRectangle : RectangleBase {
     private let _sd = ShapeDescription.freeform
     var poolShape: PoolShape = .doublewidthrect
     
-    private var _lesserWidth: Double = 0    // This is the width at the shallow end that is less than the width at the deep end (by definition)
+    // For a certain set of pools of various freeform shapes, Latham defines the
+    // shape as an overall length with two width values, one being greater than
+    // the other.
+    // In general, it's assumed that the width at the shallow end that is less
+    // than the width at the deep end.
+    // The calculation for area is defined as the length times the greater of
+    // the two widths.
+    // The greater of the two widths is captured in RectangleBase.width.
+    // The lesser of the two widths is captured in this class in ._lesserWidth.
+    // This value is not yet used but it's included here to hopefully
+    // make things more clear to the implementation.
+    private var _lesserWidth: Double = 0
     
     //---------------------------
     //---------------------------
@@ -193,11 +204,12 @@ class DoubleWidthRectangle : RectangleBase {
     
     //---------------------------
     //---------------------------
-    init(length: Double, width: Double, lesserWidth: Double) {
-        super.init(length: length, width: width)
+    init(length: Double, greaterWidth: Double, lesserWidth: Double) {
+        super.init(length: length, width: greaterWidth)
         
         self.shapeDescription = _sd
         _lesserWidth = lesserWidth
+        
         calculateAreaPool()
     }
     

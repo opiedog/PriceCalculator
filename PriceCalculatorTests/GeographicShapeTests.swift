@@ -426,7 +426,7 @@ class GeographicShapeTests: XCTestCase {
         let poolAreaExpected: Double = 1
         // END INPUTS
 
-        let pool = DoubleWidthRectangle(length: l, width: w, lesserWidth: wLesser)
+        let pool = DoubleWidthRectangle(length: l, greaterWidth: w, lesserWidth: wLesser)
         
         let areaPool: Double = pool.areaPool
         XCTAssertEqual(poolAreaExpected, areaPool)
@@ -448,7 +448,7 @@ class GeographicShapeTests: XCTestCase {
 //        let coverAreaExpected: Double = 123.45
         // END INPUTS
 
-        let pool = DoubleWidthRectangle(length: l, width: w, lesserWidth: wLesser)
+        let pool = DoubleWidthRectangle(length: l, greaterWidth: w, lesserWidth: wLesser)
 
         let areaPool: Double = pool.areaPool
         XCTAssertEqual(poolAreaExpected, areaPool)

@@ -469,7 +469,7 @@ class LinerPriceCalculatorTests: XCTestCase {
         let l: Double = 16
         let w: Double = 32
         let wLesser: Double = (w - 1)    // Not actually important - just setting to an amt less than "w"
-        let pool = DoubleWidthRectangle(length: l, width: w, lesserWidth: wLesser)
+        let pool = DoubleWidthRectangle(length: l, greaterWidth: w, lesserWidth: wLesser)
         let brand = LinerBrand.Latham
         let areaExpected: Double = (l * w)
         let discountRate: Double = 0
