@@ -25,10 +25,15 @@ enum PoolShape {
     case lazyl
     case roman
 
-    // Freeform shapes
+    // Freeform shapes from SC Sq ft.pdf
     case oasis
     case tahiti
     case lagoon
+    
+    // Freeform shapes from Latham_Sq_Ft_Pricing Examples.pdf
+    case doublewidthrect
+    //case kidney
+    //case obliquecelebrity
 }
 
 //===========================================================
@@ -71,26 +76,32 @@ class RectangleBase {
      }
 }
 
+//===========================================================
+//===========================================================
 class Rectangle: RectangleBase {
     var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .rectangle
 }
 
+//===========================================================
 class Oval: RectangleBase {
     var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .oval
 }
 
+//===========================================================
 class Grecian: RectangleBase {
     var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .grecian
 }
 
+//===========================================================
 class Roman: RectangleBase {
     var shapeDescription: ShapeDescription = .geometric
     var poolShape: PoolShape = .roman
 }
 
+//===========================================================
 class Oasis: RectangleBase {
     var shapeDescription: ShapeDescription = .freeform
     var poolShape: PoolShape = .oasis
@@ -103,6 +114,7 @@ class Oasis: RectangleBase {
     }
 }
 
+//===========================================================
 class Tahiti: RectangleBase {
     var shapeDescription: ShapeDescription = .freeform
     var poolShape: PoolShape = .tahiti
@@ -114,6 +126,46 @@ class Tahiti: RectangleBase {
         self.areaCover = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: totalCoverOverlap)
     }
 }
+
+//===========================================================
+//  LINER POOL AREA CALCULATIONS
+// Various shapes that have two different width dimensions, and that
+// by definition have their pool areas calculated as a rectangle.
+// This will work for at least the following shapes per "Latham_Sq_Ft_Pricing Examples.pdf"
+// and the set in "shapes.zip" that we got from Will @ Latham.
+//  Oblique Celebrity; kidney; Rio; Norlander / Cape May; Mountain Pond
+//  Gemini / Omni / Oasis / Cypress; Mountain Lake / Crystal Lake
+//  Liberty; Odyssey; Keyhole; Taormina; Sentra / Michigan
+//===========================================================
+class DoubleWidthRectangle: RectangleBase {
+    var shapeDescription: ShapeDescription = .freeform
+    var poolShape: PoolShape = .doublewidthrect
+    
+    private var _lesserWidth: Double = 0    // This is the width at the shallow end that is less than the width at the deep end (by definition)
+    
+    init(length: Double, width: Double, lesserWidth: Double) {
+        super.init(length: length, width: width)
+        
+        _lesserWidth = lesserWidth
+        calculateAreaPool()
+    }
+    
+    //---------------------------
+    //---------------------------
+    override func calculateAreaPool() {
+        self.areaPool = getAreaRectWithOverlap(length: self.length, width: self.width, totalOverlap: 0)
+    }
+}
+
+////===========================================================
+//class ObliqueCelebrity: DoubleWidthRectangle {
+//    private let _ps: PoolShape = .obliquecelebrity
+//    
+//    override init(length: Double, width: Double, lesserWidth: Double) {
+//        super.init(length: length, width: width, lesserWidth: lesserWidth)
+//        self.poolShape = _ps
+//    }
+//}
 
 //===========================================================
 class TrueL {
