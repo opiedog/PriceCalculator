@@ -85,18 +85,7 @@ class SafetyCoverPriceCalculator {
         _shapeDescription = shapeDescription
 
         // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
-        //  - "All freeform covers will be built with 3' x 3' spacing"
-        if(_shapeDescription == ShapeDescription.freeform) {
-            if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
-                // TODO
-                // Notify the user to explain why the value the user set
-                // cannot be used. This should be controlled by the UI but
-                // just in case...
-            }
-            _safetyCoverPanelSize = SafetyCoverPanelSize.threebythree
-        }
-
-        //_poolShape = shape
+        bizRule_BigPoolMustUse3x3()
     }
     
     func setSelectedOptions(selectedOptions: [SafetyCoverOptionSelection]) {
@@ -106,6 +95,24 @@ class SafetyCoverPriceCalculator {
     // Needed by tests (if nothing else)
     func getSafetyCoverPanelSize() -> SafetyCoverPanelSize {
         return _safetyCoverPanelSize
+    }
+    
+    //--------------------------------
+    // BUSINESS RULE IMPLEMENTATIONS
+    //--------------------------------
+    // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
+    //  - "All freeform covers will be built with 3' x 3' spacing"
+    //--------------------------------
+    private func bizRule_BigPoolMustUse3x3() {
+        if(_shapeDescription == ShapeDescription.freeform) {
+            if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
+                // TODO
+                // Notify the user to explain why the value the user set
+                // cannot be used. This should be controlled by the UI but
+                // just in case...
+            }
+            _safetyCoverPanelSize = SafetyCoverPanelSize.threebythree
+        }
     }
 
     //--------------------------------

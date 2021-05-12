@@ -86,7 +86,7 @@ class PriceCalculatorTests: XCTestCase {
         XCTAssertEqual(SafetyCoverPanelSize.threebythree, calc.getSafetyCoverPanelSize())
     }
 
-    // FUNCTIONAL PRICE CHECKS
+    // FUNCTIONAL TESTS
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceForRectangularPool1() throws {
@@ -247,28 +247,33 @@ class PriceCalculatorTests: XCTestCase {
     //----------------------------------------------------
     //----------------------------------------------------
     func testPriceFor_TrueL_1() throws {
-        // Set the dimensions of the pool and the pool type
         let helper = MeasurementHelper()
+
+        // INPUTS
         let A = helper.feetAndInchesToFeet(footVal: 13, inchVal: 2)
         let A1 = helper.feetAndInchesToFeet(footVal: 21, inchVal: 4)
         let B = helper.feetAndInchesToFeet(footVal: 42, inchVal: 5)
         let B7 = helper.feetAndInchesToFeet(footVal: 9, inchVal: 0)
+        let scModel: SafetyCoverModel = SafetyCoverModel.HighShadeMesh7000MS
+        let scSize: SafetyCoverPanelSize = SafetyCoverPanelSize.threebythree
+
+        let areaCoverExpected: Double = 763.4861
+        let coverPriceExpected: Double = 2962.3261
+        // END INPUTS
 
         let pool = TrueL(longLength: B, longWidth: A1, shortLength: B7, shortWidth: A)
 
         let area: Double = pool.areaCover
-        XCTAssertEqual(763.4861, DoubleHelper.roundToTenThousandth(value: area))
+        XCTAssertEqual(areaCoverExpected, DoubleHelper.roundToTenThousandth(value: area))
 
         // Calculate the price
-        let scModel: SafetyCoverModel = SafetyCoverModel.HighShadeMesh7000MS
-        let scSize: SafetyCoverPanelSize = SafetyCoverPanelSize.threebythree
         let calculator: SafetyCoverPriceCalculator = SafetyCoverPriceCalculator(safetyCoverModel: scModel, safetyCoverPanelSize: scSize)
         calculator.setArea(area: pool.areaCover)
         calculator.setPoolCharacteristics(shapeDescription: pool.shapeDescription)
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        XCTAssertEqual(2962.3261, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
+        XCTAssertEqual(coverPriceExpected, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         
         let dict: [String: Double] = ["A": DoubleHelper.roundToHundredth(value: A), "A1": DoubleHelper.roundToHundredth(value: A1), "B": DoubleHelper.roundToHundredth(value: B), "B7": DoubleHelper.roundToHundredth(value: B7)]
         printTestResultForLathamValidation(priceType: PriceType.per_pool_size, shapeDesc: pool.shapeDescription, shape: pool.poolShape, area: DoubleHelper.roundToHundredth(value: area), dimensionDict: dict, safetyCoverModel: scModel, panelSize: scSize, optionList: nil, price: DoubleHelper.roundToHundredth(value: calculator.priceResult.calculatedPrice))

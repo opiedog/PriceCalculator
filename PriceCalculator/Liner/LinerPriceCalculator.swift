@@ -95,6 +95,16 @@ class LinerPriceCalculator {
     func getFreeformIrregularShapeChargeAmount() -> Double {
         return _dataLayer.getFreeformIrregularShapeChargeAmount()
     }
+    
+    //--------------------------------
+    // BUSINESS RULE IMPLEMENTATIONS
+    //--------------------------------
+    //--------------------------------
+    private func bizRule_IrregularShape() {
+        if(self.isIrregularPool) {
+            priceResult.calculatedPrice += self.getFreeformIrregularShapeChargeAmount()
+        }
+    }
 
     //--------------------------------
     //--------------------------------
@@ -119,9 +129,7 @@ class LinerPriceCalculator {
         }
 
         if(priceResult.wasSuccessful) {
-            if(self.isIrregularPool) {
-                priceResult.calculatedPrice += self.getFreeformIrregularShapeChargeAmount()
-            }
+            bizRule_IrregularShape()
         }
 
         // Add the options
