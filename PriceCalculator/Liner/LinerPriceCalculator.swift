@@ -57,6 +57,9 @@ class LinerPriceCalculator {
     var priceResult: PriceResult = PriceResult()
 
     //--------------------------------
+    // Area is explicitly accepted here so we don't assume that we should use
+    // PoolBase.areaPool (vs .areaCover). That's probably an unnecessary assumption
+    // but that's where this ended up...
     //--------------------------------
     init(pool: PoolBase?, area: Double, linerBrand: LinerBrand, dealerDiscountPercentage: Double = 0) {
         _area = 0
