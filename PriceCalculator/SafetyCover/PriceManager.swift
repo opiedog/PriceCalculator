@@ -4,6 +4,8 @@
 //
 //  Created by John Tafoya on 4/15/21.
 //
+//  Implementation of the price calculations for **SAFETY COVERS**
+//
 //  **THIS MODULE IMPLEMENTS BUSINESS LOGIC**
 //
 
@@ -79,13 +81,16 @@ class SafetyCoverPriceCalculator {
 
     func setArea(area: Double) {
         _area = area
+
+        // Biz rule: Large covers require 3x3 spacing
+        bizRule_BigPoolMustUse3x3()
     }
     
     func setPoolCharacteristics(shapeDescription: ShapeDescription) {   //, shape: PoolShape
         _shapeDescription = shapeDescription
 
         // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
-        bizRule_BigPoolMustUse3x3()
+        bizRule_FreeformShapeMustUse3x3()
     }
     
     func setSelectedOptions(selectedOptions: [SafetyCoverOptionSelection]) {
@@ -103,7 +108,7 @@ class SafetyCoverPriceCalculator {
     // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
     //  - "All freeform covers will be built with 3' x 3' spacing"
     //--------------------------------
-    private func bizRule_BigPoolMustUse3x3() {
+    private func bizRule_FreeformShapeMustUse3x3() {
         if(_shapeDescription == ShapeDescription.freeform) {
             if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
                 // TODO
@@ -115,6 +120,29 @@ class SafetyCoverPriceCalculator {
         }
     }
 
+    //--------------------------------
+    // Biz Rule: Per "SC Sq ft.pdf": For freeform shapes:
+    //  - "All freeform covers will be built with 3' x 3' spacing"
+    //--------------------------------
+    private func bizRule_BigPoolMustUse3x3() {
+        if(_area == nil) {
+            // Log this? Notify the user? Throw? Not sure what to do here...
+            return
+        }
+        
+        if(_area! > _dataLayer.getAreaThresholdToMandate3x3Spacing()) {
+            if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
+                // TODO
+                // Notify the user to explain why the value the user set
+                // cannot be used. This should be controlled by the UI but
+                // just in case...
+            }
+            _safetyCoverPanelSize = SafetyCoverPanelSize.threebythree
+        }
+    }
+
+    //--------------------------------
+    // CALCULATOR
     //--------------------------------
     func calculatePrice() {
         // Validate inputs

@@ -16,7 +16,7 @@ enum ShapeDescription {
 }
 
 enum PoolShape {
-    // Geometric/rectangle shapes
+    // Geometric/rectangle shapes from "SC Sq ft.pdf"
     case undefined
     case rectangle
     case oval
@@ -24,13 +24,16 @@ enum PoolShape {
     case truel
     case lazyl
     case roman
-
-    // Freeform shapes from SC Sq ft.pdf
+    
+    // Freeform shapes from "SC Sq ft.pdf"
     case oasis
     case tahiti
     case lagoon
-    
-    // Freeform shapes from Latham_Sq_Ft_Pricing Examples.pdf
+
+    // Geometric/rectangle shapes from "Latham_Sq_Ft_Pricing Examples.pdf"
+    case octagon
+
+    // Freeform shapes from "Latham_Sq_Ft_Pricing Examples.pdf"
     case doublewidthrect
     //case kidney
     //case obliquecelebrity
@@ -324,7 +327,7 @@ class LazyL : PoolBase {
     // opposite edges. I'm calling this "different side averaging" or "DiffSideAvgerage"
     // I previously called this "ExcelCoverCalcMethod" but that gets confusing since
     // this same technique is used in the PDF for liners...
-    var useDiffSideAvgerageMethod: Bool = true
+    var useDiffSideAverageMethod: Bool = true
     
     //---------------------------
     //---------------------------
@@ -358,7 +361,7 @@ class LazyL : PoolBase {
         // I'm not convinced that this isn't a bug but whatever, it's Latham's
         // calc and we'll replace this with the real value from the scanner...
         var how: Double = (fow / 2)
-        if(!self.useDiffSideAvgerageMethod) {
+        if(!self.useDiffSideAverageMethod) {
             how = fow
         }
 
@@ -372,7 +375,7 @@ class LazyL : PoolBase {
         //let useExcelCoverCalcMethod: Bool = false
         
         var area: Double = 0
-        if(self.useDiffSideAvgerageMethod) {
+        if(self.useDiffSideAverageMethod) {
             area = getAreaBase_perExcelCoverCalculator(a: a, x1: x1, w1: w1, a1: a1, v3: v3, t: t)
         }
         else {
@@ -448,6 +451,37 @@ class LazyL : PoolBase {
         let p: Double = (longLength + longWidth + shortLength + shortWidth + longDiagLength + shortDiagLength)
         self.perimeterPool = p
     }
+}
+
+//===========================================================
+//===========================================================
+class Octagon : PoolBase {
+    private let _sd: ShapeDescription = .geometric
+    var poolShape: PoolShape = .octagon
+
+    var radius: Double = 0
+    
+    init(radius: Double) {
+        super.init()
+        
+        self.radius = radius
+        
+        calculateAreaPool()
+        //calculateAreaCover()
+    }
+
+    //---------------------------
+    //---------------------------
+    func calculateAreaPool() {
+        // area == pi * r squared
+        self.areaPool = .pi * 6
+    }
+
+    //---------------------------
+    //---------------------------
+//    func calculateAreaCover() {
+//        // TODO
+//    }
 }
 
 // FREEFORM SHAPES

@@ -293,7 +293,7 @@ class PriceCalculatorTests: XCTestCase {
         let pool = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let area: Double = pool.areaCover
-        if(pool.useDiffSideAvgerageMethod) {
+        if(pool.useDiffSideAverageMethod) {
             XCTAssertEqual(489.3507, DoubleHelper.roundToTenThousandth(value: area))
         }
         else {
@@ -309,7 +309,7 @@ class PriceCalculatorTests: XCTestCase {
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        if(pool.useDiffSideAvgerageMethod) {
+        if(pool.useDiffSideAverageMethod) {
             XCTAssertEqual(2618.0262, DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
         else {
@@ -333,7 +333,7 @@ class PriceCalculatorTests: XCTestCase {
         let pool = LazyL(longLength: X1, longWidth: A, shortLength: T, shortWidth: A1, longDiagLength: W1, shortDiagLength: V3)
 
         let area: Double = pool.areaCover
-        if(pool.useDiffSideAvgerageMethod) {
+        if(pool.useDiffSideAverageMethod) {
             XCTAssertEqual(576, DoubleHelper.roundToTenThousandth(value: area))
         }
         else {
@@ -361,7 +361,7 @@ class PriceCalculatorTests: XCTestCase {
 
         calculator.calculatePrice()
         XCTAssertTrue(calculator.priceResult.wasSuccessful)
-        if(pool.useDiffSideAvgerageMethod) {
+        if(pool.useDiffSideAverageMethod) {
             XCTAssertEqual((1612.80 + selectedOptionCostExpected), DoubleHelper.roundToTenThousandth(value: calculator.priceResult.calculatedPrice))
         }
         else {

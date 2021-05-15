@@ -27,6 +27,11 @@ class DataLayer {
         populateOptions()
     }
     
+    func getAreaThresholdToMandate3x3Spacing() -> Double {
+        // TODO
+        return 9999
+    }
+
     //------------------------------------------------------------
     // Product options
     //  I was going to create a dictionary but I wasn't sure how to
