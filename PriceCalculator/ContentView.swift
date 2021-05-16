@@ -11,66 +11,65 @@ struct ContentView: View {
     //@State private var toggleState = true
     @State private var length: String = ""
     @State private var width: String = ""
-    @State private var p: String = ""
+    @State private var priceStr: String = ""
     @State private var price: Double = 0
     @State private var selectedLiner = LinerBrand.Latham
 
-    //let upchargeAmtExpected: Double = 177.00
-    //let calc = LinerPriceCalculator(pool: nil, area: 0, linerBrand: LinerBrand.undefined)
-
     var body: some View {
-//        let chgAmt = calc.getFreeformIrregularShapeChargeAmount()
-//        let s = DoubleHelper.roundToHundredth(value: chgAmt)
-//        Text("chgAmt=\(s)").padding()
-        
-        Text("Get liner price for rectanglular pool by brand").padding()
-        Spacer()
-        
-        Picker("Liner", selection: $selectedLiner) {
-            Text("Latham").tag(LinerBrand.Latham)
-            Text("LathamModel2").tag(LinerBrand.LathamModel2)
-            Text("LathamModel3").tag(LinerBrand.LathamModel3)
-            Text("Premier").tag(LinerBrand.Premier)
-            Text("Signature").tag(LinerBrand.Signature)
-        }
-        
-        TextField("Length", text: $length).padding()
-        TextField("Width", text: $width).padding()
-
-        Section {
-            Button(action: {
-//                //print("l:\(length), w:\(width)")
-//                let nf = NumberFormatter()
-//                let l = nf.number(from: length)
-//                let w = nf.number(from: width)
-//                price = (l!.doubleValue * w!.doubleValue)
-//                p = "$\(price)"
-                print("selectedLinerStr='\($selectedLiner)'")
-                getPrice()
-            }) {
-                Text("Get Price")
+        Section(header: Text("Liners")) {
+            // Liner
+            Text("Get liner price for rectanglular pool by brand").padding()
+            
+            Picker("Liner", selection: $selectedLiner) {
+                Text("Latham").tag(LinerBrand.Latham)
+                Text("LathamModel2").tag(LinerBrand.LathamModel2)
+                Text("LathamModel3").tag(LinerBrand.LathamModel3)
+                Text("Premier").tag(LinerBrand.Premier)
+                Text("Signature").tag(LinerBrand.Signature)
             }
+            
+            TextField("Length", text: $length).padding()
+            TextField("Width", text: $width).padding()
+
+            Section {
+                Button(action: {
+                    getPrice()
+                }) {
+                    Text("Get Price")
+                }
+            }
+
+            TextField("Price", text: $priceStr).padding()
+
+    //        Text("Hello, world!")
+    //            .padding()
+    //        Toggle(isOn: $toggleState) {
+    //            Text("Toggler")
+    //                .padding()
+    //        }
+
         }
-
-        TextField("Price", text: $p).padding()
-
-//        Text("Hello, world!")
-//            .padding()
-//        Toggle(isOn: $toggleState) {
-//            Text("Toggler")
-//                .padding()
-//        }
+        
+        Section(header: Text("Covers")) {
+            Text("Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand ").padding()
+        }
     }
 
     //-----------------
     //-----------------
     func getPrice() {
+        let price: Double = handleRectangularPool()
+        
+        priceStr = "$\(price)"
+    }
+
+    //-----------------
+    //-----------------
+    func handleRectangularPool() -> Double {
         let nf = NumberFormatter()
         
         let l = nf.number(from: length)
         let w = nf.number(from: width)
-        
-        //price = (l!.doubleValue * w!.doubleValue)
         
         let pool = Rectangle(length: l!.doubleValue, width: w!.doubleValue)
         print("areaPool = \(pool.areaPool)")
@@ -81,7 +80,10 @@ struct ContentView: View {
         calc.calculatePrice()
         
         price = calc.priceResult.calculatedPrice
-        p = "$\(price)"
+        
+        //priceStr = "$\(price)"
+        
+        return price
     }
 }
 
