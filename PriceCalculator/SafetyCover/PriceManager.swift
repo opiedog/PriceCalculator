@@ -110,12 +110,14 @@ class SafetyCoverPriceCalculator {
     //--------------------------------
     private func bizRule_FreeformShapeMustUse3x3() {
         if(_shapeDescription == ShapeDescription.freeform) {
+            // Force the panel size to 3x3
             if(_safetyCoverPanelSize != SafetyCoverPanelSize.threebythree) {
                 // TODO
                 // Notify the user to explain why the value the user set
                 // cannot be used. This should be controlled by the UI but
                 // just in case...
             }
+            
             _safetyCoverPanelSize = SafetyCoverPanelSize.threebythree
         }
     }
@@ -142,7 +144,7 @@ class SafetyCoverPriceCalculator {
     }
 
     //--------------------------------
-    // CALCULATOR
+    // CORE CALCULATOR
     //--------------------------------
     func calculatePrice() {
         // Validate inputs

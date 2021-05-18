@@ -49,39 +49,44 @@ struct ContentView: View {
     //        }
 
         }
-        
-        Section(header: Text("Covers")) {
-            Text("Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand Get liner price for rectanglular pool by brand ").padding()
-        }
     }
 
     //-----------------
     //-----------------
     func getPrice() {
-        let price: Double = handleRectangularPool()
+        var pool = PoolBase()
         
+        
+        pool = getPool_Rectangle()
+        
+        let price: Double = getPriceForPool(pool: pool)
+
         priceStr = "$\(price)"
     }
 
     //-----------------
     //-----------------
-    func handleRectangularPool() -> Double {
+    func getPool_Rectangle() -> PoolBase {
         let nf = NumberFormatter()
-        
         let l = nf.number(from: length)
         let w = nf.number(from: width)
         
         let pool = Rectangle(length: l!.doubleValue, width: w!.doubleValue)
+
         print("areaPool = \(pool.areaPool)")
-        
+
+        return pool
+    }
+
+    //-----------------
+    //-----------------
+    func getPriceForPool(pool: PoolBase) -> Double {
         let b: LinerBrand = selectedLiner
         let calc = LinerPriceCalculator(pool: pool, area: pool.areaPool, linerBrand: b)
         
         calc.calculatePrice()
         
         price = calc.priceResult.calculatedPrice
-        
-        //priceStr = "$\(price)"
         
         return price
     }

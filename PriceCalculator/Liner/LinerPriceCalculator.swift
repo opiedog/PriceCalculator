@@ -99,6 +99,7 @@ class LinerPriceCalculator {
     //--------------------------------
     // BUSINESS RULE IMPLEMENTATIONS
     //--------------------------------
+    // Add an upcharge for irregular shapes.
     //--------------------------------
     private func bizRule_IrregularShape() {
         if(self.isIrregularPool) {
@@ -106,6 +107,8 @@ class LinerPriceCalculator {
         }
     }
 
+    //--------------------------------
+    // CORE CALCULATOR
     //--------------------------------
     //--------------------------------
     func calculatePrice() {
