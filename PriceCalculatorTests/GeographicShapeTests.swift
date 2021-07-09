@@ -4,6 +4,11 @@
 //
 //  Created by John Tafoya on 5/12/21.
 //
+// ********************************
+//  OOPS
+//  This should be named "Geometric..." not "Geographic..."
+// ********************************
+//
 
 import XCTest
 @testable import PriceCalculator
